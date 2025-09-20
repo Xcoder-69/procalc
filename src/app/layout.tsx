@@ -9,9 +9,18 @@ import { AuthProvider } from '@/components/AuthProvider';
 import { AIChat } from '@/components/AIChat';
 import { Button } from '@/components/ui/button';
 import { Bot } from 'lucide-react';
+import { Poppins } from 'next/font/google';
+
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-body',
+  weight: ['400', '500', '600', '700', '800'],
+});
 
 export const metadata: Metadata = {
-  title: 'ProCalc Hub - Your Suite of Professional Calculators',
+  title: 'ProCalc - Your Suite of Professional Calculators',
   description: 'A comprehensive collection of calculators for finance, health, mathematics, and more. All-in-one suite for your daily calculation needs.',
 };
 
@@ -21,15 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" suppressHydrationWarning className={poppins.variable}>
       <body
         className={cn(
           'min-h-screen bg-background font-body antialiased',
@@ -39,6 +40,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
+          disableTransitionOnChange
         >
           <AuthProvider>
             <div className="relative flex min-h-dvh flex-col bg-background">

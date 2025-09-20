@@ -49,7 +49,7 @@ export default function ContactPage() {
                   <User className="h-5 w-5 text-accent" />
                   <div>
                     <p className="font-semibold">Owner: Mayur Suryavanshi</p>
-                    <p className="text-sm text-muted-foreground">Owner & Founder — All-in-One Calculator</p>
+                    <p className="text-sm text-muted-foreground">Owner & Founder — ProCalc</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -62,13 +62,6 @@ export default function ContactPage() {
                 </div>
               </CardContent>
             </Card>
-            <div className='p-4 text-center bg-card rounded-lg border'>
-              <h4 className='font-semibold mb-2'>Ad Placeholder</h4>
-              <div className='bg-background flex items-center justify-center h-40 rounded-md'>
-                <p className='text-muted-foreground text-sm'>Sidebar Ad</p>
-              </div>
-              <p className='text-xs text-muted-foreground mt-2'>/* AD PLACEHOLDER — PASTE ADSENSE SCRIPT HERE */</p>
-            </div>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { Mail, Phone } from 'lucide-react';
 export default function AboutPage() {
   return (
     <div className="container mx-auto px-4 py-16">
-      <h1 className="text-4xl md:text-5xl font-headline font-bold text-center mb-8 text-primary">About ProCalc Hub</h1>
+      <h1 className="text-4xl md:text-5xl font-headline font-bold text-center mb-8 text-primary">About ProCalc</h1>
       
       <div className="max-w-4xl mx-auto space-y-12">
         <Card>
@@ -14,7 +14,7 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent className="text-lg text-muted-foreground space-y-4">
             <p>
-              At ProCalc Hub, our mission is to provide a comprehensive, reliable, and user-friendly suite of calculators for professionals, students, and anyone in need of quick, accurate calculations. We believe that access to powerful tools shouldn't be complicated.
+              At ProCalc, our mission is to provide a comprehensive, reliable, and user-friendly suite of calculators for professionals, students, and anyone in need of quick, accurate calculations. We believe that access to powerful tools shouldn't be complicated.
             </p>
             <p>
               Whether you are managing your finances, tracking your health, or solving complex mathematical problems, our goal is to be your go-to resource, empowering you to make informed decisions with confidence.

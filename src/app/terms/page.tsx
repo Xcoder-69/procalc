@@ -2,12 +2,12 @@ export default function TermsPage() {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="prose dark:prose-invert max-w-4xl mx-auto">
-        <h1>Terms and Disclaimer for ProCalc Hub</h1>
+        <h1>Terms and Disclaimer for ProCalc</h1>
         <p><em>Last Updated: {new Date().toLocaleDateString()}</em></p>
 
         <h2>1. Acceptance of Terms</h2>
         <p>
-          By accessing and using ProCalc Hub (the "Website"), you accept and agree to be bound by the terms and provision of this agreement.
+          By accessing and using ProCalc (the "Website"), you accept and agree to be bound by the terms and provision of this agreement.
         </p>
 
         <h2>2. Use of Calculators</h2>

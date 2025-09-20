@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search, User, Calculator, Sun, Moon, Monitor, History } from 'lucide-react';
+import { Menu, User, Calculator, Sun, Moon, Monitor, History } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { categories } from '@/lib/calculators-data';
 import { useTheme } from 'next-themes';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/components/AuthProvider';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import SearchBar from './SearchBar';
 
 function AuthArea() {
   const { user, signOut } = useAuth();
@@ -90,7 +91,6 @@ function ThemeSwitcher() {
   );
 }
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function Header() {
   const { user } = useAuth();
@@ -109,7 +109,7 @@ export default function Header() {
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo className="h-6 w-6 text-primary" />
             <span className="hidden font-bold sm:inline-block font-headline">
-              ProCalc Hub
+              ProCalc
             </span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -139,7 +139,7 @@ export default function Header() {
           <SheetContent side="left" className="pr-0">
             <Link href="/" className="flex items-center space-x-2">
               <Logo className="h-6 w-6 text-primary" />
-              <span className="font-bold font-headline">ProCalc Hub</span>
+              <span className="font-bold font-headline">ProCalc</span>
             </Link>
             <div className="my-4 h-px w-full bg-border" />
             <div className="flex flex-col space-y-2">
@@ -172,14 +172,7 @@ export default function Header() {
         
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search calculators..."
-                className="pl-9 w-full md:w-64"
-              />
-            </div>
+            <SearchBar />
           </div>
           <nav className="flex items-center">
             {user && (

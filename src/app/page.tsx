@@ -16,7 +16,7 @@ export default function Home() {
         <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
             <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter text-primary mb-4">
-              ProCalc Hub
+              ProCalc
             </h1>
             <p className="max-w-xl mx-auto md:mx-0 text-lg md:text-xl text-muted-foreground mb-8">
               Your all-in-one suite of professional-grade calculators for finance, health, and mathematics. Accurate, fast, and easy to use.
@@ -42,16 +42,18 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredCalculators.map(calc => (
-              <Card key={calc.slug} className="flex flex-col hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
+              <Card key={calc.slug} className="flex flex-col hover:shadow-lg transition-shadow duration-300 overflow-hidden group border-2 border-transparent hover:border-primary/50">
                 <CardHeader className='p-0'>
-                  <Image
-                    src={`https://picsum.photos/seed/${calc.image.seed}/${calc.image.width}/${calc.image.height}`}
-                    alt={calc.title}
-                    width={calc.image.width}
-                    height={calc.image.height}
-                    className="w-full h-auto aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-300"
-                    data-ai-hint={calc.image.hint}
-                  />
+                   <div className="overflow-hidden">
+                    <Image
+                        src={`https://picsum.photos/seed/${calc.image.seed}/${calc.image.width}/${calc.image.height}`}
+                        alt={calc.title}
+                        width={calc.image.width}
+                        height={calc.image.height}
+                        className="w-full h-auto aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-300"
+                        data-ai-hint={calc.image.hint}
+                    />
+                   </div>
                   <div className="p-4">
                     <CardTitle className="text-lg font-semibold">{calc.title}</CardTitle>
                     <CardDescription className="text-sm h-10 overflow-hidden">{calc.shortDescription}</CardDescription>
@@ -79,14 +81,14 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {categories.map(category => (
-              <div key={category.slug} className="p-6 rounded-lg border bg-background">
+              <div key={category.slug} className="p-6 rounded-lg border bg-background hover:shadow-xl transition-shadow">
                 <h3 className="text-2xl font-bold font-headline text-primary mb-3">{category.name}</h3>
                 <p className="text-muted-foreground mb-6">{category.description}</p>
                 <ul className="space-y-2">
                   {calculators.filter(c => c.category === category.slug).slice(0, 5).map(calc => (
                     <li key={calc.slug}>
-                      <Link href={`/calculator/${calc.slug}`} className="flex items-center text-foreground hover:text-primary transition-colors">
-                        <Calculator className="mr-2 h-4 w-4 text-accent" />
+                      <Link href={`/calculator/${calc.slug}`} className="flex items-center text-foreground hover:text-primary transition-colors group">
+                        <Calculator className="mr-2 h-4 w-4 text-accent-foreground/50 group-hover:text-primary transition-colors" />
                         <span>{calc.title}</span>
                       </Link>
                     </li>

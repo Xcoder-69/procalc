@@ -2,11 +2,11 @@ export default function PrivacyPage() {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="prose dark:prose-invert max-w-4xl mx-auto">
-        <h1>Privacy Policy for ProCalc Hub</h1>
+        <h1>Privacy Policy for ProCalc</h1>
         <p><em>Last Updated: {new Date().toLocaleDateString()}</em></p>
 
         <p>
-          At ProCalc Hub, accessible from [Your Website URL], one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by ProCalc Hub and how we use it.
+          At ProCalc, accessible from [Your Website URL], one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by ProCalc and how we use it.
         </p>
 
         <h2>Information We Collect</h2>
@@ -32,24 +32,24 @@ export default function PrivacyPage() {
 
         <h2>Log Files</h2>
         <p>
-          ProCalc Hub follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.
+          ProCalc follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.
         </p>
 
         <h2>Advertising Partners Privacy Policies</h2>
         <p>
-          You may consult this list to find the Privacy Policy for each of the advertising partners of ProCalc Hub.
+          You may consult this list to find the Privacy Policy for each of the advertising partners of ProCalc.
         </p>
         <p>
-          Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on ProCalc Hub, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
+          Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on ProCalc, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
         </p>
         <p>
-          Note that ProCalc Hub has no access to or control over these cookies that are used by third-party advertisers.
+          Note that ProCalc has no access to or control over these cookies that are used by third-party advertisers.
         </p>
 
         <h2>Contact Us</h2>
         <p>
           If you have any questions about this Privacy Policy, please contact us.
-        p>
+        </p>
       </div>
     </div>
   );
