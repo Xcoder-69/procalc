@@ -78,7 +78,7 @@ export const calculators: CalculatorDef[] = [
     category: 'finance',
     shortDescription: 'Project the future value of your Systematic Investment Plan.',
     isFeatured: true,
-    image: { seed: 'investment-chart', width: 600, height: 400, hint: 'growth chart' },
+    image: { seed: 'sip-calculator-tablet', width: 600, height: 400, hint: 'investment calculator' },
     inputs: [
       { name: 'monthlyInvestment', label: 'Monthly Investment ($)', type: 'number', placeholder: '5000', min: 1 },
       { name: 'rate', label: 'Expected Annual Return (%)', type: 'number', placeholder: '12', min: 0, step: 0.1 },
