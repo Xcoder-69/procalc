@@ -42,20 +42,22 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredCalculators.map(calc => (
-              <Card key={calc.slug} className="flex flex-col hover:shadow-lg transition-shadow duration-300">
-                <CardHeader>
+              <Card key={calc.slug} className="flex flex-col hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
+                <CardHeader className='p-0'>
                   <Image
                     src={`https://picsum.photos/seed/${calc.image.seed}/${calc.image.width}/${calc.image.height}`}
                     alt={calc.title}
                     width={calc.image.width}
                     height={calc.image.height}
-                    className="rounded-lg mb-4 w-full h-auto aspect-[4/3] object-cover"
+                    className="w-full h-auto aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-300"
                     data-ai-hint={calc.image.hint}
                   />
-                  <CardTitle className="text-lg font-semibold">{calc.title}</CardTitle>
-                  <CardDescription className="text-sm h-10 overflow-hidden">{calc.shortDescription}</CardDescription>
+                  <div className="p-4">
+                    <CardTitle className="text-lg font-semibold">{calc.title}</CardTitle>
+                    <CardDescription className="text-sm h-10 overflow-hidden">{calc.shortDescription}</CardDescription>
+                  </div>
                 </CardHeader>
-                <CardContent className="mt-auto">
+                <CardContent className="mt-auto p-4">
                   <Button asChild className="w-full" variant="secondary">
                     <Link href={`/calculator/${calc.slug}`}>
                       Open Calculator

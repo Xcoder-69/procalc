@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { CalculatorDef, CalculatorInput } from '@/lib/types';
+import { CalculatorDef, CalculatorInput, Calculation } from '@/lib/types';
 import * as calculatorLogics from '@/lib/calculator-helpers';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +14,10 @@ import { Terminal } from 'lucide-react';
 import FormulaAssistance from './FormulaAssistance';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { useAuth } from './AuthProvider';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { useToast } from '@/hooks/use-toast';
 
 const calculationMap: Record<string, (inputs: Record<string, number | string>) => Record<string, any>> = {
   'bmi-calculator': calculatorLogics.calculateBmi,
@@ -32,6 +36,8 @@ type FormValues = Record<string, string | number>;
 
 export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: CalculatorDef }) {
   const [result, setResult] = useState<Record<string, any> | null>(null);
+  const { user } = useAuth();
+  const { toast } = useToast();
 
   const defaultValues = calculatorDef.inputs.reduce((acc, input) => {
     if (input.type === 'date') {
@@ -44,12 +50,11 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
   
   const { control, handleSubmit, reset, setValue } = useForm<FormValues>({ defaultValues });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     const calculationFn = calculationMap[calculatorDef.slug];
     if (calculationFn) {
       const numericData = Object.entries(data).reduce((acc, [key, value]) => {
         const inputDef = calculatorDef.inputs.find(i => i.name === key);
-        // Ensure empty strings for number inputs are handled as empty, not 0
         if (inputDef?.type === 'number' && value === '') {
           acc[key] = '';
         } else if (inputDef?.type === 'number') {
@@ -61,6 +66,27 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
       }, {} as Record<string, number | string>);
       const res = calculationFn(numericData);
       setResult(res);
+
+      if (user && Object.keys(res).length > 0) {
+        try {
+          const historyData: Calculation = {
+            userId: user.uid,
+            calculatorSlug: calculatorDef.slug,
+            calculatorTitle: calculatorDef.title,
+            inputs: data,
+            results: res,
+            createdAt: serverTimestamp(),
+          };
+          await addDoc(collection(db, 'history'), historyData);
+        } catch (error) {
+          console.error("Error saving calculation to history: ", error);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Could not save this calculation to your history.",
+          })
+        }
+      }
     }
   };
 

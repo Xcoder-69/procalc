@@ -4,11 +4,13 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search, User, Calculator, Sun, Moon, Monitor } from 'lucide-react';
+import { Menu, Search, User, Calculator, Sun, Moon, Monitor, History, Bot } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { categories } from '@/lib/calculators-data';
 import { useTheme } from 'next-themes';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { useAuth, AuthProvider } from '@/components/AuthProvider';
+import { AIChat } from '../AIChat';
 
 const navLinks = [
   { href: '/#featured-calculators', label: 'Featured' },
@@ -16,6 +18,52 @@ const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
+
+function AuthArea() {
+  const { user, signOut } = useAuth();
+  
+  if (user) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" aria-label="User profile">
+            <User className="h-5 w-5" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem disabled>
+            <div className='flex flex-col'>
+              <p className='text-sm font-medium'>{user.email}</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href="/history">
+              <History className="mr-2 h-4 w-4" />
+              Calculation History
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={signOut}>
+            Sign Out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
+
+  return (
+    <div className='flex items-center gap-2'>
+      <Button variant="ghost" asChild>
+        <Link href="/login">Login</Link>
+      </Button>
+      <Button asChild>
+        <Link href="/signup">Sign Up</Link>
+      </Button>
+    </div>
+  )
+}
+
 
 export default function Header() {
   const { setTheme } = useTheme();
@@ -100,6 +148,11 @@ export default function Header() {
             </div>
           </div>
           <nav className="flex items-center">
+            <AIChat>
+              <Button variant="ghost" size="icon" aria-label="AI Chat">
+                <Bot className="h-5 w-5" />
+              </Button>
+            </AIChat>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -123,9 +176,7 @@ export default function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button variant="ghost" size="icon" aria-label="User profile">
-              <User className="h-5 w-5" />
-            </Button>
+            <AuthArea />
           </nav>
         </div>
       </div>

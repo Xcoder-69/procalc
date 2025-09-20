@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { AuthProvider } from '@/components/AuthProvider';
 
 export const metadata: Metadata = {
   title: 'ProCalc Hub - Your Suite of Professional Calculators',
@@ -36,12 +37,14 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
         >
-          <div className="relative flex min-h-dvh flex-col bg-background">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
+          <AuthProvider>
+            <div className="relative flex min-h-dvh flex-col bg-background">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,3 +1,5 @@
+import { FieldValue } from "firebase/firestore";
+
 export type CategorySlug = 'health' | 'finance' | 'mathematics' | 'conversion-tools';
 export type CategoryName = 'Health' | 'Finance' | 'Mathematics' | 'Conversion & Tools';
 
@@ -37,3 +39,13 @@ export type CalculatorDef = {
   inputs: CalculatorInput[];
   resultLabels: Record<string, { label: string; unit?: string; description?: string; precision?: number }>;
 };
+
+export interface Calculation {
+  id?: string;
+  userId: string;
+  calculatorSlug: string;
+  calculatorTitle: string;
+  inputs: Record<string, any>;
+  results: Record<string, any>;
+  createdAt: FieldValue;
+}

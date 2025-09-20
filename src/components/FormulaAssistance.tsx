@@ -5,7 +5,8 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { getFormulaExplanation, FormulaAssistanceInput } from '@/ai/flows/formula-assistance';
+import { getFormulaExplanation } from '@/ai/flows/formula-assistance';
+import type { FormulaAssistanceInput } from '@/ai/flows/formula-assistance';
 import { Loader2, Sparkles } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 
