@@ -4,7 +4,9 @@ import { categories, calculators } from '@/lib/calculators-data';
 import { ArrowRight, Calculator } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import SimpleCalculator from '@/components/SimpleCalculator';
+import dynamic from 'next/dynamic';
+import { Skeleton } from '@/components/ui/skeleton';
+import SimpleCalculatorClient from '@/components/SimpleCalculatorClient';
 
 export default function Home() {
   const featuredCalculators = calculators.filter(c => c.isFeatured).slice(0, 8);
@@ -28,7 +30,7 @@ export default function Home() {
             </Button>
           </div>
           <div className='max-w-md mx-auto'>
-            <SimpleCalculator />
+            <SimpleCalculatorClient />
           </div>
         </div>
       </section>
