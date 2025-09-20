@@ -6,6 +6,9 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/components/AuthProvider';
+import { AIChat } from '@/components/AIChat';
+import { Button } from '@/components/ui/button';
+import { Bot } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'ProCalc Hub - Your Suite of Professional Calculators',
@@ -43,6 +46,14 @@ export default function RootLayout({
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
+            <AIChat>
+              <Button
+                className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg hover:scale-110 active:scale-100 transition-transform duration-200"
+                aria-label="Open AI Chat"
+              >
+                <Bot className="h-8 w-8" />
+              </Button>
+            </AIChat>
             <Toaster />
           </AuthProvider>
         </ThemeProvider>

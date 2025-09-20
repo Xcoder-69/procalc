@@ -16,7 +16,7 @@ export const calculators: CalculatorDef[] = [
     category: 'health',
     shortDescription: 'Calculate your Body Mass Index to assess your weight category.',
     isFeatured: true,
-    image: { seed: 'abstract-health', width: 600, height: 400, hint: 'health scale' },
+    image: { seed: 'health-monitor', width: 600, height: 400, hint: 'health scale' },
     inputs: [
       { name: 'weight', label: 'Weight (kg)', type: 'number', placeholder: '70', min: 1, step: 0.1 },
       { name: 'height', label: 'Height (cm)', type: 'number', placeholder: '175', min: 1, step: 0.1 },
@@ -35,7 +35,7 @@ export const calculators: CalculatorDef[] = [
     category: 'health',
     shortDescription: 'Estimate your Basal Metabolic Rate, the energy spent while at rest.',
     isFeatured: true,
-    image: { seed: 'abstract-energy', width: 600, height: 400, hint: 'metabolism energy' },
+    image: { seed: 'metabolism-rate', width: 600, height: 400, hint: 'healthy food' },
     inputs: [
       { name: 'age', label: 'Age (years)', type: 'number', placeholder: '30', min: 1 },
       { name: 'gender', label: 'Gender', type: 'select', options: [{value: 'male', label: 'Male'}, {value: 'female', label: 'Female'}] },
@@ -57,7 +57,7 @@ export const calculators: CalculatorDef[] = [
     category: 'finance',
     shortDescription: 'Calculate your Equated Monthly Installment for loans.',
     isFeatured: true,
-    image: { seed: 'abstract-finance', width: 600, height: 400, hint: 'finance loan' },
+    image: { seed: 'loan-payment', width: 600, height: 400, hint: 'loan document' },
     inputs: [
       { name: 'principal', label: 'Loan Amount ($)', type: 'number', placeholder: '100000', min: 1 },
       { name: 'rate', label: 'Annual Interest Rate (%)', type: 'number', placeholder: '5', min: 0, step: 0.01 },
@@ -78,7 +78,7 @@ export const calculators: CalculatorDef[] = [
     category: 'finance',
     shortDescription: 'Project the future value of your Systematic Investment Plan.',
     isFeatured: true,
-    image: { seed: 'abstract-investment', width: 600, height: 400, hint: 'investment growth' },
+    image: { seed: 'investment-chart', width: 600, height: 400, hint: 'growth chart' },
     inputs: [
       { name: 'monthlyInvestment', label: 'Monthly Investment ($)', type: 'number', placeholder: '5000', min: 1 },
       { name: 'rate', label: 'Expected Annual Return (%)', type: 'number', placeholder: '12', min: 0, step: 0.1 },
@@ -98,7 +98,7 @@ export const calculators: CalculatorDef[] = [
     title: 'Simple Interest Calculator',
     category: 'finance',
     shortDescription: 'Calculate simple interest on a principal amount.',
-    image: { seed: 'abstract-interest', width: 600, height: 400, hint: 'money interest' },
+    image: { seed: 'money-growth', width: 600, height: 400, hint: 'coins stacking' },
     inputs: [
       { name: 'principal', label: 'Principal Amount ($)', type: 'number', placeholder: '10000', min: 1 },
       { name: 'rate', label: 'Annual Interest Rate (%)', type: 'number', placeholder: '5', min: 0, step: 0.1 },
@@ -120,7 +120,7 @@ export const calculators: CalculatorDef[] = [
     category: 'mathematics',
     shortDescription: 'Calculate percentages for various scenarios.',
     isFeatured: true,
-    image: { seed: 'abstract-math', width: 600, height: 400, hint: 'math percent' },
+    image: { seed: 'math-symbols', width: 600, height: 400, hint: 'math equation' },
     inputs: [
       { name: 'percentage', label: 'What is', type: 'number', placeholder: '10', min: 0 },
       { name: 'total', label: '% of', type: 'number', placeholder: '500', min: 0 },
@@ -140,7 +140,7 @@ export const calculators: CalculatorDef[] = [
     category: 'conversion-tools',
     shortDescription: 'Find out your exact age in years, months, and days.',
     isFeatured: true,
-    image: { seed: 'abstract-birthday', width: 600, height: 400, hint: 'birthday cake' },
+    image: { seed: 'hourglass-time', width: 600, height: 400, hint: 'hourglass calendar' },
     inputs: [
       { name: 'dob', label: 'Your Date of Birth', type: 'date' },
     ],
@@ -158,7 +158,7 @@ export const calculators: CalculatorDef[] = [
     category: 'conversion-tools',
     shortDescription: 'A simple converter for common length units.',
     isFeatured: true,
-    image: { seed: 'abstract-measure', width: 600, height: 400, hint: 'measuring tape' },
+    image: { seed: 'ruler-measure', width: 600, height: 400, hint: 'measuring tools' },
     inputs: [
         { name: 'value', label: 'Value', type: 'number', placeholder: '10', min: 0 },
         { name: 'fromUnit', label: 'From', type: 'select', defaultValue: 'meters', options: [{value: 'meters', label: 'Meters'}, {value: 'feet', label: 'Feet'}, {value: 'inches', label: 'Inches'}, {value: 'kilometers', label: 'Kilometers'}, {value: 'miles', label: 'Miles'}] },
@@ -176,7 +176,7 @@ export const calculators: CalculatorDef[] = [
     category: 'conversion-tools',
     shortDescription: 'Calculate the final price after a discount.',
     isFeatured: true,
-    image: { seed: 'abstract-sale', width: 600, height: 400, hint: 'sale tag' },
+    image: { seed: 'shopping-sale', width: 600, height: 400, hint: 'shopping tag' },
     inputs: [
       { name: 'price', label: 'Original Price ($)', type: 'number', placeholder: '100', min: 0 },
       { name: 'discount', label: 'Discount (%)', type: 'number', placeholder: '20', min: 0, max: 100 },
@@ -194,7 +194,7 @@ export const calculators: CalculatorDef[] = [
     title: 'Date Difference Calculator',
     category: 'conversion-tools',
     shortDescription: 'Calculate the duration between two dates.',
-    image: { seed: 'abstract-calendar', width: 600, height: 400, hint: 'calendar dates' },
+    image: { seed: 'calendar-days', width: 600, height: 400, hint: 'calendar schedule' },
     inputs: [
       { name: 'startDate', label: 'Start Date', type: 'date' },
       { name: 'endDate', label: 'End Date', type: 'date' },

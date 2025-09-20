@@ -4,30 +4,27 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search, User, Calculator, Sun, Moon, Monitor, History, Bot } from 'lucide-react';
+import { Menu, Search, User, Calculator, Sun, Moon, Monitor, History } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { categories } from '@/lib/calculators-data';
 import { useTheme } from 'next-themes';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
-import { useAuth, AuthProvider } from '@/components/AuthProvider';
-import { AIChat } from '../AIChat';
-
-const navLinks = [
-  { href: '/#featured-calculators', label: 'Featured' },
-  { href: '/#all-categories', label: 'Categories' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
+import { useAuth } from '@/components/AuthProvider';
 
 function AuthArea() {
   const { user, signOut } = useAuth();
   
   if (user) {
     return (
-      <DropdownMenu>
+       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" aria-label="User profile">
-            <User className="h-5 w-5" />
+          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+             <Avatar className="h-8 w-8">
+              <AvatarImage src={`https://avatar.vercel.sh/${user.email}.png`} alt={user.email ?? ''} />
+              <AvatarFallback>
+                {user.email?.[0].toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -64,9 +61,46 @@ function AuthArea() {
   )
 }
 
+function ThemeSwitcher() {
+  const { setTheme } = useTheme();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          <Sun className="mr-2 h-4 w-4" />
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          <Moon className="mr-2 h-4 w-4" />
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          <Monitor className="mr-2 h-4 w-4" />
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function Header() {
-  const { setTheme } = useTheme();
+  const { user } = useAuth();
+
+  const navLinks = [
+    { href: '/#featured-calculators', label: 'Featured' },
+    { href: '/#all-categories', label: 'Categories' },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -148,34 +182,14 @@ export default function Header() {
             </div>
           </div>
           <nav className="flex items-center">
-            <AIChat>
-              <Button variant="ghost" size="icon" aria-label="AI Chat">
-                <Bot className="h-5 w-5" />
+            {user && (
+              <Button variant="ghost" size="icon" asChild>
+                <Link href="/history" aria-label="Calculation History">
+                  <History className="h-5 w-5" />
+                </Link>
               </Button>
-            </AIChat>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                  <span className="sr-only">Toggle theme</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme("light")}>
-                  <Sun className="mr-2 h-4 w-4" />
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                  <Moon className="mr-2 h-4 w-4" />
-                  Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>
-                  <Monitor className="mr-2 h-4 w-4" />
-                  System
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            )}
+            <ThemeSwitcher />
             <AuthArea />
           </nav>
         </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { z } from 'zod';
 import { useState } from 'react';
 import {
   Dialog,
@@ -17,6 +18,7 @@ import type { SolveEquationInput, SolveEquationOutput } from "@/ai/flows/solve-e
 import { Loader2, Bot, Sparkles } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Separator } from './ui/separator';
+import { Logo } from './icons/Logo';
 
 export function AIChat({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,13 +60,13 @@ export function AIChat({ children }: { children: React.ReactNode }) {
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[625px]">
+      <DialogContent className="sm:max-w-[625px] bg-background/80 backdrop-blur-sm">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Bot /> AI Problem Solver
+          <DialogTitle className="flex items-center gap-2 text-2xl">
+            <Logo className='h-7 w-7 text-primary' /> Calc
           </DialogTitle>
           <DialogDescription>
-            Ask a math problem or equation, and our AI will provide a step-by-step solution.
+            Your AI-powered problem solver. Ask a math equation, and Calc will provide a step-by-step solution.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -73,6 +75,7 @@ export function AIChat({ children }: { children: React.ReactNode }) {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             rows={4}
+            className='bg-background'
           />
           <Button onClick={handleSubmit} disabled={isLoading}>
             {isLoading ? (
@@ -95,11 +98,13 @@ export function AIChat({ children }: { children: React.ReactNode }) {
 
         {result && (
           <div>
-            <h3 className="font-semibold text-lg mb-2 flex items-center gap-2"><Sparkles className="h-5 w-5 text-accent"/> Solution</h3>
+            <h3 className="font-semibold text-lg mb-2 flex items-center gap-2"><Sparkles className="h-5 w-5 text-yellow-400"/> Solution</h3>
             <div className="p-4 bg-muted/50 rounded-lg border space-y-4">
                 <div>
                     <h4 className="font-semibold mb-2">Step-by-step Explanation:</h4>
-                    <p className="text-sm whitespace-pre-wrap">{result.solution}</p>
+                    <div className="text-sm whitespace-pre-wrap prose prose-sm dark:prose-invert max-w-full">
+                      {result.solution}
+                    </div>
                 </div>
                 <Separator />
                 <div>
