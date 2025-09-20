@@ -21,7 +21,23 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: 'ProCalc - Your Suite of Professional Calculators',
-  description: 'A comprehensive collection of calculators for finance, health, mathematics, and more. All-in-one suite for your daily calculation needs.',
+  description: 'A comprehensive collection of free, accurate, and easy-to-use online calculators for finance, health, mathematics, and more. Your all-in-one suite for daily calculation needs, from BMI and loan EMI to age and percentage calculations.',
+  keywords: [
+    'calculator',
+    'free calculator',
+    'online calculator',
+    'finance calculator',
+    'health calculator',
+    'math calculator',
+    'BMI calculator',
+    'EMI calculator',
+    'SIP calculator',
+    'age calculator',
+    'percentage calculator',
+    'loan calculator',
+    'investment calculator',
+    'ProCalc',
+  ],
 };
 
 export default function RootLayout({

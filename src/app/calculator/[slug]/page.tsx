@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: CalculatorPageProps) {
   return {
     title: `${calculator.title} | ProCalc`,
     description: calculator.shortDescription,
+    keywords: [calculator.title, 'calculator', ...calculator.title.toLowerCase().split(' ')],
   };
 }
 
