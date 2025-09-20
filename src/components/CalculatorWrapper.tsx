@@ -42,15 +42,18 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
     return acc;
   }, {} as FormValues);
   
-  const { control, handleSubmit, reset } = useForm<FormValues>({ defaultValues });
+  const { control, handleSubmit, reset, setValue } = useForm<FormValues>({ defaultValues });
 
   const onSubmit = (data: FormValues) => {
     const calculationFn = calculationMap[calculatorDef.slug];
     if (calculationFn) {
       const numericData = Object.entries(data).reduce((acc, [key, value]) => {
         const inputDef = calculatorDef.inputs.find(i => i.name === key);
-        if (inputDef?.type === 'number' && typeof value === 'string') {
-          acc[key] = parseFloat(value);
+        // Ensure empty strings for number inputs are handled as empty, not 0
+        if (inputDef?.type === 'number' && value === '') {
+          acc[key] = '';
+        } else if (inputDef?.type === 'number') {
+          acc[key] = parseFloat(String(value));
         } else {
           acc[key] = value;
         }
@@ -83,20 +86,29 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
               </Select>
             );
           }
-          const inputProps = {
-             ...field,
-            type: input.type,
-            placeholder: input.placeholder,
-            min: input.min,
-            max: input.max,
-            step: input.step,
-            inputMode: input.type === 'number' ? 'numeric' as const : undefined,
-          }
-          if (input.type === 'number') {
-            inputProps.value = field.value === '' ? '' : Number(field.value)
-            inputProps.onChange = e => field.onChange(e.target.value === '' ? '' : Number(e.target.value))
-          }
-          return <Input {...inputProps} />;
+          return (
+            <Input
+              {...field}
+              type={input.type}
+              placeholder={input.placeholder}
+              min={input.min}
+              max={input.max}
+              step={input.step}
+              inputMode={input.type === 'number' ? 'decimal' : undefined}
+              value={field.value ?? ''}
+              onChange={(e) => {
+                const { value } = e.target;
+                if (input.type === 'number') {
+                    // Allow empty string, or valid number strings
+                    if (value === '' || /^-?\d*\.?\d*$/.test(value)) {
+                        field.onChange(value);
+                    }
+                } else {
+                    field.onChange(value);
+                }
+              }}
+            />
+          );
         }}
       />
     );
@@ -154,7 +166,7 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
         </Card>
       )}
 
-      <Alert variant="destructive" className="bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-900 text-red-800 dark:text-red-200">
+      <Alert variant="destructive" className="bg-red-50 dark:bg-red-950/50 border-red-200 dark:border-red-900/50 text-red-800 dark:text-red-200">
         <Terminal className="h-4 w-4 !text-red-600 dark:!text-red-400" />
         <AlertTitle className="text-red-900 dark:text-red-300">Disclaimer</AlertTitle>
         <AlertDescription className="text-red-700 dark:text-red-300">

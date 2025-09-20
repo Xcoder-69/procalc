@@ -4,6 +4,7 @@ import { categories, calculators } from '@/lib/calculators-data';
 import { ArrowRight, Calculator } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import SimpleCalculator from '@/components/SimpleCalculator';
 
 export default function Home() {
   const featuredCalculators = calculators.filter(c => c.isFeatured).slice(0, 8);
@@ -11,20 +12,23 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="py-20 md:py-32 bg-card border-b">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter text-primary mb-4">
-            ProCalc Hub
-          </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground mb-8">
-            Your all-in-one suite of professional-grade calculators for finance, health, and mathematics. Accurate, fast, and easy to use.
-          </p>
-          <div className="space-x-4">
+      <section className="py-20 md:py-32 bg-background border-b">
+        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+          <div className="text-center md:text-left">
+            <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter text-primary mb-4">
+              ProCalc Hub
+            </h1>
+            <p className="max-w-xl mx-auto md:mx-0 text-lg md:text-xl text-muted-foreground mb-8">
+              Your all-in-one suite of professional-grade calculators for finance, health, and mathematics. Accurate, fast, and easy to use.
+            </p>
             <Button asChild size="lg">
               <Link href="#featured-calculators">
                 Explore Calculators <ArrowRight className="ml-2" />
               </Link>
             </Button>
+          </div>
+          <div className='max-w-md mx-auto'>
+            <SimpleCalculator />
           </div>
         </div>
       </section>
