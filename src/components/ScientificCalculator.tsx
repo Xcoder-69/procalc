@@ -12,19 +12,25 @@ const safeEval = (expr: string) => {
     // Replace user-friendly symbols with JS equivalents
     let evalExpr = expr.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
     
-    // Handle percentages
-    evalExpr = evalExpr.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
+    // Handle percentages: find numbers followed by % and convert them
+    evalExpr = evalExpr.replace(/(\d+(\.\d+)?)%/g, (match, number) => `(${number}/100)`);
     
-    // Using new Function is safer than eval, but for a production app, a dedicated math expression parser is recommended.
+    // Handle expressions like (5+10)% -> (5+10)/100
+    evalExpr = evalExpr.replace(/\(([^)]+)\)%/g, (match, expression) => `((${expression})/100)`);
+
+
+    // Using new Function is safer than direct eval, but a dedicated math expression parser (like math.js) is best for production apps.
+    // For this context, it's a reasonable approach.
     return new Function('return ' + evalExpr)();
   } catch (error) {
-    console.error("Evaluation Error:", error);
+    console.error("Evaluation Error:", error, "Expression:", expr);
     return 'Error';
   }
 };
 
 const factorial = (n: number): number => {
     if (n < 0 || n % 1 !== 0) return NaN; // Factorial is only for non-negative integers
+    if (n > 170) return Infinity; // Prevent call stack size exceeded for large numbers
     if (n === 0 || n === 1) return 1;
     let result = 1;
     for (let i = 2; i <= n; i++) {
@@ -40,105 +46,102 @@ export default function ScientificCalculator() {
   const [memory, setMemory] = useState(0);
 
   const handleButtonClick = (value: string) => {
-    setInput((prev) => prev + value);
+    if (input === 'Error') {
+        setInput(value);
+    } else {
+        setInput((prev) => prev + value);
+    }
   };
   
   const handleFunction = (func: string) => {
-    switch (func) {
-      case 'AC':
+    if (func === 'AC') {
         setInput('');
         setHistory('');
-        break;
-      case 'C':
-        setInput(input.slice(0, -1));
-        break;
-      case '=':
-        if (input) {
+        return;
+    }
+    
+    if (func === 'C') {
+        if (input !== 'Error') {
+          setInput(input.slice(0, -1));
+        } else {
+          setInput('');
+        }
+        return;
+    }
+
+    if (func === '=') {
+        if (input && input !== 'Error') {
           const res = safeEval(input);
           setHistory(input + '=');
           setInput(String(res));
         }
-        break;
-      case 'deg':
-        setIsDeg(true);
-        break;
-      case 'rad':
-        setIsDeg(false);
-        break;
-      case '^':
-        handleButtonClick('**');
-        break;
-      case 'M+':
-        setMemory(memory + (Number(safeEval(input)) || 0));
-        break;
-      case 'MR':
-        setInput(prev => prev + String(memory));
-        break;
-      case 'MC':
-        setMemory(0);
-        break;
-      default:
-        // For functions that operate on the current input
-        if (input && input !== 'Error') {
-            try {
-                const currentVal = parseFloat(safeEval(input));
-                if (isNaN(currentVal)) {
-                    setInput('Error');
-                    return;
-                }
+        return;
+    }
+    
+    if (func === 'deg' || func === 'rad') {
+        setIsDeg(func === 'deg');
+        return;
+    }
 
-                let result;
-                let displayFunc = func;
+    // Memory functions
+    if (func.startsWith('M')) {
+      let currentVal = 0;
+      if (input && input !== 'Error') {
+        currentVal = Number(safeEval(input)) || 0;
+      }
 
-                switch (func) {
-                    case '√':
-                        result = Math.sqrt(currentVal);
-                        displayFunc = 'sqrt';
-                        break;
-                    case 'log':
-                        result = Math.log10(currentVal);
-                        break;
-                    case 'ln':
-                        result = Math.log(currentVal);
-                        break;
-                    case 'sin':
-                        result = Math.sin(isDeg ? currentVal * (Math.PI / 180) : currentVal);
-                        break;
-                    case 'cos':
-                        result = Math.cos(isDeg ? currentVal * (Math.PI / 180) : currentVal);
-                        break;
-                    case 'tan':
-                        result = Math.tan(isDeg ? currentVal * (Math.PI / 180) : currentVal);
-                        break;
-                    case 'x²':
-                        result = Math.pow(currentVal, 2);
-                        displayFunc = 'sqr';
-                        break;
-                    case '!':
-                        result = factorial(currentVal);
-                        displayFunc = 'fact';
-                        break;
-                    default:
-                        handleButtonClick(func);
-                        return;
-                }
+      switch (func) {
+        case 'M+': setMemory(memory + currentVal); break;
+        case 'MR': setInput(prev => prev + String(memory)); break;
+        case 'MC': setMemory(0); break;
+      }
+      return;
+    }
 
-                if (result !== undefined && !isNaN(result)) {
-                    setHistory(`${displayFunc}(${input})`);
-                    setInput(String(result));
-                } else {
-                    setInput('Error');
-                }
-            } catch (e) {
+    // Constants
+    if (['π', 'e'].includes(func)) {
+        const value = func === 'π' ? Math.PI : Math.E;
+        setInput(prev => prev + String(value));
+        return;
+    }
+
+    // Unary operators that take the current value
+    if (input && input !== 'Error') {
+        try {
+            const currentVal = parseFloat(safeEval(input));
+            if (isNaN(currentVal)) {
+                setInput('Error');
+                return;
+            }
+
+            let result: number | undefined;
+            let displayFunc = func;
+
+            switch (func) {
+                case '√': result = Math.sqrt(currentVal); displayFunc = 'sqrt'; break;
+                case 'log': result = Math.log10(currentVal); break;
+                case 'ln': result = Math.log(currentVal); break;
+                case 'sin': result = Math.sin(isDeg ? currentVal * (Math.PI / 180) : currentVal); break;
+                case 'cos': result = Math.cos(isDeg ? currentVal * (Math.PI / 180) : currentVal); break;
+                case 'tan': result = Math.tan(isDeg ? currentVal * (Math.PI / 180) : currentVal); break;
+                case 'x²': result = Math.pow(currentVal, 2); displayFunc = 'sqr'; break;
+                case '!': result = factorial(currentVal); displayFunc = 'fact'; break;
+                default: 
+                  handleButtonClick(func); // For operators like '^', '(', ')'
+                  return;
+            }
+
+            if (result !== undefined && !isNaN(result)) {
+                setHistory(`${displayFunc}(${input})`);
+                setInput(String(result));
+            } else {
                 setInput('Error');
             }
-        } else if (['π', 'e'].includes(func)) { // Handle constants
-            const value = func === 'π' ? Math.PI : Math.E;
-            setInput(prev => prev + String(value));
-        } else {
-            handleButtonClick(func);
+        } catch (e) {
+            setInput('Error');
         }
-        break;
+    } else { // If input is empty, just append the function/operator
+        handleButtonClick(func);
     }
   };
   
@@ -168,28 +171,31 @@ export default function ScientificCalculator() {
 
 
   return (
-    <Card className="w-full max-w-lg mx-auto shadow-2xl bg-card/80 backdrop-blur-xl border-border/20 rounded-2xl overflow-hidden font-mono">
-      <CardContent className="p-4 space-y-4">
+    <Card className="w-full max-w-xs mx-auto shadow-2xl bg-card/80 backdrop-blur-xl border-border/20 rounded-2xl overflow-hidden font-mono">
+      <CardContent className="p-2 space-y-2">
         {/* Display */}
-        <div className="bg-muted/30 rounded-md px-4 py-2 text-right h-28 flex flex-col justify-end text-foreground border border-border/20 shadow-inner">
-          <div className="h-8 text-xl text-foreground/50 truncate text-right">{history || ''}</div>
-          <div className="w-full text-right h-12 text-4xl font-bold truncate">
+        <div className="bg-muted/30 rounded-md px-2 py-1 text-right h-24 flex flex-col justify-end text-foreground border border-border/20 shadow-inner">
+          <div className="h-6 text-sm text-foreground/50 truncate text-right flex items-center justify-between">
+            <span>{isDeg ? 'DEG' : 'RAD'}</span>
+            <span>{history || ''}</span>
+          </div>
+          <div className="w-full text-right h-10 text-3xl font-bold truncate">
             {input || '0'}
           </div>
         </div>
 
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-5 gap-1">
             <CalcButton value="SHIFT" onClick={() => {}} className='col-span-1 !text-yellow-600 !bg-yellow-400/10' />
             <CalcButton value="ALPHA" onClick={() => {}} className='col-span-1 !text-red-500 !bg-red-400/10' />
             <div className="col-span-3 grid grid-cols-3 grid-rows-2 gap-1 bg-foreground/10 p-1 rounded-md">
-                <Button size="icon" variant="ghost" className='col-start-1 row-span-2 m-auto bg-card rounded-full h-12 w-12 flex items-center justify-center text-primary'><ChevronLeft /></Button>
-                <Button size="icon" variant="ghost" className='col-start-2 row-start-1 bg-card rounded-md h-6 w-6'><ChevronUp /></Button>
-                <Button size="icon" variant="ghost" className='col-start-2 row-start-2 bg-card rounded-md h-6 w-6'><ChevronDown /></Button>
-                <Button size="icon" variant="ghost" className='col-start-3 row-span-2 m-auto bg-card rounded-full h-12 w-12 flex items-center justify-center text-primary'><ChevronRight /></Button>
+                <Button size="icon" variant="ghost" className='col-start-2 row-start-1 bg-card rounded-md h-5 w-5 mx-auto'><ChevronUp className='h-4 w-4'/></Button>
+                <Button size="icon" variant="ghost" className='col-start-1 row-span-2 my-auto bg-card rounded-full h-10 w-10 flex items-center justify-center text-primary'><ChevronLeft /></Button>
+                <Button size="icon" variant="ghost" className='col-start-3 row-span-2 my-auto bg-card rounded-full h-10 w-10 flex items-center justify-center text-primary'><ChevronRight /></Button>
+                <Button size="icon" variant="ghost" className='col-start-2 row-start-2 bg-card rounded-md h-5 w-5 mx-auto'><ChevronDown className='h-4 w-4'/></Button>
             </div>
         </div>
         
-        <div className='grid grid-cols-5 gap-2'>
+        <div className='grid grid-cols-5 gap-1'>
             <CalcButton value="sin" onClick={handleFunction} />
             <CalcButton value="cos" onClick={handleFunction} />
             <CalcButton value="tan" onClick={handleFunction} />
@@ -197,7 +203,7 @@ export default function ScientificCalculator() {
             <CalcButton value="MR" onClick={handleFunction} className='!text-destructive/80' />
 
             <CalcButton value="x²" display="x²" onClick={handleFunction} />
-            <CalcButton value="^" display="xʸ" onClick={handleFunction} />
+            <CalcButton value="**" display="xʸ" onClick={handleFunction} />
             <CalcButton value="log" onClick={handleFunction} />
             <CalcButton value="ln" onClick={handleFunction} />
             <CalcButton value="M+" onClick={handleFunction} className='!text-destructive/80' />
@@ -210,7 +216,7 @@ export default function ScientificCalculator() {
 
         </div>
 
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-5 gap-1">
           <NumButton value="7" onClick={handleButtonClick} />
           <NumButton value="8" onClick={handleButtonClick} />
           <NumButton value="9" onClick={handleButtonClick} />
@@ -235,9 +241,9 @@ export default function ScientificCalculator() {
           <CalcButton value="e" onClick={handleFunction} />
           <OpButton value="=" onClick={handleFunction} />
         </div>
-        <div className="flex items-center justify-center gap-4 text-xs mt-2">
-            <Button variant={isDeg ? "secondary" : "ghost"} size="sm" onClick={() => setIsDeg(true)}>DEG</Button>
-            <Button variant={!isDeg ? "secondary" : "ghost"} size="sm" onClick={() => setIsDeg(false)}>RAD</Button>
+        <div className="flex items-center justify-center gap-2 text-xs mt-1">
+            <Button variant={isDeg ? "secondary" : "ghost"} size="sm" className="h-6 px-2" onClick={() => handleFunction('deg')}>DEG</Button>
+            <Button variant={!isDeg ? "secondary" : "ghost"} size="sm" className="h-6 px-2" onClick={() => handleFunction('rad')}>RAD</Button>
         </div>
       </CardContent>
     </Card>

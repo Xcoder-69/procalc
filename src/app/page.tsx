@@ -5,6 +5,9 @@ import { ArrowRight, Calculator } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ScientificCalculator from '@/components/ScientificCalculator';
+import SimpleCalculator from '@/components/SimpleCalculator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 export default function Home() {
   const featuredCalculators = calculators.filter(c => c.isFeatured).slice(0, 8);
@@ -31,8 +34,19 @@ export default function Home() {
               </Link>
             </Button>
           </div>
-          <div className='max-w-lg mx-auto w-full'>
-            <ScientificCalculator />
+          <div className='max-w-xs mx-auto w-full'>
+            <Tabs defaultValue="simple" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="simple">Simple</TabsTrigger>
+                <TabsTrigger value="scientific">Scientific</TabsTrigger>
+              </TabsList>
+              <TabsContent value="simple">
+                <SimpleCalculator />
+              </TabsContent>
+              <TabsContent value="scientific">
+                <ScientificCalculator />
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </section>

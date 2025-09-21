@@ -13,7 +13,7 @@ const CalcButton = ({ display, className }: { display?: string, className?: stri
 
 export default function ScientificCalculatorStatic() {
   return (
-    <Card className="w-full max-w-lg mx-auto shadow-2xl bg-card/50 backdrop-blur-xl border-white/10 rounded-2xl overflow-hidden">
+    <Card className="w-full max-w-sm mx-auto shadow-2xl bg-card/50 backdrop-blur-xl border-white/10 rounded-2xl overflow-hidden">
       <CardContent className="p-4 space-y-4">
         {/* Display */}
         <div className="bg-transparent rounded-md px-4 py-2 text-right h-32 flex flex-col justify-end text-foreground font-mono">

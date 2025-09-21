@@ -12,11 +12,12 @@ export default function SimpleCalculator() {
 
   const handleButtonClick = (value: string) => {
     if (result !== null) {
-      if (['+', '-', '*', '/'].includes(value)) {
+      // If an operator is pressed, start a new calculation with the previous result
+      if (['+', '−', '×', '÷'].includes(value)) {
         setInput(String(result) + value);
         setHistory(String(result) + value);
         setResult(null);
-      } else {
+      } else { // Otherwise, start a fresh calculation
         setInput(value);
         setHistory(value);
         setResult(null);
@@ -28,65 +29,72 @@ export default function SimpleCalculator() {
   };
 
   const calculateResult = () => {
+    if (!input || input === 'Error') return;
     try {
-      // Avoid using eval directly for security reasons
-      const safeEval = new Function('return ' + input.replace(/[^-()\d/*+.]/g, ''));
+      // Replace display symbols with evaluatable operators
+      const expr = input.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+      // Use Function for safer evaluation than direct eval()
+      const safeEval = new Function('return ' + expr.replace(/[^-()\d/*+.]/g, ''));
       const res = safeEval();
+
       if (isNaN(res) || !isFinite(res)) {
         setResult('Error');
+        setHistory(input + '=Error');
         setInput('');
       } else {
-        setResult(String(res));
-        setHistory(input + '=' + res);
-        setInput(String(res));
+        const finalResult = parseFloat(res.toPrecision(15));
+        setResult(String(finalResult));
+        setHistory(input + '=' + finalResult);
+        setInput(String(finalResult));
       }
     } catch (error) {
       setResult('Error');
+      setHistory(input + '=Error');
       setInput('');
     }
   };
 
-  const clearInput = () => {
+  const clearAll = () => {
     setInput('');
     setResult(null);
     setHistory('');
   };
 
-  const deleteLast = () => {
+  const clearEntry = () => {
     if (result !== null) {
-      clearInput();
+      clearAll();
       return;
     }
     setInput(input.slice(0, -1));
     setHistory(input.slice(0, -1));
   };
   
-  const baseButtonClass = "text-xl h-16 w-16 rounded-2xl transition-all duration-200";
+  const baseButtonClass = "text-xl h-14 w-full rounded-lg transition-all duration-200 border-b-4 active:border-b-0 active:translate-y-1 shadow-md hover:shadow-lg";
 
-  const ActionButton = ({ value, display, className, onClick }: { value?: string, display: string, className?: string, onClick?: () => void }) => (
+  const ActionButton = ({ display, className, onClick }: { display: string, className?: string, onClick: () => void }) => (
     <Button
-        variant="secondary"
-        className={cn(baseButtonClass, "bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300", className)}
-        onClick={onClick ? onClick : () => handleButtonClick(value!)}
+        variant="ghost"
+        className={cn(baseButtonClass, "bg-destructive/80 text-destructive-foreground border-destructive/90 hover:bg-destructive", className)}
+        onClick={onClick}
     >
       {display}
     </Button>
   );
 
-  const OperatorButton = ({ value, display }: { value: string, display: string }) => (
+  const OperatorButton = ({ value }: { value: string }) => (
     <Button
-      variant="secondary"
-      className={cn(baseButtonClass, "bg-primary/20 text-primary hover:bg-primary/30 hover:text-primary/80 text-2xl")}
+      variant="ghost"
+      className={cn(baseButtonClass, "bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 hover:shadow-primary/30 text-2xl")}
       onClick={() => handleButtonClick(value)}
     >
-      {display}
+      {value}
     </Button>
   );
 
   const NumberButton = ({ value }: { value: string }) => (
     <Button
-      variant="outline"
-      className={cn(baseButtonClass, "bg-white/5 border-white/10 text-white hover:bg-white/10")}
+      variant="ghost"
+      className={cn(baseButtonClass, "bg-card text-card-foreground border-foreground/10 hover:bg-foreground/10 hover:-translate-y-px hover:shadow-primary/20")}
       onClick={() => handleButtonClick(value)}
     >
       {value}
@@ -94,51 +102,48 @@ export default function SimpleCalculator() {
   );
 
   return (
-    <Card className="w-full max-w-sm mx-auto shadow-2xl bg-black/30 backdrop-blur-lg border border-white/10 rounded-2xl">
-      <CardContent className="p-4 space-y-2">
-        <div className="bg-transparent rounded-md p-4 text-right h-28 flex flex-col justify-end text-white">
-          <div className="h-8 text-lg text-white/60 truncate">{history || '0'}</div>
-          <div className="w-full text-right h-12 text-5xl font-bold truncate">
+    <Card className="w-full max-w-xs mx-auto shadow-2xl bg-card/80 backdrop-blur-xl border-border/20 rounded-2xl overflow-hidden font-mono">
+      <CardContent className="p-2 space-y-2">
+        <div className="bg-muted/30 rounded-md p-2 text-right h-24 flex flex-col justify-end text-foreground border border-border/20 shadow-inner">
+          <div className="h-6 text-sm text-foreground/50 truncate">{history || ' '}</div>
+          <div className="w-full text-right h-10 text-3xl font-bold truncate">
             {result !== null ? result : input || '0'}
           </div>
         </div>
         
         <div className="grid grid-cols-4 gap-2">
-           <ActionButton display="AC" onClick={clearInput} />
-           <ActionButton display="C" onClick={deleteLast} />
-           <OperatorButton value="/" display="÷" />
-           <OperatorButton value="*" display="×" />
+          <ActionButton display="AC" onClick={clearAll} className="col-span-2" />
+          <ActionButton display="C" onClick={clearEntry} />
+          <OperatorButton value="÷" />
         </div>
 
         <div className="grid grid-cols-4 gap-2">
             <NumberButton value="7" />
             <NumberButton value="8" />
             <NumberButton value="9" />
-            <OperatorButton value="-" display="−" />
-            
+            <OperatorButton value="×" />
+        </div>
+
+        <div className="grid grid-cols-4 gap-2">
             <NumberButton value="4" />
             <NumberButton value="5" />
             <NumberButton value="6" />
-            <OperatorButton value="+" display="+" />
+            <OperatorButton value="−" />
         </div>
         
         <div className="grid grid-cols-4 gap-2">
-            <div className="col-span-2 grid grid-cols-2 gap-2">
-              <NumberButton value="1" />
-              <NumberButton value="2" />
-              <NumberButton value="3" />
-              <Button
-                variant="outline"
-                className={cn(baseButtonClass, "bg-white/5 border-white/10 text-white hover:bg-white/10")}
-                onClick={() => handleButtonClick('0')}
-              >
-                0
-              </Button>
+            <NumberButton value="1" />
+            <NumberButton value="2" />
+            <NumberButton value="3" />
+            <OperatorButton value="+" />
+        </div>
+
+        <div className="grid grid-cols-4 gap-2">
+            <div className="col-span-2">
+              <NumberButton value="0" />
             </div>
-            <div className="col-span-2 grid grid-rows-2 gap-2">
-                <NumberButton value="." />
-                <Button className={cn(baseButtonClass, "row-span-2 h-full w-full bg-primary hover:bg-primary/90 text-2xl")} onClick={calculateResult}>=</Button>
-            </div>
+            <NumberButton value="." />
+            <Button className={cn(baseButtonClass, "bg-primary hover:bg-primary/90 text-2xl")} onClick={calculateResult}>=</Button>
         </div>
 
       </CardContent>
