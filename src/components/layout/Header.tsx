@@ -150,7 +150,7 @@ export default function Header() {
   const navLinks = [
     { href: '/', label: 'Home'},
     { href: '/#featured-calculators', label: 'Featured' },
-    { href: '/#all-categories', label: 'Categories' },
+    { href: '/categories', label: 'Categories' },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
   ];
@@ -214,8 +214,8 @@ export default function Header() {
                 {categories.map((category) => (
                   <SheetClose asChild key={category.slug}>
                     <Link
-                        href={`/#all-categories`}
-                        className="flex items-center px-2 py-1 text-muted-foreground"
+                        href={`/categories#${category.slug}`}
+                        className="flex items-center px-2 py-2 text-muted-foreground rounded-md hover:bg-muted/50 hover:text-foreground transition-colors"
                     >
                         <Calculator className="mr-2 h-4 w-4" />
                         {category.name}

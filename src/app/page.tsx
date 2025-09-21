@@ -81,7 +81,7 @@ export default function Home() {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 md:py-24 bg-card border-t">
+      <section id="all-categories" className="py-16 md:py-24 bg-card border-t">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-headline font-bold text-center mb-4">All Categories</h2>
           <p className="text-center text-muted-foreground max-w-xl mx-auto mb-12">
@@ -104,6 +104,11 @@ export default function Home() {
                 </ul>
               </div>
             ))}
+          </div>
+          <div className="text-center mt-12">
+            <Button asChild size="lg">
+              <Link href="/categories">View All Categories</Link>
+            </Button>
           </div>
         </div>
       </section>
