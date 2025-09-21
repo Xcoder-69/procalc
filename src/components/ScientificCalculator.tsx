@@ -176,7 +176,10 @@ export default function ScientificCalculator() {
         {/* Display */}
         <div className="bg-muted/30 rounded-md px-2 py-1 text-right h-24 flex flex-col justify-end text-foreground border border-border/20 shadow-inner">
           <div className="h-6 text-sm text-foreground/50 truncate text-right flex items-center justify-between">
-            <span>{isDeg ? 'DEG' : 'RAD'}</span>
+            <div className="flex items-center justify-center gap-2 text-xs">
+                <Button variant={isDeg ? "secondary" : "ghost"} size="sm" className="h-6 px-2" onClick={() => handleFunction('deg')}>DEG</Button>
+                <Button variant={!isDeg ? "secondary" : "ghost"} size="sm" className="h-6 px-2" onClick={() => handleFunction('rad')}>RAD</Button>
+            </div>
             <span>{history || ''}</span>
           </div>
           <div className="w-full text-right h-10 text-3xl font-bold truncate">
@@ -189,8 +192,8 @@ export default function ScientificCalculator() {
             <CalcButton value="ALPHA" onClick={() => {}} className='col-span-1 !text-red-500 !bg-red-400/10' />
             <div className="col-span-3 grid grid-cols-3 grid-rows-2 gap-1 bg-foreground/10 p-1 rounded-md">
                 <Button size="icon" variant="ghost" className='col-start-2 row-start-1 bg-card rounded-md h-5 w-5 mx-auto'><ChevronUp className='h-4 w-4'/></Button>
-                <Button size="icon" variant="ghost" className='col-start-1 row-span-2 my-auto bg-card rounded-full h-10 w-10 flex items-center justify-center text-primary'><ChevronLeft /></Button>
-                <Button size="icon" variant="ghost" className='col-start-3 row-span-2 my-auto bg-card rounded-full h-10 w-10 flex items-center justify-center text-primary'><ChevronRight /></Button>
+                <Button size="icon" variant="ghost" className='col-start-1 row-start-2 bg-card rounded-md h-5 w-5 my-auto'><ChevronLeft className='h-4 w-4'/></Button>
+                <Button size="icon" variant="ghost" className='col-start-3 row-start-2 bg-card rounded-md h-5 w-5 my-auto'><ChevronRight className='h-4 w-4'/></Button>
                 <Button size="icon" variant="ghost" className='col-start-2 row-start-2 bg-card rounded-md h-5 w-5 mx-auto'><ChevronDown className='h-4 w-4'/></Button>
             </div>
         </div>
@@ -220,8 +223,8 @@ export default function ScientificCalculator() {
           <NumButton value="7" onClick={handleButtonClick} />
           <NumButton value="8" onClick={handleButtonClick} />
           <NumButton value="9" onClick={handleButtonClick} />
-          <CalcButton value="C" onClick={handleFunction} className="!bg-destructive/80 !text-destructive-foreground !border-destructive/90" />
-          <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/80 !text-destructive-foreground !border-destructive/90" />
+          <CalcButton value="C" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/30 hover:!bg-destructive/30 hover:shadow-destructive/40" />
+          <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/30 hover:!bg-destructive/30 hover:shadow-destructive/40" />
           
           <NumButton value="4" onClick={handleButtonClick} />
           <NumButton value="5" onClick={handleButtonClick} />
@@ -241,11 +244,9 @@ export default function ScientificCalculator() {
           <CalcButton value="e" onClick={handleFunction} />
           <OpButton value="=" onClick={handleFunction} />
         </div>
-        <div className="flex items-center justify-center gap-2 text-xs mt-1">
-            <Button variant={isDeg ? "secondary" : "ghost"} size="sm" className="h-6 px-2" onClick={() => handleFunction('deg')}>DEG</Button>
-            <Button variant={!isDeg ? "secondary" : "ghost"} size="sm" className="h-6 px-2" onClick={() => handleFunction('rad')}>RAD</Button>
-        </div>
       </CardContent>
     </Card>
   );
 }
+
+    
