@@ -184,10 +184,9 @@ export default function ScientificCalculator() {
 
           <TabsContent value="simple" className='mt-4'>
              <div className="grid grid-cols-4 gap-2">
-              <div className='col-span-2'>
-                <Button variant='ghost' onClick={() => handleFunction('AC')} className={cn(baseButtonClass, "w-full bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:shadow-red-500/30")}>AC</Button>
-              </div>
-              <CalcButton value="C" onClick={handleFunction} className="bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:shadow-red-500/30"/>
+              <CalcButton value="AC" onClick={handleFunction} className="bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:shadow-red-500/30" />
+              <CalcButton value="C" onClick={handleFunction} className="bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:shadow-red-500/30" />
+              <CalcButton value="%" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
               <CalcButton value="÷" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
               
               <CalcButton value="7" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
@@ -217,5 +216,3 @@ export default function ScientificCalculator() {
     </Card>
   );
 }
-
-    
