@@ -63,7 +63,7 @@ export default function SimpleCalculator() {
 
 
   return (
-    <Card className="w-full max-w-xs mx-auto shadow-2xl bg-card/80 backdrop-blur-sm border-primary/20">
+    <Card className="w-full max-w-xs mx-auto shadow-2xl bg-card/80 backdrop-blur-sm border-border/20">
       <CardContent className="p-4 space-y-4">
         <div className="bg-background/50 rounded-md p-4 text-right h-24 flex flex-col justify-end">
           <div className="h-6 text-sm text-muted-foreground truncate">{history || '0'}</div>
@@ -76,30 +76,32 @@ export default function SimpleCalculator() {
         </div>
         
         <div className="grid grid-cols-4 gap-2">
-           <Button variant="outline" className="col-span-2 text-lg h-16 bg-destructive/20 text-destructive-foreground border-destructive/50" onClick={clearInput}>AC</Button>
-           <Button variant="outline" className="text-lg h-16 bg-destructive/20 text-destructive-foreground border-destructive/50" onClick={deleteLast}>DEL</Button>
-           <Button variant="outline" className="text-lg h-16 bg-primary/20 text-primary-foreground" onClick={() => handleButtonClick('/')}>&divide;</Button>
+           <Button variant="destructive" className="col-span-1 text-lg h-16" onClick={clearInput}>AC</Button>
+           <Button variant="destructive" className="text-lg h-16" onClick={deleteLast}>DEL</Button>
+           <Button variant="secondary" className="text-lg h-16" onClick={() => handleButtonClick('/')}>&divide;</Button>
+           <Button variant="secondary" className="text-lg h-16" onClick={() => handleButtonClick('*')}>&times;</Button>
         </div>
 
         <div className="grid grid-cols-4 gap-2">
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('7')}>7</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('8')}>8</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('9')}>9</Button>
-            <Button variant="outline" className="text-lg h-16 bg-primary/20 text-primary-foreground" onClick={() => handleButtonClick('*')}>&times;</Button>
+            <Button variant="secondary" className="text-lg h-16" onClick={() => handleButtonClick('-')}>-</Button>
             
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('4')}>4</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('5')}>5</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('6')}>6</Button>
-            <Button variant="outline" className="text-lg h-16 bg-primary/20 text-primary-foreground" onClick={() => handleButtonClick('-')}>-</Button>
+            <Button variant="secondary" className="text-lg h-16" onClick={() => handleButtonClick('+')}>+</Button>
 
+        </div>
+        <div className="grid grid-cols-4 gap-2">
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('1')}>1</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('2')}>2</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('3')}>3</Button>
-            <Button variant="outline" className="text-lg h-16 bg-primary/20 text-primary-foreground" onClick={() => handleButtonClick('+')}>+</Button>
+            <Button className="row-span-2 text-lg h-auto" onClick={calculateResult}>=</Button>
 
             <Button variant="outline" className="col-span-2 text-lg h-16" onClick={() => handleButtonClick('0')}>0</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('.')}>.</Button>
-            <Button className="text-lg h-16" onClick={calculateResult}>=</Button>
         </div>
       </CardContent>
     </Card>

@@ -23,7 +23,7 @@ export default function Home() {
             <p className="max-w-xl mx-auto md:mx-0 text-lg md:text-xl text-muted-foreground mb-8">
               Your all-in-one suite of professional-grade calculators for finance, health, and mathematics. Accurate, fast, and easy to use.
             </p>
-            <Button asChild size="lg">
+            <Button asChild size="lg" variant="outline">
               <Link href="#featured-calculators">
                 Explore Calculators <ArrowRight className="ml-2" />
               </Link>
@@ -44,7 +44,7 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredCalculators.map((calc, index) => (
-              <Card key={calc.slug} className="flex flex-col hover:shadow-lg transition-shadow duration-300 overflow-hidden group border-2 border-transparent hover:border-primary/50">
+              <Card key={calc.slug} className="flex flex-col hover:shadow-lg transition-shadow duration-300 overflow-hidden group border-2 border-transparent hover:border-primary/20">
                 <CardHeader className='p-0'>
                    <div className="overflow-hidden">
                     <Image
