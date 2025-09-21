@@ -175,11 +175,12 @@ export default function ScientificCalculator() {
         <div className="grid grid-cols-5 gap-1">
             <CalcButton value="SHIFT" onClick={() => {}} className='col-span-1 !text-yellow-600 !bg-yellow-400/10' />
             <CalcButton value="ALPHA" onClick={() => {}} className='col-span-1 !text-red-500 !bg-red-400/10' />
-            <div className="col-span-3 grid grid-cols-3 grid-rows-2 gap-1 bg-foreground/10 p-1 rounded-md">
+            <div className="col-span-3 grid grid-cols-3 grid-rows-3 gap-px bg-foreground/10 p-1 rounded-md h-[70px] w-full">
                 <Button size="icon" variant="ghost" className='col-start-2 row-start-1 bg-card rounded-md h-5 w-5 mx-auto'><ChevronUp className='h-4 w-4'/></Button>
                 <Button size="icon" variant="ghost" className='col-start-1 row-start-2 bg-card rounded-md h-5 w-5 my-auto'><ChevronLeft className='h-4 w-4'/></Button>
+                <Button size="icon" variant="ghost" className='col-start-2 row-start-2 bg-card rounded-md h-5 w-5 my-auto mx-auto' />
                 <Button size="icon" variant="ghost" className='col-start-3 row-start-2 bg-card rounded-md h-5 w-5 my-auto'><ChevronRight className='h-4 w-4'/></Button>
-                <Button size="icon" variant="ghost" className='col-start-2 row-start-2 bg-card rounded-md h-5 w-5 mx-auto'><ChevronDown className='h-4 w-4'/></Button>
+                <Button size="icon" variant="ghost" className='col-start-2 row-start-3 bg-card rounded-md h-5 w-5 mx-auto'><ChevronDown className='h-4 w-4'/></Button>
             </div>
         </div>
         
