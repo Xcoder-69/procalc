@@ -1,4 +1,4 @@
-import { FieldValue } from "firebase/firestore";
+import type { FieldValue } from "firebase/firestore";
 
 export type CategorySlug = 'health' | 'finance' | 'mathematics' | 'conversion-tools';
 export type CategoryName = 'Health' | 'Finance' | 'Mathematics' | 'Conversion & Tools';

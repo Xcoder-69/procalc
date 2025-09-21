@@ -25,9 +25,6 @@ export default {
         headline: ['var(--font-inter)', ...fontFamily.sans],
         mono: ['var(--font-jetbrains-mono)', ...fontFamily.mono],
       },
-      fontWeight: {
-        headline: '700',
-      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

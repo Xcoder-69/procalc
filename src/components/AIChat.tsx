@@ -39,11 +39,14 @@ export function AIChat({ children }: { children: React.ReactNode }) {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
-
+  
   useEffect(() => {
-    const handle = setTimeout(() => setIsOpen(false), 4000);
-    return () => clearTimeout(handle);
-  }, [isOpen]);
+    if (isOpen) {
+      const handle = setTimeout(() => setIsOpen(false), 4000);
+      return () => clearTimeout(handle);
+    }
+  }, [isOpen, prompt, result]);
+
 
   const getCameraPermission = async () => {
     if (isCameraOpen) {
@@ -100,6 +103,11 @@ export function AIChat({ children }: { children: React.ReactNode }) {
     } catch (e) {
       console.error(e);
       setError("Sorry, I couldn't solve that. Please try rephrasing your question.");
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "An unexpected error occurred.",
+      });
     } finally {
       setIsLoading(false);
     }
