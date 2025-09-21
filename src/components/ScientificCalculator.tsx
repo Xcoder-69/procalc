@@ -105,7 +105,7 @@ export default function ScientificCalculator() {
     }
   };
   
-  const baseButtonClass = "text-xl h-16 w-full rounded-2xl transition-all duration-200 shadow-inner-white-sm border border-white/10 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:-translate-y-1 hover:shadow-lg";
+  const baseButtonClass = "text-xl h-16 w-full rounded-2xl transition-all duration-200 shadow-inner-white-sm border border-white/10 bg-white/10 backdrop-blur-sm hover:-translate-y-1 hover:shadow-lg";
 
   const CalcButton = ({ value, display, className, onClick }: { value: string, display?: string, className?: string, onClick: (val: string) => void }) => (
     <Button
@@ -128,7 +128,7 @@ export default function ScientificCalculator() {
           </div>
         </div>
         
-        <Tabs defaultValue="scientific" className='w-full'>
+        <Tabs defaultValue="simple" className='w-full'>
           <TabsList className="grid w-full grid-cols-2 bg-black/20 border-white/10 h-14">
             <TabsTrigger value="scientific" className='text-base data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/40'>Scientific</TabsTrigger>
             <TabsTrigger value="simple" className='text-base data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/40'>Simple</TabsTrigger>
