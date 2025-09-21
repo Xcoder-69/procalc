@@ -101,7 +101,7 @@ function SessionHistory() {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Session History" disabled={history.length === 0}>
+                <Button variant="ghost" size="icon" aria-label="Session History">
                     <History className="h-5 w-5" />
                 </Button>
             </PopoverTrigger>
