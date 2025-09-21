@@ -15,10 +15,13 @@ export const Logo = (props: React.SVGProps<SVGSVGElement>) => (
         <stop offset="100%" style={{ stopColor: "hsl(var(--primary) / 0.5)", stopOpacity: 1 }} />
       </linearGradient>
     </defs>
-    <rect width="18" height="18" x="3" y="3" rx="4" stroke="url(#logo-gradient)" />
-    <path d="M8 8h8" stroke="url(#logo-gradient)" strokeWidth="2"/>
-    <path d="M8 16h8" stroke="url(#logo-gradient)" strokeWidth="2"/>
-    <path d="M12 4v16"  stroke="url(#logo-gradient)" strokeWidth="0.5" />
-    <path d="M4 12h16"  stroke="url(#logo-gradient)" strokeWidth="0.5"/>
+    <rect width="16" height="20" x="4" y="2" rx="2" ry="2" stroke="url(#logo-gradient)" />
+    <rect width="10" height="6" x="7" y="6" rx="1" fill="hsl(var(--background))" stroke="url(#logo-gradient)" strokeWidth="1" />
+    <line x1="8" y1="15" x2="8" y2="15" stroke="url(#logo-gradient)" strokeWidth="2" />
+    <line x1="12" y1="15" x2="12" y2="15" stroke="url(#logo-gradient)" strokeWidth="2" />
+    <line x1="16" y1="15" x2="16" y2="15" stroke="url(#logo-gradient)" strokeWidth="2" />
+    <line x1="8" y1="19" x2="8" y2="19" stroke="url(#logo-gradient)" strokeWidth="2" />
+    <line x1="12" y1="19" x2="12" y2="19" stroke="url(#logo-gradient)" strokeWidth="2" />
+    <line x1="16" y1="19" x2="16" y2="19" stroke="url(#logo-gradient)" strokeWidth="2" />
   </svg>
 );
