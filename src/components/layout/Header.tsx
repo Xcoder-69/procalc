@@ -214,7 +214,7 @@ export default function Header() {
                 {categories.map((category) => (
                   <SheetClose asChild key={category.slug}>
                     <Link
-                        href={`/calculator/${category.slug}`}
+                        href={`/#all-categories`}
                         className="flex items-center px-2 py-1 text-muted-foreground"
                     >
                         <Calculator className="mr-2 h-4 w-4" />
