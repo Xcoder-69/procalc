@@ -105,7 +105,7 @@ export default function ScientificCalculator() {
     }
   };
   
-  const baseButtonClass = "text-xl h-16 w-full rounded-2xl transition-all duration-200 shadow-inner-white-sm border border-white/10 bg-white/10 backdrop-blur-sm hover:bg-white/20";
+  const baseButtonClass = "text-xl h-16 w-full rounded-2xl transition-all duration-200 shadow-inner-white-sm border border-white/10 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:-translate-y-1 hover:shadow-lg";
 
   const CalcButton = ({ value, display, className, onClick }: { value: string, display?: string, className?: string, onClick: (val: string) => void }) => (
     <Button
@@ -149,8 +149,8 @@ export default function ScientificCalculator() {
                 <CalcButton value="^" display="xʸ" onClick={handleFunction} className='text-primary/80'/>
                 
                 <CalcButton value="√" onClick={handleFunction} className='text-primary/80'/>
-                <CalcButton value="AC" onClick={handleFunction} className="text-red-400" />
-                <CalcButton value="C" onClick={handleFunction} className="text-red-400" />
+                <CalcButton value="AC" onClick={handleFunction} className="bg-red-500/20 text-red-400 hover:bg-red-500/30" />
+                <CalcButton value="C" onClick={handleFunction} className="bg-red-500/20 text-red-400 hover:bg-red-500/30" />
                 <CalcButton value="%" onClick={handleButtonClick} className="text-primary"/>
                 <CalcButton value="÷" onClick={handleButtonClick} className="text-primary"/>
 
@@ -177,7 +177,7 @@ export default function ScientificCalculator() {
                 </div>
                 <CalcButton value="." onClick={handleButtonClick} />
                 <div className="col-span-2">
-                    <Button variant='default' className={cn(baseButtonClass, 'w-full text-2xl hover:shadow-primary/40 hover:shadow-lg')}>=</Button>
+                    <Button variant='default' className={cn(baseButtonClass, 'w-full text-2xl bg-purple-600 hover:bg-purple-700 hover:shadow-purple-500/40 text-white')} onClick={() => handleFunction('=')}>=</Button>
                 </div>
             </div>
           </TabsContent>
@@ -185,9 +185,9 @@ export default function ScientificCalculator() {
           <TabsContent value="simple" className='mt-4'>
              <div className="grid grid-cols-4 gap-2">
               <div className='col-span-2'>
-                <Button variant='ghost' onClick={() => handleFunction('AC')} className={cn(baseButtonClass, "w-full text-red-400")}>AC</Button>
+                <Button variant='ghost' onClick={() => handleFunction('AC')} className={cn(baseButtonClass, "w-full bg-red-500/20 text-red-400 hover:bg-red-500/30")}>AC</Button>
               </div>
-              <CalcButton value="C" onClick={handleFunction} className="text-red-400"/>
+              <CalcButton value="C" onClick={handleFunction} className="bg-red-500/20 text-red-400 hover:bg-red-500/30"/>
               <CalcButton value="÷" onClick={handleButtonClick} className="text-primary"/>
               
               <CalcButton value="7" onClick={handleButtonClick} />
@@ -209,7 +209,7 @@ export default function ScientificCalculator() {
                 <Button variant='ghost' onClick={() => handleButtonClick('0')} className={cn(baseButtonClass, 'w-full')}>0</Button>
               </div>
               <CalcButton value="." onClick={handleButtonClick} />
-              <Button variant='default' onClick={() => handleFunction('=')} className={cn(baseButtonClass, "text-2xl hover:shadow-primary/40 hover:shadow-lg")}> =</Button>
+              <Button variant='default' onClick={() => handleFunction('=')} className={cn(baseButtonClass, "text-2xl bg-purple-600 hover:bg-purple-700 hover:shadow-purple-500/40 text-white")}> =</Button>
             </div>
           </TabsContent>
         </Tabs>
