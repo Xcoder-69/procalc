@@ -1,7 +1,7 @@
 'use client';
 
 import { z } from 'zod';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -32,11 +32,46 @@ function AICalcLogo() {
 export function AIChat({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [prompt, setPrompt] = useState('');
-  <DialogTitle>AI Calc</DialogTitle>
   const [result, setResult] = useState<SolveEquationOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+
+
+  const getCameraPermission = async () => {
+    if (isCameraOpen) {
+      // Turn off camera
+      if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+        videoRef.current.srcObject = null;
+      }
+      setIsCameraOpen(false);
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      setHasCameraPermission(true);
+      setIsCameraOpen(true);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      setHasCameraPermission(false);
+      setIsCameraOpen(false);
+      toast({
+        variant: 'destructive',
+        title: 'Camera Access Denied',
+        description: 'Please enable camera permissions in your browser settings.',
+      });
+    }
+  };
+
 
   const handleSubmit = async () => {
     if (!prompt.trim()) return;
@@ -73,6 +108,12 @@ export function AIChat({ children }: { children: React.ReactNode }) {
       setResult(null);
       setError(null);
       setIsLoading(false);
+      if (isCameraOpen && videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+        videoRef.current.srcObject = null;
+      }
+      setIsCameraOpen(false);
     }
     setIsOpen(open);
   }
@@ -89,7 +130,9 @@ export function AIChat({ children }: { children: React.ReactNode }) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-2xl bg-background/80 backdrop-blur-sm border-border/50">
         <DialogHeader>
-          <DialogTitle><AICalcLogo /></DialogTitle>
+          <DialogTitle>
+            <AICalcLogo />
+          </DialogTitle>
           <DialogDescription>
             Ask a math question and our AI will solve it for you.
           </DialogDescription>
@@ -104,11 +147,25 @@ export function AIChat({ children }: { children: React.ReactNode }) {
             className='bg-muted/30 pr-12'
           />
           <div className="absolute bottom-2 right-2 flex flex-col gap-2">
-            <Button size="icon" variant="ghost" onClick={() => handleToolClick('Microphone')} disabled><Mic className="h-5 w-5" /></Button>
-            <Button size="icon" variant="ghost" onClick={() => handleToolClick('File Upload')} disabled><Paperclip className="h-5 w-5" /></Button>
-            <Button size="icon" variant="ghost" onClick={() => handleToolClick('Camera')} disabled><Camera className="h-5 w-5" /></Button>
+            <Button size="icon" variant="ghost" onClick={() => handleToolClick('Microphone')}><Mic className="h-5 w-5" /></Button>
+            <Button size="icon" variant="ghost" onClick={() => handleToolClick('File Upload')}><Paperclip className="h-5 w-5" /></Button>
+            <Button size="icon" variant={isCameraOpen ? 'secondary' : 'ghost'} onClick={getCameraPermission}><Camera className="h-5 w-5" /></Button>
           </div>
         </div>
+
+        {isCameraOpen && (
+          <div className='space-y-2'>
+            <video ref={videoRef} className="w-full aspect-video rounded-md bg-muted" autoPlay muted />
+            {hasCameraPermission === false && (
+                <Alert variant="destructive">
+                  <AlertTitle>Camera Access Required</AlertTitle>
+                  <AlertDescription>
+                    Please allow camera access in your browser settings to use this feature.
+                  </AlertDescription>
+                </Alert>
+            )}
+          </div>
+        )}
 
         <Button onClick={handleSubmit} disabled={isLoading} className="w-full">
             {isLoading ? (
