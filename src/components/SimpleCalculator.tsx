@@ -74,7 +74,7 @@ export default function SimpleCalculator() {
   const ActionButton = ({ display, className, onClick }: { display: string, className?: string, onClick: () => void }) => (
     <Button
         variant="ghost"
-        className={cn(baseButtonClass, "bg-destructive/80 text-destructive-foreground border-destructive/90 hover:bg-destructive", className)}
+        className={cn(baseButtonClass, "!bg-amber-500/20 !text-amber-500 !border-amber-500/30 hover:!bg-amber-500/30 hover:shadow-amber-500/40", className)}
         onClick={onClick}
     >
       {display}
