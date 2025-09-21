@@ -30,6 +30,7 @@ export type CalculatorDef = {
   formulaDescription?: string;
   relatedCalculators: string[];
   isFeatured?: boolean;
+  component?: 'ScientificCalculator';
   image: {
     seed: string;
     width: number;

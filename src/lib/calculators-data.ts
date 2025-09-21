@@ -46,8 +46,30 @@ export const calculators: CalculatorDef[] = [
       bmr: { label: 'Basal Metabolic Rate', unit: 'calories/day', precision: 0 },
     },
     formulaDescription: 'Uses the Mifflin-St Jeor Equation: For men: BMR = 10W + 6.25H - 5A + 5. For women: BMR = 10W + 6.25H - 5A - 161. Where W is weight in kg, H is height in cm, and A is age in years.',
-    relatedCalculators: ['bmi-calculator', 'calories-burned-calculator'],
+    relatedCalculators: ['bmi-calculator', 'body-fat-calculator', 'calories-burned-calculator'],
     article: 'Your Basal Metabolic Rate (BMR) is the number of calories you burn as your body performs basic (basal) life-sustaining function. Commonly also termed as Resting Metabolic Rate (RMR), which is the calories burned if you stayed in bed all day. Knowing your BMR can help you manage your weight.'
+  },
+    {
+    slug: 'body-fat-calculator',
+    title: 'Body Fat Calculator',
+    category: 'health',
+    shortDescription: 'Estimate your body fat percentage using the U.S. Navy method.',
+    image: { seed: 'body-fat- calipers', width: 600, height: 400, hint: 'fitness measure' },
+    inputs: [
+      { name: 'gender', label: 'Gender', type: 'select', options: [{value: 'male', label: 'Male'}, {value: 'female', label: 'Female'}] },
+      { name: 'height', label: 'Height (cm)', type: 'number', placeholder: '175', min: 1 },
+      { name: 'neck', label: 'Neck (cm)', type: 'number', placeholder: '38', min: 1 },
+      { name: 'waist', label: 'Waist (cm)', type: 'number', placeholder: '85', min: 1 },
+      { name: 'hip', label: 'Hip (cm, women only)', type: 'number', placeholder: '95', min: 1 },
+    ],
+    resultLabels: {
+      bodyFatPercentage: { label: 'Body Fat', unit: '%', precision: 2 },
+      bodyFatMass: { label: 'Body Fat Mass', unit: 'kg', precision: 2 },
+      leanBodyMass: { label: 'Lean Body Mass', unit: 'kg', precision: 2 },
+    },
+    formulaDescription: 'Uses the U.S. Navy method. For men: BFP = 86.010 * log10(waist - neck) - 70.041 * log10(height) + 36.76. For women: BFP = 163.205 * log10(waist + hip - neck) - 97.684 * log10(height) - 78.387.',
+    relatedCalculators: ['bmi-calculator', 'bmr-calculator'],
+    article: 'Body fat percentage is a key indicator of health. This calculator uses the U.S. Navy method, which only requires a few simple body measurements, to estimate your body fat. It\'s a convenient way to track your fitness progress.'
   },
   
   // Finance
@@ -131,6 +153,19 @@ export const calculators: CalculatorDef[] = [
     formulaDescription: 'Result = (Percentage / 100) * Total',
     relatedCalculators: ['discount-calculator', 'loan-emi-calculator'],
     article: 'Percentages are a fundamental part of mathematics and are used in many areas of life, from calculating discounts in stores to understanding financial reports. This calculator helps you quickly solve various percentage-related problems.'
+  },
+  {
+    slug: 'scientific-calculator',
+    title: 'Scientific Calculator',
+    category: 'mathematics',
+    shortDescription: 'Perform advanced mathematical calculations.',
+    isFeatured: false,
+    component: 'ScientificCalculator',
+    image: { seed: 'scientific-math', width: 600, height: 400, hint: 'equations blackboard' },
+    inputs: [],
+    resultLabels: {},
+    relatedCalculators: ['percentage-calculator'],
+    article: 'A scientific calculator is a type of electronic calculator, usually but not always handheld, designed to calculate problems in science, engineering, and mathematics. They have completely replaced slide rules in traditional applications, and are widely used in both education and professional settings.'
   },
 
   // Conversion & Tools

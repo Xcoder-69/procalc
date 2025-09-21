@@ -141,3 +141,24 @@ export const calculateDateDifference = (inputs: Inputs) => {
   
   return { years, months, weeks, days };
 };
+
+export const calculateBodyFat = (inputs: Inputs) => {
+  const { gender, height, neck, waist, hip, weight } = inputs as { gender: string; height: number; neck: number; waist: number; hip?: number, weight: number };
+  if (!gender || !height || !neck || !waist) return {};
+  
+  let bodyFatPercentage = 0;
+  
+  if (gender === 'male') {
+    bodyFatPercentage = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(height) + 36.76;
+  } else {
+    if (!hip) return {};
+    bodyFatPercentage = 163.205 * Math.log10(waist + hip - neck) - 97.684 * Math.log10(height) - 78.387;
+  }
+
+  if (bodyFatPercentage < 0) bodyFatPercentage = 0;
+
+  const bodyFatMass = (Number(weight) * bodyFatPercentage) / 100;
+  const leanBodyMass = Number(weight) - bodyFatMass;
+
+  return { bodyFatPercentage, bodyFatMass, leanBodyMass };
+};

@@ -18,10 +18,12 @@ import { useAuth } from './AuthProvider';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
+import ScientificCalculator from './ScientificCalculator';
 
 const calculationMap: Record<string, (inputs: Record<string, number | string>) => Record<string, any>> = {
   'bmi-calculator': calculatorLogics.calculateBmi,
   'bmr-calculator': calculatorLogics.calculateBmr,
+  'body-fat-calculator': calculatorLogics.calculateBodyFat,
   'loan-emi-calculator': calculatorLogics.calculateEmi,
   'sip-calculator': calculatorLogics.calculateSip,
   'simple-interest-calculator': calculatorLogics.calculateSimpleInterest,
@@ -48,13 +50,34 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
     return acc;
   }, {} as FormValues);
   
-  const { control, handleSubmit, reset, setValue } = useForm<FormValues>({ defaultValues });
+  const { control, handleSubmit, reset, watch } = useForm<FormValues>({ defaultValues });
+
+  const gender = watch('gender');
+
+  if (calculatorDef.component === 'ScientificCalculator') {
+    return <ScientificCalculator />;
+  }
 
   const onSubmit = async (data: FormValues) => {
     const calculationFn = calculationMap[calculatorDef.slug];
     if (calculationFn) {
-      const numericData = Object.entries(data).reduce((acc, [key, value]) => {
+      // For body-fat-calculator, we need weight from BMI to calculate mass
+      let submissionData = {...data};
+      if (calculatorDef.slug === 'body-fat-calculator') {
+          const weight = prompt('Please enter your weight in kg to calculate body fat mass:');
+          if (weight) {
+            submissionData.weight = weight;
+          }
+      }
+
+
+      const numericData = Object.entries(submissionData).reduce((acc, [key, value]) => {
         const inputDef = calculatorDef.inputs.find(i => i.name === key);
+        // Special handling for optional hip input
+        if (calculatorDef.slug === 'body-fat-calculator' && key === 'hip' && gender === 'male') {
+          return acc;
+        }
+
         if (inputDef?.type === 'number' && value === '') {
           acc[key] = '';
         } else if (inputDef?.type === 'number') {
@@ -64,6 +87,7 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
         }
         return acc;
       }, {} as Record<string, number | string>);
+      
       const res = calculationFn(numericData);
       setResult(res);
 
@@ -91,52 +115,60 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
   };
 
   const renderInput = (input: CalculatorInput) => {
+    // Conditional rendering for the 'hip' input
+    if (calculatorDef.slug === 'body-fat-calculator' && input.name === 'hip' && gender === 'male') {
+      return null;
+    }
+
     return (
-      <Controller
-        name={input.name}
-        control={control}
-        render={({ field }) => {
-          if (input.type === 'select') {
+      <div key={input.name} className="space-y-2">
+        <Label htmlFor={input.name}>{input.label}</Label>
+        <Controller
+          name={input.name}
+          control={control}
+          render={({ field }) => {
+            if (input.type === 'select') {
+              return (
+                <Select onValueChange={field.onChange} defaultValue={field.value as string}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={input.placeholder} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {input.options?.map(option => (
+                      <SelectItem key={String(option.value)} value={String(option.value)}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              );
+            }
             return (
-              <Select onValueChange={field.onChange} defaultValue={field.value as string}>
-                <SelectTrigger>
-                  <SelectValue placeholder={input.placeholder} />
-                </SelectTrigger>
-                <SelectContent>
-                  {input.options?.map(option => (
-                    <SelectItem key={String(option.value)} value={String(option.value)}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                {...field}
+                id={input.name}
+                type={input.type}
+                placeholder={input.placeholder}
+                min={input.min}
+                max={input.max}
+                step={input.step}
+                inputMode={input.type === 'number' ? 'decimal' : undefined}
+                value={field.value ?? ''}
+                onChange={(e) => {
+                  const { value } = e.target;
+                  if (input.type === 'number') {
+                      if (value === '' || /^-?\d*\.?\d*$/.test(value)) {
+                          field.onChange(value);
+                      }
+                  } else {
+                      field.onChange(value);
+                  }
+                }}
+              />
             );
-          }
-          return (
-            <Input
-              {...field}
-              type={input.type}
-              placeholder={input.placeholder}
-              min={input.min}
-              max={input.max}
-              step={input.step}
-              inputMode={input.type === 'number' ? 'decimal' : undefined}
-              value={field.value ?? ''}
-              onChange={(e) => {
-                const { value } = e.target;
-                if (input.type === 'number') {
-                    // Allow empty string, or valid number strings
-                    if (value === '' || /^-?\d*\.?\d*$/.test(value)) {
-                        field.onChange(value);
-                    }
-                } else {
-                    field.onChange(value);
-                }
-              }}
-            />
-          );
-        }}
-      />
+          }}
+        />
+      </div>
     );
   };
 
@@ -151,12 +183,7 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
     <div className="space-y-6">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className={cn("grid gap-4", calculatorDef.inputs.length > 2 ? "md:grid-cols-2" : "md:grid-cols-1")}>
-          {calculatorDef.inputs.map(input => (
-            <div key={input.name} className="space-y-2">
-              <Label htmlFor={input.name}>{input.label}</Label>
-              {renderInput(input)}
-            </div>
-          ))}
+          {calculatorDef.inputs.map(input => renderInput(input))}
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button type="submit" className="flex-1">Calculate</Button>
