@@ -174,7 +174,7 @@ export default function ScientificCalculator() {
 
 
   return (
-    <Card className="w-full max-w-xs mx-auto shadow-2xl bg-card/80 backdrop-blur-xl border-border/20 rounded-2xl overflow-hidden font-mono">
+    <Card className="w-full max-w-sm mx-auto shadow-2xl bg-card/80 backdrop-blur-xl border-border/20 rounded-2xl overflow-hidden font-mono">
       <CardContent className="p-2 space-y-2">
         <div className="bg-muted/30 rounded-md px-2 py-1 text-right h-24 flex flex-col justify-end text-foreground border border-border/20 shadow-inner">
           <div className="h-6 text-sm text-foreground/50 truncate text-right flex items-center justify-between">
@@ -227,7 +227,7 @@ export default function ScientificCalculator() {
           <NumButton value="8" onClick={handleButtonClick} />
           <NumButton value="9" onClick={handleButtonClick} />
           <CalcButton value="C" onClick={handleFunction} className="!bg-amber-500/20 !text-amber-500 !border-amber-500/30 hover:!bg-amber-500/30 hover:shadow-amber-500/40" />
-          <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/30 hover:!bg-destructive/30 hover:shadow-destructive/40" />
+          <CalcButton value="AC" onClick={handleFunction} className="!bg-amber-500/30 !text-amber-500 !border-amber-500/40 hover:!bg-amber-500/40 hover:shadow-amber-500/50" />
           
           <NumButton value="4" onClick={handleButtonClick} />
           <NumButton value="5" onClick={handleButtonClick} />
