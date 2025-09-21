@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useWatch } from 'react-hook-form';
 import { CalculatorDef, CalculatorInput, Calculation } from '@/lib/types';
 import * as calculatorLogics from '@/lib/calculator-helpers';
 import { Button } from '@/components/ui/button';
@@ -37,6 +37,63 @@ const calculationMap: Record<string, (inputs: Record<string, number | string>) =
 
 type FormValues = Record<string, string | number>;
 
+const renderInput = (input: CalculatorInput, control: any, gender?: string) => {
+    if (input.name === 'hip' && gender === 'male') {
+      return null;
+    }
+
+    return (
+      <div key={input.name} className="space-y-2">
+        <Label htmlFor={input.name}>{input.label}</Label>
+        <Controller
+          name={input.name}
+          control={control}
+          render={({ field }) => {
+            if (input.type === 'select') {
+              return (
+                <Select onValueChange={field.onChange} defaultValue={field.value as string}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={input.placeholder} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {input.options?.map(option => (
+                      <SelectItem key={String(option.value)} value={String(option.value)}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              );
+            }
+            return (
+              <Input
+                {...field}
+                id={input.name}
+                type={input.type}
+                placeholder={input.placeholder}
+                min={input.min}
+                max={input.max}
+                step={input.step}
+                inputMode={input.type === 'number' ? 'decimal' : undefined}
+                value={field.value ?? ''}
+                onChange={(e) => {
+                  const { value } = e.target;
+                  if (input.type === 'number') {
+                      if (value === '' || /^-?\d*\.?\d*$/.test(value)) {
+                          field.onChange(value);
+                      }
+                  } else {
+                      field.onChange(value);
+                  }
+                }}
+              />
+            );
+          }}
+        />
+      </div>
+    );
+  };
+
 export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: CalculatorDef }) {
   const [result, setResult] = useState<Record<string, any> | null>(null);
   const { user } = useAuth();
@@ -52,9 +109,9 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
     return acc;
   }, {} as FormValues);
   
-  const { control, handleSubmit, reset, watch } = useForm<FormValues>({ defaultValues });
-
-  const gender = watch('gender');
+  const { control, handleSubmit, reset } = useForm<FormValues>({ defaultValues });
+  
+  const gender = useWatch({ control, name: 'gender' });
 
   if (calculatorDef.component === 'ScientificCalculator') {
     return <ScientificCalculator />;
@@ -124,64 +181,6 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
     }
   };
 
-  const renderInput = (input: CalculatorInput) => {
-    // Conditional rendering for the 'hip' input
-    if (calculatorDef.slug === 'body-fat-calculator' && input.name === 'hip' && gender === 'male') {
-      return null;
-    }
-
-    return (
-      <div key={input.name} className="space-y-2">
-        <Label htmlFor={input.name}>{input.label}</Label>
-        <Controller
-          name={input.name}
-          control={control}
-          render={({ field }) => {
-            if (input.type === 'select') {
-              return (
-                <Select onValueChange={field.onChange} defaultValue={field.value as string}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={input.placeholder} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {input.options?.map(option => (
-                      <SelectItem key={String(option.value)} value={String(option.value)}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              );
-            }
-            return (
-              <Input
-                {...field}
-                id={input.name}
-                type={input.type}
-                placeholder={input.placeholder}
-                min={input.min}
-                max={input.max}
-                step={input.step}
-                inputMode={input.type === 'number' ? 'decimal' : undefined}
-                value={field.value ?? ''}
-                onChange={(e) => {
-                  const { value } = e.target;
-                  if (input.type === 'number') {
-                      if (value === '' || /^-?\d*\.?\d*$/.test(value)) {
-                          field.onChange(value);
-                      }
-                  } else {
-                      field.onChange(value);
-                  }
-                }}
-              />
-            );
-          }}
-        />
-      </div>
-    );
-  };
-
   const handleReset = () => {
     reset(defaultValues);
     setResult(null);
@@ -193,7 +192,7 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
     <div className="space-y-6">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className={cn("grid gap-4", calculatorDef.inputs.length > 2 ? "md:grid-cols-2" : "md:grid-cols-1")}>
-          {calculatorDef.inputs.map(input => renderInput(input))}
+          {calculatorDef.inputs.map(input => renderInput(input, control, gender as string | undefined))}
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button type="submit" className="flex-1">Calculate</Button>

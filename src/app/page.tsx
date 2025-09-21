@@ -4,10 +4,7 @@ import { categories, calculators } from '@/lib/calculators-data';
 import { ArrowRight, Calculator } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import { Skeleton } from '@/components/ui/skeleton';
-import SimpleCalculatorClient from '@/components/SimpleCalculatorClient';
-import { cn } from '@/lib/utils';
+import ScientificCalculatorStatic from '@/components/ScientificCalculatorStatic';
 
 export default function Home() {
   const featuredCalculators = calculators.filter(c => c.isFeatured).slice(0, 8);
@@ -29,13 +26,13 @@ export default function Home() {
               Your all-in-one suite of professional-grade calculators for finance, health, and mathematics. Accurate, fast, and easy to use.
             </p>
             <Button asChild size="lg" className="group">
-              <Link href="#featured-calculators">
+              <Link href="/categories">
                 Explore Calculators <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
           </div>
           <div className='max-w-lg mx-auto w-full'>
-            <SimpleCalculatorClient />
+            <ScientificCalculatorStatic />
           </div>
         </div>
       </section>
@@ -59,7 +56,7 @@ export default function Home() {
                         height={calc.image.height}
                         className="w-full h-auto aspect-[4/3] object-cover group-hover/card:scale-105 transition-transform duration-300"
                         data-ai-hint={calc.image.hint}
-                        priority={index === 0}
+                        priority={index < 2}
                     />
                    </div>
                   <div className="p-4">

@@ -1,6 +1,6 @@
 import { categories, calculators } from '@/lib/calculators-data';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Calculator } from 'lucide-react';
 import { Metadata } from 'next';
 
@@ -24,8 +24,8 @@ export default function CategoriesPage() {
           <section key={category.slug} id={category.slug} className="scroll-mt-24">
             <Card className="overflow-hidden">
                 <CardHeader className="bg-muted/30">
-                    <CardTitle className="text-2xl text-primary font-headline">{category.name}</CardTitle>
-                    <CardDescription>{category.description}</CardDescription>
+                    <div className="text-2xl font-headline font-bold text-primary">{category.name}</div>
+                    <p className="text-muted-foreground">{category.description}</p>
                 </CardHeader>
                 <CardContent className="p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
