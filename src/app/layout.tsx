@@ -8,7 +8,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/components/AuthProvider';
 import { AIChat } from '@/components/AIChat';
 import { Button } from '@/components/ui/button';
-import { BrainCircuit } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { HistoryProvider } from '@/components/HistoryProvider';
 
@@ -92,10 +92,10 @@ export default function RootLayout({
               </div>
               <AIChat>
                 <Button
-                  className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg animate-pulse-glow-once bg-primary hover:bg-primary/90"
+                  className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg animate-gemini-button bg-gemini"
                   aria-label="Open AI Chat"
                 >
-                  <BrainCircuit className="h-8 w-8" />
+                  <Sparkles className="h-8 w-8 text-white" />
                 </Button>
               </AIChat>
               <Toaster />
