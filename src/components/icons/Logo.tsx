@@ -4,27 +4,13 @@ export const Logo = (props: React.SVGProps<SVGSVGElement>) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.5"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     {...props}
   >
-    <defs>
-      <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="hsl(var(--primary))" />
-        <stop offset="100%" stopColor="hsl(280, 83%, 58%)" />
-      </linearGradient>
-    </defs>
-    <path
-      stroke="url(#logo-gradient)"
-      d="M12.55,2.429A5.823,5.823,0,0,0,8.429,0H5.823A5.823,5.823,0,0,0,0,5.823v2.606a5.823,5.823,0,0,0,2.429,4.122"
-      transform="translate(4 4)"
-    />
-     <path
-      stroke="url(#logo-gradient)"
-      d="M2.429,12.55A5.823,5.823,0,0,0,0,8.429V5.823A5.823,5.823,0,0,0,5.823,0h2.606a5.823,5.823,0,0,0,4.122,2.429"
-       transform="translate(4 4) rotate(180) translate(-12.551 -12.55)"
-    />
-    <rect x="9" y="9" width="6" height="6" rx="1" fill="hsl(var(--primary) / 0.1)" stroke="hsl(var(--primary) / 0.5)" strokeWidth="0.5" />
+    <rect width="18" height="18" x="3" y="3" rx="2" fill="hsl(var(--primary) / 0.1)" stroke="hsl(var(--primary))" />
+    <path d="M3 12h18" stroke="hsl(var(--primary))" />
+    <path d="M12 3v18" stroke="hsl(var(--primary))" />
   </svg>
 );
