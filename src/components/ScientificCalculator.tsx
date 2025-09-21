@@ -181,12 +181,12 @@ export default function ScientificCalculator() {
         <div className="grid grid-cols-5 gap-2">
             <CalcButton value="SHIFT" onClick={() => {}} className='col-span-1 !text-yellow-600 !bg-yellow-400/10' />
             <CalcButton value="ALPHA" onClick={() => {}} className='col-span-1 !text-red-500 !bg-red-400/10' />
-            <div className="col-span-2 grid grid-cols-2 grid-rows-2 gap-1 bg-foreground/10 p-1 rounded-md">
-                <Button size="icon" variant="ghost" className='row-span-2 m-auto bg-card rounded-full h-12 w-12 flex items-center justify-center text-primary'><ChevronLeft /></Button>
+            <div className="col-span-3 grid grid-cols-3 grid-rows-2 gap-1 bg-foreground/10 p-1 rounded-md">
+                <Button size="icon" variant="ghost" className='col-start-1 row-span-2 m-auto bg-card rounded-full h-12 w-12 flex items-center justify-center text-primary'><ChevronLeft /></Button>
                 <Button size="icon" variant="ghost" className='col-start-2 row-start-1 bg-card rounded-md h-6 w-6'><ChevronUp /></Button>
                 <Button size="icon" variant="ghost" className='col-start-2 row-start-2 bg-card rounded-md h-6 w-6'><ChevronDown /></Button>
+                <Button size="icon" variant="ghost" className='col-start-3 row-span-2 m-auto bg-card rounded-full h-12 w-12 flex items-center justify-center text-primary'><ChevronRight /></Button>
             </div>
-             <Button size="icon" variant="ghost" className='m-auto bg-card rounded-full h-12 w-12 flex items-center justify-center text-primary'><ChevronRight /></Button>
         </div>
         
         <div className='grid grid-cols-5 gap-2'>
