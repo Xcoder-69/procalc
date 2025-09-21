@@ -4,7 +4,7 @@ import { categories, calculators } from '@/lib/calculators-data';
 import { ArrowRight, Calculator } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import ScientificCalculatorStatic from '@/components/ScientificCalculatorStatic';
+import ScientificCalculator from '@/components/ScientificCalculator';
 
 export default function Home() {
   const featuredCalculators = calculators.filter(c => c.isFeatured).slice(0, 8);
@@ -32,7 +32,7 @@ export default function Home() {
             </Button>
           </div>
           <div className='max-w-lg mx-auto w-full'>
-            <ScientificCalculatorStatic />
+            <ScientificCalculator />
           </div>
         </div>
       </section>
@@ -60,8 +60,8 @@ export default function Home() {
                     />
                    </div>
                   <div className="p-4">
-                    <CardTitle className="text-lg font-semibold">{calc.title}</CardTitle>
-                    <CardDescription className="text-sm h-10 overflow-hidden">{calc.shortDescription}</CardDescription>
+                    <p className="text-lg font-semibold leading-tight">{calc.title}</p>
+                    <p className="text-sm h-10 overflow-hidden text-muted-foreground mt-1">{calc.shortDescription}</p>
                   </div>
                 </CardHeader>
                 <CardContent className="mt-auto p-4">
