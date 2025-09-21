@@ -17,7 +17,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
+const auth = getAuth(app, {
+  persistence: undefined, // Let Firebase decide persistence
+  authDomain: "procalc-hub.vercel.app", // Explicitly set for Vercel
+});
 const db = getFirestore(app);
 
 export { app, auth, db };
