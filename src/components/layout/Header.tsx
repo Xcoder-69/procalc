@@ -157,11 +157,11 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-20 items-center">
+      <div className="container flex h-24 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo className="h-8 w-8" />
-            <span className="hidden font-bold sm:inline-block font-headline">
+            <span className="hidden font-bold sm:inline-block font-headline text-lg">
               ProCalc
             </span>
           </Link>
@@ -170,7 +170,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="transition-colors hover:text-foreground/80 text-foreground/60"
+                className="transition-colors hover:text-foreground/80 text-foreground/60 text-lg"
               >
                 {link.label}
               </Link>

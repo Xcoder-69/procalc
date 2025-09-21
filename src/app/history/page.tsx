@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
 import { db } from '@/lib/firebase';
-import { collection, query, where, orderBy, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, query, where, orderBy, getDocs, deleteDoc, doc, Timestamp } from 'firebase/firestore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trash2, Edit, AlertCircle } from 'lucide-react';
@@ -126,7 +126,7 @@ export default function HistoryPage() {
                   <div>
                     <CardTitle>{item.calculatorTitle}</CardTitle>
                     <CardDescription>
-                      {item.createdAt && format(new Date((item.createdAt as any).seconds * 1000), 'PPP p')}
+                      {item.createdAt && format(new Date((item.createdAt as unknown as Timestamp).seconds * 1000), 'PPP p')}
                     </CardDescription>
                   </div>
                   <div className="flex gap-2">
