@@ -15,7 +15,7 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { solveEquation } from "@/ai/flows/solve-equation";
 import type { SolveEquationInput, SolveEquationOutput } from "@/ai/flows/solve-equation";
-import { Loader2, Sparkles, BrainCircuit, Mic, Paperclip, Camera, AlertTriangle } from "lucide-react";
+import { Loader2, Sparkles, Mic, Paperclip, Camera, AlertTriangle, Calculator } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Separator } from './ui/separator';
 import { useToast } from '@/hooks/use-toast';
@@ -23,7 +23,7 @@ import { useToast } from '@/hooks/use-toast';
 function AICalcLogo() {
     return (
         <div className="flex items-center gap-2 text-2xl font-semibold">
-            <BrainCircuit className="h-7 w-7 text-primary" />
+            <Calculator className="h-7 w-7 text-primary" />
             <span className="font-headline">AI Calc</span>
         </div>
     )
@@ -39,6 +39,11 @@ export function AIChat({ children }: { children: React.ReactNode }) {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+
+  useEffect(() => {
+    const handle = setTimeout(() => setIsOpen(false), 4000);
+    return () => clearTimeout(handle);
+  }, [isOpen]);
 
   const getCameraPermission = async () => {
     if (isCameraOpen) {
