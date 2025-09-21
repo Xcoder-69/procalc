@@ -6,31 +6,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Helper for safe evaluation
-const safeEval = (expr: string) => {
-  try {
-    // Replace user-friendly symbols with JS equivalents
-    let evalExpr = expr.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
-    
-    // Handle percentages: find numbers followed by % and convert them
-    evalExpr = evalExpr.replace(/(\d+(\.\d+)?)%/g, (match, number) => `(${number}/100)`);
-    
-    // Handle expressions like (5+10)% -> (5+10)/100
-    evalExpr = evalExpr.replace(/\(([^)]+)\)%/g, (match, expression) => `((${expression})/100)`);
-
-
-    // Using new Function is safer than direct eval, but a dedicated math expression parser (like math.js) is best for production apps.
-    // For this context, it's a reasonable approach.
-    return new Function('return ' + evalExpr)();
-  } catch (error) {
-    console.error("Evaluation Error:", error, "Expression:", expr);
-    return 'Error';
-  }
-};
-
 const factorial = (n: number): number => {
-    if (n < 0 || n % 1 !== 0) return NaN; // Factorial is only for non-negative integers
-    if (n > 170) return Infinity; // Prevent call stack size exceeded for large numbers
+    if (n < 0 || n % 1 !== 0) return NaN;
+    if (n > 170) return Infinity;
     if (n === 0 || n === 1) return 1;
     let result = 1;
     for (let i = 2; i <= n; i++) {
@@ -44,6 +22,48 @@ export default function ScientificCalculator() {
   const [history, setHistory] = useState('');
   const [isDeg, setIsDeg] = useState(true);
   const [memory, setMemory] = useState(0);
+
+  // Helper for safe evaluation
+  const safeEval = (expr: string) => {
+    try {
+      let evalExpr = expr.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+      evalExpr = evalExpr.replace(/π/g, 'Math.PI').replace(/e/g, 'Math.E');
+      
+      // Handle percentages
+      evalExpr = evalExpr.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
+
+      // Handle square roots
+      evalExpr = evalExpr.replace(/√\(([^)]+)\)/g, 'Math.sqrt($1)');
+      
+      // Handle powers
+      evalExpr = evalExpr.replace(/(\w+)\^/g, 'Math.pow($1,');
+
+      // Handle factorial
+      evalExpr = evalExpr.replace(/(\d+)!/g, (match, num) => `factorial(${num})`);
+
+      // Handle trig and log functions
+      const functions = ['sin', 'cos', 'tan', 'log', 'ln'];
+      functions.forEach(func => {
+        const re = new RegExp(`${func}\\(([^)]+)\\)`, 'g');
+        let replacement = '';
+        switch(func) {
+          case 'sin': replacement = `Math.sin(${isDeg ? '($1 * Math.PI / 180)' : '$1'})`; break;
+          case 'cos': replacement = `Math.cos(${isDeg ? '($1 * Math.PI / 180)' : '$1'})`; break;
+          case 'tan': replacement = `Math.tan(${isDeg ? '($1 * Math.PI / 180)' : '$1'})`; break;
+          case 'log': replacement = 'Math.log10($1)'; break;
+          case 'ln': replacement = 'Math.log($1)'; break;
+        }
+        evalExpr = evalExpr.replace(re, replacement);
+      });
+      
+      // Using new Function is safer than direct eval
+      const evalFn = new Function('factorial', 'return ' + evalExpr);
+      return evalFn(factorial);
+    } catch (error) {
+      console.error("Evaluation Error:", error, "Expression:", expr);
+      return 'Error';
+    }
+  };
 
   const handleButtonClick = (value: string) => {
     if (input === 'Error') {
@@ -87,7 +107,11 @@ export default function ScientificCalculator() {
     if (func.startsWith('M')) {
       let currentVal = 0;
       if (input && input !== 'Error') {
-        currentVal = Number(safeEval(input)) || 0;
+        try {
+          currentVal = Number(safeEval(input)) || 0;
+        } catch {
+          currentVal = 0;
+        }
       }
 
       switch (func) {
@@ -97,52 +121,13 @@ export default function ScientificCalculator() {
       }
       return;
     }
-
-    // Constants
-    if (['π', 'e'].includes(func)) {
-        const value = func === 'π' ? Math.PI : Math.E;
-        setInput(prev => prev + String(value));
-        return;
+    
+    if (['sin(', 'cos(', 'tan(', 'log(', 'ln(', '√('].includes(func)) {
+      handleButtonClick(func);
+      return;
     }
 
-    // Unary operators that take the current value
-    if (input && input !== 'Error') {
-        try {
-            const currentVal = parseFloat(safeEval(input));
-            if (isNaN(currentVal)) {
-                setInput('Error');
-                return;
-            }
-
-            let result: number | undefined;
-            let displayFunc = func;
-
-            switch (func) {
-                case '√': result = Math.sqrt(currentVal); displayFunc = 'sqrt'; break;
-                case 'log': result = Math.log10(currentVal); break;
-                case 'ln': result = Math.log(currentVal); break;
-                case 'sin': result = Math.sin(isDeg ? currentVal * (Math.PI / 180) : currentVal); break;
-                case 'cos': result = Math.cos(isDeg ? currentVal * (Math.PI / 180) : currentVal); break;
-                case 'tan': result = Math.tan(isDeg ? currentVal * (Math.PI / 180) : currentVal); break;
-                case 'x²': result = Math.pow(currentVal, 2); displayFunc = 'sqr'; break;
-                case '!': result = factorial(currentVal); displayFunc = 'fact'; break;
-                default: 
-                  handleButtonClick(func); // For operators like '^', '(', ')'
-                  return;
-            }
-
-            if (result !== undefined && !isNaN(result)) {
-                setHistory(`${displayFunc}(${input})`);
-                setInput(String(result));
-            } else {
-                setInput('Error');
-            }
-        } catch (e) {
-            setInput('Error');
-        }
-    } else { // If input is empty, just append the function/operator
-        handleButtonClick(func);
-    }
+    handleButtonClick(func);
   };
   
   const baseButtonClass = "text-sm h-10 w-full rounded-md transition-all duration-200 border-b-4 active:border-b-0 active:translate-y-1 shadow-md hover:shadow-lg";
@@ -199,22 +184,22 @@ export default function ScientificCalculator() {
         </div>
         
         <div className='grid grid-cols-5 gap-1'>
-            <CalcButton value="sin" onClick={handleFunction} />
-            <CalcButton value="cos" onClick={handleFunction} />
-            <CalcButton value="tan" onClick={handleFunction} />
+            <CalcButton value="sin(" display="sin" onClick={handleFunction} />
+            <CalcButton value="cos(" display="cos" onClick={handleFunction} />
+            <CalcButton value="tan(" display="tan" onClick={handleFunction} />
             <CalcButton value="MC" onClick={handleFunction} className='!text-destructive/80' />
             <CalcButton value="MR" onClick={handleFunction} className='!text-destructive/80' />
 
-            <CalcButton value="x²" display="x²" onClick={handleFunction} />
+            <CalcButton value="**2" display="x²" onClick={handleFunction} />
             <CalcButton value="**" display="xʸ" onClick={handleFunction} />
-            <CalcButton value="log" onClick={handleFunction} />
-            <CalcButton value="ln" onClick={handleFunction} />
+            <CalcButton value="log(" display="log" onClick={handleFunction} />
+            <CalcButton value="ln(" display="ln" onClick={handleFunction} />
             <CalcButton value="M+" onClick={handleFunction} className='!text-destructive/80' />
             
             <CalcButton value="(" onClick={handleButtonClick} />
             <CalcButton value=")" onClick={handleButtonClick} />
-            <CalcButton value="√" onClick={handleFunction} />
-            <CalcButton value="!" onClick={handleFunction} />
+            <CalcButton value="√(" display="√" onClick={handleFunction} />
+            <CalcButton value="!" onClick={handleButtonClick} />
             <CalcButton value="%" onClick={handleButtonClick} />
 
         </div>
@@ -240,8 +225,8 @@ export default function ScientificCalculator() {
 
           <NumButton value="0" onClick={handleButtonClick} />
           <NumButton value="." onClick={handleButtonClick} />
-          <CalcButton value="π" onClick={handleFunction} />
-          <CalcButton value="e" onClick={handleFunction} />
+          <CalcButton value="π" onClick={handleButtonClick} />
+          <CalcButton value="e" onClick={handleButtonClick} />
           <OpButton value="=" onClick={handleFunction} />
         </div>
       </CardContent>
