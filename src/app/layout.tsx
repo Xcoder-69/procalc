@@ -9,19 +9,18 @@ import { AuthProvider } from '@/components/AuthProvider';
 import { AIChat } from '@/components/AIChat';
 import { Button } from '@/components/ui/button';
 import { Bot } from 'lucide-react';
-import { Poppins } from 'next/font/google';
+import { Inter } from 'next/font/google';
 
 
-const poppins = Poppins({
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-body',
-  weight: ['400', '500', '600', '700', '800'],
 });
 
-export const metadata: Metadata = {
-  title: 'ProCalc - Your Suite of Professional Calculators',
-  description: 'A comprehensive collection of free, accurate, and easy-to-use online calculators for finance, health, mathematics, and more. Your all-in-one suite for daily calculation needs, from BMI and loan EMI to age and percentage calculations.',
+export const metadata = {
+  title: 'ProCalc - Your Ultimate All-in-One Calculator Suite',
+  description: 'ProCalc is a comprehensive collection of free, accurate, and easy-to-use online calculators for finance, health, mathematics, and more. Your all-in-one suite for daily calculation needs, from BMI and loan EMI to age and percentage calculations.',
   keywords: [
     'calculator',
     'free calculator',
@@ -29,14 +28,22 @@ export const metadata: Metadata = {
     'finance calculator',
     'health calculator',
     'math calculator',
+    'conversion calculator',
+    'all-in-one calculator',
     'BMI calculator',
-    'EMI calculator',
+    'BMR calculator',
+    'loan EMI calculator',
     'SIP calculator',
-    'age calculator',
+    'simple interest calculator',
     'percentage calculator',
-    'loan calculator',
-    'investment calculator',
+    'age calculator',
+    'unit converter',
+    'discount calculator',
+    'date difference calculator',
     'ProCalc',
+    'professional calculator',
+    'calculator suite',
+    'daily calculations',
   ],
 };
 
@@ -46,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${poppins.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
       <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5141258475616427"
           crossOrigin="anonymous"></script>
