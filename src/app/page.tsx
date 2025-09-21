@@ -68,9 +68,9 @@ export default function Home() {
                   </div>
                 </CardHeader>
                 <CardContent className="mt-auto p-4">
-                  <Button asChild className="w-full group/button" variant="outline">
+                  <Button asChild className="w-full" variant="outline">
                     <Link href={`/calculator/${calc.slug}`}>
-                      <span className='group-hover/button:text-primary-foreground transition-colors duration-300'>Open Calculator</span>
+                      Open Calculator
                     </Link>
                   </Button>
                 </CardContent>
