@@ -13,7 +13,6 @@ const safeEval = (expr: string) => {
     let evalExpr = expr.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
     
     // Handle percentages by evaluating them in the expression
-    // This regex finds a number followed by '%' and converts it to '*(1/100)'
     evalExpr = evalExpr.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
 
     // Using new Function is safer than eval, but for a production app, a dedicated math expression parser is recommended.
@@ -243,5 +242,3 @@ export default function ScientificCalculator() {
     </Card>
   );
 }
-
-    
