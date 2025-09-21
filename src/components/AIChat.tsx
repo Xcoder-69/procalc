@@ -8,7 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter
+  DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
@@ -31,6 +32,7 @@ function AICalcLogo() {
 export function AIChat({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [prompt, setPrompt] = useState('');
+  <DialogTitle>AI Calc</DialogTitle>
   const [result, setResult] = useState<SolveEquationOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -87,9 +89,10 @@ export function AIChat({ children }: { children: React.ReactNode }) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-2xl bg-background/80 backdrop-blur-sm border-border/50">
         <DialogHeader>
-          <DialogTitle asChild>
-            <AICalcLogo />
-          </DialogTitle>
+          <DialogTitle><AICalcLogo /></DialogTitle>
+          <DialogDescription>
+            Ask a math question and our AI will solve it for you.
+          </DialogDescription>
         </DialogHeader>
         
         <div className="relative">
