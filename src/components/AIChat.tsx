@@ -39,13 +39,6 @@ export function AIChat({ children }: { children: React.ReactNode }) {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
-  
-  useEffect(() => {
-    if (isOpen) {
-      const handle = setTimeout(() => setIsOpen(false), 4000);
-      return () => clearTimeout(handle);
-    }
-  }, [isOpen, prompt, result]);
 
 
   const getCameraPermission = async () => {
