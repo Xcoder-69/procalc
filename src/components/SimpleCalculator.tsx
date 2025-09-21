@@ -28,7 +28,6 @@ export default function SimpleCalculator() {
 
   const calculateResult = () => {
     try {
-      // Use a safer method than eval() for calculations
       const safeEval = new Function('return ' + input.replace(/[^-()\d/*+.]/g, ''));
       const res = safeEval();
       if (isNaN(res) || !isFinite(res)) {
@@ -61,42 +60,50 @@ export default function SimpleCalculator() {
   };
 
 
+  const NumberButton = ({ value }: { value: string }) => (
+    <Button variant="outline" className="text-xl h-16 bg-background/20 border-white/10 text-white hover:bg-white/20" onClick={() => handleButtonClick(value)}>{value}</Button>
+  );
+
+  const OperatorButton = ({ value, display }: { value: string, display: string }) => (
+    <Button variant="secondary" className="text-xl h-16 bg-white/30 text-white hover:bg-white/40" onClick={() => handleButtonClick(value)}>{display}</Button>
+  );
+
   return (
-    <Card className="w-full max-w-xs mx-auto shadow-2xl bg-card/80 backdrop-blur-sm border-border/20">
-      <CardContent className="p-4 space-y-2">
-        <div className="bg-background/50 rounded-md p-4 text-right h-24 flex flex-col justify-end">
-          <div className="h-6 text-sm text-muted-foreground truncate">{history || '0'}</div>
-          <div className="w-full text-right h-12 text-4xl font-bold truncate">
+    <Card className="w-full max-w-md mx-auto shadow-2xl bg-black/30 backdrop-blur-lg border border-white/10 rounded-2xl">
+      <CardContent className="p-4 space-y-4">
+        <div className="bg-transparent rounded-md p-4 text-right h-28 flex flex-col justify-end text-white">
+          <div className="h-8 text-lg text-white/60 truncate">{history || '0'}</div>
+          <div className="w-full text-right h-12 text-5xl font-bold truncate">
             {result !== null ? result : input || '0'}
           </div>
         </div>
         
         <div className="grid grid-cols-4 gap-2">
-           <Button variant="secondary" className="col-span-2 text-lg h-16 text-primary" onClick={clearInput}>AC</Button>
-           <Button variant="secondary" className="text-lg h-16 text-primary" onClick={() => handleButtonClick('/')}>&divide;</Button>
-           <Button variant="secondary" className="text-lg h-16 text-primary" onClick={() => handleButtonClick('*')}>&times;</Button>
+           <Button variant="secondary" className="col-span-2 text-xl h-16 bg-white/30 text-white hover:bg-white/40" onClick={clearInput}>AC</Button>
+           <Button variant="secondary" className="text-xl h-16 bg-white/30 text-white hover:bg-white/40" onClick={deleteLast}>C</Button>
+           <OperatorButton value="/" display="&divide;" />
         </div>
 
         <div className="grid grid-cols-4 gap-2">
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('7')}>7</Button>
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('8')}>8</Button>
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('9')}>9</Button>
-            <Button variant="secondary" className="text-lg h-16 text-primary" onClick={() => handleButtonClick('-')}>-</Button>
+            <NumberButton value="7" />
+            <NumberButton value="8" />
+            <NumberButton value="9" />
+            <OperatorButton value="*" display="&times;" />
             
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('4')}>4</Button>
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('5')}>5</Button>
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('6')}>6</Button>
-            <Button variant="secondary" className="text-lg h-16 text-primary" onClick={() => handleButtonClick('+')}>+</Button>
+            <NumberButton value="4" />
+            <NumberButton value="5" />
+            <NumberButton value="6" />
+            <OperatorButton value="-" display="-" />
 
+            <NumberButton value="1" />
+            <NumberButton value="2" />
+            <NumberButton value="3" />
+            <OperatorButton value="+" display="+" />
         </div>
         <div className="grid grid-cols-4 gap-2">
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('1')}>1</Button>
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('2')}>2</Button>
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('3')}>3</Button>
-            <Button className="row-span-2 text-lg h-auto" onClick={calculateResult}>=</Button>
-
-            <Button variant="outline" className="col-span-2 text-lg h-16" onClick={() => handleButtonClick('0')}>0</Button>
-            <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('.')}>.</Button>
+            <Button variant="outline" className="col-span-2 text-xl h-16 bg-background/20 border-white/10 text-white hover:bg-white/20" onClick={() => handleButtonClick('0')}>0</Button>
+            <NumberButton value="." />
+            <Button className="text-xl h-16 bg-primary hover:bg-primary/90" onClick={calculateResult}>=</Button>
         </div>
       </CardContent>
     </Card>

@@ -17,7 +17,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-20 md:py-32 bg-background border-b relative overflow-hidden">
         <div 
-          className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-full max-w-2xl h-auto aspect-square bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"
+          className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-full max-w-4xl h-auto aspect-square bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-background to-background"
           aria-hidden="true"
         />
         <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center relative">
@@ -28,8 +28,8 @@ export default function Home() {
             <p className="max-w-xl mx-auto md:mx-0 text-lg md:text-xl text-muted-foreground mb-8">
               Your all-in-one suite of professional-grade calculators for finance, health, and mathematics. Accurate, fast, and easy to use.
             </p>
-            <Button asChild size="lg">
-              <Link href="#featured-calculators" className='group'>
+            <Button asChild size="lg" className="group">
+              <Link href="#featured-calculators">
                 Explore Calculators <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
