@@ -17,6 +17,9 @@ export default {
       },
     },
     extend: {
+      boxShadow: {
+        'inner-white-sm': 'inset 0 1px 2px 0 rgb(255 255 255 / 0.15)',
+      },
       fontFamily: {
         body: ['Inter', ...fontFamily.sans],
         headline: ['Inter', ...fontFamily.sans],
