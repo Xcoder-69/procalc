@@ -12,16 +12,27 @@ const safeEval = (expr: string) => {
     // Replace user-friendly symbols with JS equivalents
     let evalExpr = expr.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
     
-    // Handle percentages
+    // Handle percentages by evaluating them in the expression
+    // This regex finds a number followed by '%' and converts it to '*(1/100)'
     evalExpr = evalExpr.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
 
-    // This is still using new Function, which is safer than eval, but caution is advised.
-    // For a production app, a proper math expression parser is recommended.
+    // Using new Function is safer than eval, but for a production app, a dedicated math expression parser is recommended.
     return new Function('return ' + evalExpr)();
   } catch (error) {
+    console.error("Evaluation Error:", error);
     return 'Error';
   }
 };
+
+const factorial = (n: number): number => {
+    if (n < 0 || n % 1 !== 0) return NaN; // Factorial is only for non-negative integers
+    if (n === 0 || n === 1) return 1;
+    let result = 1;
+    for (let i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
 
 export default function ScientificCalculator() {
   const [input, setInput] = useState('');
@@ -48,59 +59,85 @@ export default function ScientificCalculator() {
           setInput(String(res));
         }
         break;
-      case '√':
-        setInput((prev) => `Math.sqrt(${prev})`);
-        break;
-      case 'log':
-        setInput((prev) => `Math.log10(${prev})`);
-        break;
-      case 'ln':
-        setInput((prev) => `Math.log(${prev})`);
-        break;
-      case 'sin':
-        setInput((prev) => `Math.sin(${(isDeg ? 'Math.PI/180*' : '') + prev})`);
-        break;
-      case 'cos':
-        setInput((prev) => `Math.cos(${(isDeg ? 'Math.PI/180*' : '') + prev})`);
-        break;
-      case 'tan':
-        setInput((prev) => `Math.tan(${(isDeg ? 'Math.PI/180*' : '') + prev})`);
-        break;
-      case 'x²':
-        setInput((prev) => `Math.pow(${prev}, 2)`);
-        break;
-      case '^':
-        handleButtonClick('**');
-        break;
-      case 'π':
-        handleButtonClick('Math.PI');
-        break;
-      case 'e':
-        handleButtonClick('Math.E');
-        break;
-      case '!':
-        try {
-          const num = parseInt(input);
-          if (num < 0 || isNaN(num)) {
-            setInput('Error');
-            return;
-          }
-          let result = 1;
-          for (let i = 2; i <= num; i++) {
-            result *= i;
-          }
-          setInput(String(result));
-        } catch {
-          setInput('Error');
-        }
-        break;
       case 'deg':
         setIsDeg(true);
         break;
       case 'rad':
         setIsDeg(false);
         break;
+      case '^':
+        handleButtonClick('**');
+        break;
       default:
+        // For functions that operate on the current input
+        if (input) {
+            try {
+                const currentVal = parseFloat(safeEval(input));
+                if (isNaN(currentVal)) {
+                    setInput('Error');
+                    return;
+                }
+
+                let result;
+                let funcName = func;
+
+                switch (func) {
+                    case '√':
+                        result = Math.sqrt(currentVal);
+                        funcName = 'sqrt';
+                        break;
+                    case 'log':
+                        result = Math.log10(currentVal);
+                        break;
+                    case 'ln':
+                        result = Math.log(currentVal);
+                        break;
+                    case 'sin':
+                        result = Math.sin(isDeg ? currentVal * (Math.PI / 180) : currentVal);
+                        break;
+                    case 'cos':
+                        result = Math.cos(isDeg ? currentVal * (Math.PI / 180) : currentVal);
+                        break;
+                    case 'tan':
+                        result = Math.tan(isDeg ? currentVal * (Math.PI / 180) : currentVal);
+                        break;
+                    case 'x²':
+                        result = Math.pow(currentVal, 2);
+                        funcName = 'sqr';
+                        break;
+                    case '!':
+                        result = factorial(currentVal);
+                        funcName = 'fact';
+                        break;
+                    case 'π':
+                        result = Math.PI;
+                        break;
+                    case 'e':
+                        result = Math.E;
+                        break;
+                    default:
+                        handleButtonClick(func);
+                        return;
+                }
+
+                if (result !== undefined && !isNaN(result)) {
+                  if (func === 'π' || func === 'e') {
+                     setInput(String(result));
+                     setHistory(func);
+                  } else {
+                    setHistory(`${funcName}(${input})`);
+                    setInput(String(result));
+                  }
+                } else {
+                    setInput('Error');
+                }
+            } catch (e) {
+                setInput('Error');
+            }
+        } else if (func === 'π' || func === 'e') {
+            // Handle PI or E when input is empty
+            handleButtonClick(`Math.${func.toUpperCase()}`);
+        }
         break;
     }
   };
