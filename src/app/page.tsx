@@ -49,7 +49,7 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredCalculators.map((calc, index) => (
-              <Card key={calc.slug} className="flex flex-col hover:shadow-lg transition-shadow duration-300 overflow-hidden group border-2 border-transparent hover:border-primary/20">
+              <Card key={calc.slug} className="group/card flex flex-col hover:shadow-primary/20 hover:shadow-lg transition-all duration-300 overflow-hidden border-2 border-transparent hover:-translate-y-1">
                 <CardHeader className='p-0'>
                    <div className="overflow-hidden">
                     <Image
@@ -57,7 +57,7 @@ export default function Home() {
                         alt={calc.title}
                         width={calc.image.width}
                         height={calc.image.height}
-                        className="w-full h-auto aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-auto aspect-[4/3] object-cover group-hover/card:scale-105 transition-transform duration-300"
                         data-ai-hint={calc.image.hint}
                         priority={index === 0}
                     />
@@ -68,9 +68,9 @@ export default function Home() {
                   </div>
                 </CardHeader>
                 <CardContent className="mt-auto p-4">
-                  <Button asChild className="w-full" variant="secondary">
+                  <Button asChild className="w-full group/button" variant="outline">
                     <Link href={`/calculator/${calc.slug}`}>
-                      Open Calculator
+                      <span className='group-hover/button:text-primary-foreground transition-colors duration-300'>Open Calculator</span>
                     </Link>
                   </Button>
                 </CardContent>
