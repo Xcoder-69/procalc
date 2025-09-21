@@ -200,7 +200,7 @@ export default function Header() {
                 <SheetClose asChild key={link.href}>
                   <Link
                     href={link.href}
-                    className="flex items-center px-2 py-2 text-foreground"
+                    className="flex items-center rounded-md px-4 py-2 text-foreground transition-all hover:bg-muted hover:shadow-md"
                   >
                     {link.label === 'Home' && <HomeIcon className="mr-2 h-4 w-4" />}
                     {link.label}
@@ -210,12 +210,12 @@ export default function Header() {
             </div>
             <div className="my-4 h-px w-full bg-border" />
             <div className="flex flex-col space-y-2">
-                <p className="font-semibold px-2">Categories</p>
+                <p className="font-semibold px-4">Categories</p>
                 {categories.map((category) => (
                   <SheetClose asChild key={category.slug}>
                     <Link
                         href={`/categories#${category.slug}`}
-                        className="flex items-center px-2 py-2 text-muted-foreground rounded-md hover:bg-muted/50 hover:text-foreground transition-colors"
+                        className="flex items-center px-4 py-2 text-muted-foreground rounded-md transition-all hover:bg-muted hover:text-foreground hover:shadow-md"
                     >
                         <Calculator className="mr-2 h-4 w-4" />
                         {category.name}
