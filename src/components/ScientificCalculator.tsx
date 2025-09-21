@@ -230,8 +230,8 @@ export default function ScientificCalculator() {
           <NumButton value="7" onClick={handleButtonClick} />
           <NumButton value="8" onClick={handleButtonClick} />
           <NumButton value="9" onClick={handleButtonClick} />
-          <CalcButton value="C" onClick={handleFunction} className="!bg-amber-500/20 !text-amber-500 !border-amber-500/30 hover:!bg-amber-500/30 hover:shadow-amber-500/40" />
-          <CalcButton value="AC" onClick={handleFunction} className="!bg-amber-500/30 !text-amber-500 !border-amber-500/40 hover:!bg-amber-500/40 hover:shadow-amber-500/50" />
+          <CalcButton value="C" onClick={handleFunction} className="!bg-red-400/10 !text-red-500 dark:!text-red-400 !border-red-500/20 hover:!bg-red-400/20 hover:shadow-red-400/30" />
+          <CalcButton value="AC" onClick={handleFunction} className="!bg-red-400/20 !text-red-500 dark:!text-red-400 !border-red-500/30 hover:!bg-red-400/30 hover:shadow-red-400/40" />
           
           <NumButton value="4" onClick={handleButtonClick} />
           <NumButton value="5" onClick={handleButtonClick} />
