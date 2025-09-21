@@ -10,13 +10,15 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
 const SolveEquationInputSchema = z.object({
-  equation: z.string().describe('The mathematical equation or problem to solve.'),
+  question: z.string().describe('The mathematical equation or problem to solve.'),
 });
 export type SolveEquationInput = z.infer<typeof SolveEquationInputSchema>;
 
 const SolveEquationOutputSchema = z.object({
-  solution: z.string().describe('The step-by-step solution to the equation.'),
-  answer: z.string().describe('The final answer.'),
+  isMathProblem: z.boolean().describe('Whether the question is math-related.'),
+  reasoning: z.string().describe('The reasoning for why the question is or is not a math problem. If it is not, explain why.'),
+  solution: z.string().describe('The step-by-step solution to the equation. Provide this only if it is a math problem.'),
+  answer: z.string().describe('The final answer. Provide this only if it is a math problem.'),
 });
 export type SolveEquationOutput = z.infer<typeof SolveEquationOutputSchema>;
 
@@ -28,9 +30,14 @@ const solveEquationPrompt = ai.definePrompt({
   name: 'solveEquationPrompt',
   input: { schema: SolveEquationInputSchema },
   output: { schema: SolveEquationOutputSchema },
-  prompt: `You are a world-class mathematician. Solve the following equation, providing a step-by-step solution and the final answer.
+  prompt: `You are a world-class AI mathematician. Your task is to analyze and solve math-related questions.
 
-Equation: {{{equation}}}
+First, determine if the user's question is a mathematical problem. A math problem can be an equation, a word problem, or any question requiring mathematical reasoning.
+
+- If it IS a math problem, set 'isMathProblem' to true. Then, provide a detailed, step-by-step 'solution' and a clear 'final answer'. The reasoning should briefly state that it is a math problem.
+- If it IS NOT a math problem, set 'isMathProblem' to false. In the 'reasoning' field, explain that you are an AI specializing in mathematics and cannot answer non-math questions. Do not provide a solution or answer.
+
+User Question: {{{question}}}
 
 Your response must be in the structured format defined.`,
 });

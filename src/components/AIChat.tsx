@@ -5,7 +5,6 @@ import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -15,10 +14,19 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { solveEquation } from "@/ai/flows/solve-equation";
 import type { SolveEquationInput, SolveEquationOutput } from "@/ai/flows/solve-equation";
-import { Loader2, Bot, Sparkles } from "lucide-react";
+import { Loader2, Sparkles, BrainCircuit, Mic, Paperclip, Camera, AlertTriangle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Separator } from './ui/separator';
-import { Logo } from './icons/Logo';
+import { useToast } from '@/hooks/use-toast';
+
+function AICalcLogo() {
+    return (
+        <div className="flex items-center gap-2 text-2xl font-semibold">
+            <BrainCircuit className="h-7 w-7 text-primary" />
+            <span className="font-headline">AI Calc</span>
+        </div>
+    )
+}
 
 export function AIChat({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +34,7 @@ export function AIChat({ children }: { children: React.ReactNode }) {
   const [result, setResult] = useState<SolveEquationOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const handleSubmit = async () => {
     if (!prompt.trim()) return;
@@ -35,9 +44,18 @@ export function AIChat({ children }: { children: React.ReactNode }) {
     setResult(null);
 
     try {
-      const input: SolveEquationInput = { equation: prompt };
+      const input: SolveEquationInput = { question: prompt };
       const output = await solveEquation(input);
       setResult(output);
+      
+      if (!output.isMathProblem) {
+         toast({
+          variant: "destructive",
+          title: "Not a Math Problem",
+          description: output.reasoning,
+        });
+      }
+
     } catch (e) {
       console.error(e);
       setError("Sorry, I couldn't solve that. Please try rephrasing your question.");
@@ -57,37 +75,48 @@ export function AIChat({ children }: { children: React.ReactNode }) {
     setIsOpen(open);
   }
 
+  const handleToolClick = (toolName: string) => {
+    toast({
+      title: "Feature Coming Soon!",
+      description: `The ${toolName} functionality is under development and will be available soon.`,
+    })
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[625px] bg-background/80 backdrop-blur-sm">
+      <DialogContent className="sm:max-w-2xl bg-background/80 backdrop-blur-sm border-border/50">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-2xl">
-            <Logo className='h-7 w-7 text-primary' /> Calc
+          <DialogTitle asChild>
+            <AICalcLogo />
           </DialogTitle>
-          <DialogDescription>
-            Your AI-powered problem solver. Ask a math equation, and Calc will provide a step-by-step solution.
-          </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        
+        <div className="relative">
           <Textarea
-            placeholder="e.g., 'Solve for x: 2x + 5 = 15' or 'What is the integral of x^2?'"
+            placeholder="e.g., 'Solve for x: 2x + 5 = 15' or 'If a car travels at 60 mph, how long does it take to travel 180 miles?'"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            rows={4}
-            className='bg-background'
+            rows={5}
+            className='bg-muted/30 pr-12'
           />
-          <Button onClick={handleSubmit} disabled={isLoading}>
+          <div className="absolute bottom-2 right-2 flex flex-col gap-2">
+            <Button size="icon" variant="ghost" onClick={() => handleToolClick('Microphone')} disabled><Mic className="h-5 w-5" /></Button>
+            <Button size="icon" variant="ghost" onClick={() => handleToolClick('File Upload')} disabled><Paperclip className="h-5 w-5" /></Button>
+            <Button size="icon" variant="ghost" onClick={() => handleToolClick('Camera')} disabled><Camera className="h-5 w-5" /></Button>
+          </div>
+        </div>
+
+        <Button onClick={handleSubmit} disabled={isLoading} className="w-full">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Solving...
               </>
             ) : (
-              'Solve Equation'
+              'Solve with AI'
             )}
           </Button>
-        </div>
 
         {error && (
           <Alert variant="destructive">
@@ -96,8 +125,8 @@ export function AIChat({ children }: { children: React.ReactNode }) {
           </Alert>
         )}
 
-        {result && (
-          <div>
+        {result && result.isMathProblem && (
+          <div className='max-h-[50vh] overflow-y-auto pr-4'>
             <h3 className="font-semibold text-lg mb-2 flex items-center gap-2"><Sparkles className="h-5 w-5 text-yellow-400"/> Solution</h3>
             <div className="p-4 bg-muted/50 rounded-lg border space-y-4">
                 <div>

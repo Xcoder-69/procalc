@@ -8,7 +8,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/components/AuthProvider';
 import { AIChat } from '@/components/AIChat';
 import { Button } from '@/components/ui/button';
-import { Bot } from 'lucide-react';
+import { BrainCircuit } from 'lucide-react';
 import { Inter } from 'next/font/google';
 
 
@@ -76,10 +76,10 @@ export default function RootLayout({
             </div>
             <AIChat>
               <Button
-                className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg hover:scale-110 active:scale-100 transition-transform duration-200"
+                className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg hover:scale-110 active:scale-100 transition-transform duration-200 bg-primary hover:bg-primary/90"
                 aria-label="Open AI Chat"
               >
-                <Bot className="h-8 w-8" />
+                <BrainCircuit className="h-8 w-8" />
               </Button>
             </AIChat>
             <Toaster />
