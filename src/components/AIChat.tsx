@@ -39,13 +39,6 @@ export function AIChat({ children }: { children: React.ReactNode }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
 
-
-  const handleCameraClick = () => {
-    // Temporarily disable camera functionality and show toast
-    handleToolClick('Camera');
-  };
-
-
   const handleSubmit = async () => {
     if (!prompt.trim()) return;
 
@@ -122,7 +115,7 @@ export function AIChat({ children }: { children: React.ReactNode }) {
           <div className="absolute bottom-2 right-2 flex flex-col gap-2">
             <Button size="icon" variant="ghost" onClick={() => handleToolClick('Microphone')}><Mic className="h-5 w-5" /></Button>
             <Button size="icon" variant="ghost" onClick={() => handleToolClick('File Upload')}><Paperclip className="h-5 w-5" /></Button>
-            <Button size="icon" variant={isCameraOpen ? 'secondary' : 'ghost'} onClick={handleCameraClick}><Camera className="h-5 w-5" /></Button>
+            <Button size="icon" variant={isCameraOpen ? 'secondary' : 'ghost'} onClick={() => handleToolClick('Camera')}><Camera className="h-5 w-5" /></Button>
           </div>
         </div>
 
