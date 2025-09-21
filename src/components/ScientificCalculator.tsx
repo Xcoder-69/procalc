@@ -142,7 +142,7 @@ export default function ScientificCalculator() {
         variant="ghost"
         className={cn(
             baseButtonClass, 
-            "bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-lg", 
+            "bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-[0_4px_16px_hsl(var(--primary)/0.2)]", 
             className
         )}
         onClick={() => onClick(value)}
@@ -183,8 +183,8 @@ export default function ScientificCalculator() {
                 <CalcButton value="^" display="xʸ" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
                 
                 <CalcButton value="√" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60" />
-                <CalcButton value="C" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60" />
+                <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60 hover:shadow-[0_4px_16px_hsl(var(--destructive)/0.3)]" />
+                <CalcButton value="C" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60 hover:shadow-[0_4px_16px_hsl(var(--destructive)/0.3)]" />
                 <CalcButton value="%" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
                 <CalcButton value="÷" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
 
@@ -207,19 +207,19 @@ export default function ScientificCalculator() {
                 <CalcButton value="+" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
 
                 <div className="col-span-2">
-                    <Button variant='ghost' className={cn(baseButtonClass, 'w-full bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-lg')} onClick={() => handleButtonClick('0')}>0</Button>
+                    <Button variant='ghost' className={cn(baseButtonClass, 'w-full bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-[0_4px_16px_hsl(var(--primary)/0.2)]')} onClick={() => handleButtonClick('0')}>0</Button>
                 </div>
                 <CalcButton value="." onClick={handleButtonClick} />
                 <div className="col-span-2">
-                    <Button variant='default' className={cn(baseButtonClass, 'w-full text-2xl !bg-primary hover:!bg-primary/90 text-primary-foreground border-primary/80')} onClick={() => handleFunction('=')}>=</Button>
+                    <Button variant='default' className={cn(baseButtonClass, 'w-full text-2xl !bg-primary hover:!bg-primary/90 text-primary-foreground border-primary/80 hover:shadow-lg hover:shadow-primary/40 active:shadow-none')} onClick={() => handleFunction('=')}>=</Button>
                 </div>
             </div>
           </TabsContent>
 
           <TabsContent value="simple" className='mt-4'>
              <div className="grid grid-cols-4 gap-2">
-              <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60" />
-              <CalcButton value="C" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60" />
+              <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60 hover:shadow-[0_4px_16px_hsl(var(--destructive)/0.3)]" />
+              <CalcButton value="C" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60 hover:shadow-[0_4px_16px_hsl(var(--destructive)/0.3)]" />
               <CalcButton value="%" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
               <CalcButton value="÷" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
               
@@ -239,10 +239,10 @@ export default function ScientificCalculator() {
               <CalcButton value="+" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
 
               <div className="col-span-2">
-                <Button variant='ghost' onClick={() => handleButtonClick('0')} className={cn(baseButtonClass, 'w-full bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-lg')}>0</Button>
+                <Button variant='ghost' onClick={() => handleButtonClick('0')} className={cn(baseButtonClass, 'w-full bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-[0_4px_16px_hsl(var(--primary)/0.2)]')}>0</Button>
               </div>
               <CalcButton value="." onClick={handleButtonClick} />
-              <Button variant='default' onClick={() => handleFunction('=')} className={cn(baseButtonClass, "text-2xl !bg-primary hover:!bg-primary/90 text-primary-foreground border-primary/80")}> =</Button>
+              <Button variant='default' onClick={() => handleFunction('=')} className={cn(baseButtonClass, "text-2xl !bg-primary hover:!bg-primary/90 text-primary-foreground border-primary/80 hover:shadow-lg hover:shadow-primary/40 active:shadow-none")}> =</Button>
             </div>
           </TabsContent>
         </Tabs>
@@ -250,3 +250,5 @@ export default function ScientificCalculator() {
     </Card>
   );
 }
+
+    
