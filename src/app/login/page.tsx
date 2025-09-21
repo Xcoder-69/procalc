@@ -27,9 +27,8 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [githubLoading, setGithubLoading] = useState(false);
-  const { signIn, signInWithGoogle, signInWithGithub } = useAuth();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const { signIn, signInWithGoogle, signInWithGithub, user } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -52,15 +51,13 @@ export default function LoginPage() {
   };
 
   const handleSocialLogin = async (provider: 'google' | 'github') => {
+    setIsRedirecting(true);
     try {
       if (provider === 'google') {
-        setGoogleLoading(true);
         await signInWithGoogle();
       } else {
-        setGithubLoading(true);
         await signInWithGithub();
       }
-      router.push('/');
     } catch (error: any) {
       console.error(error);
       toast({
@@ -68,9 +65,13 @@ export default function LoginPage() {
         title: "Sign-in Failed",
         description: error.message || 'Could not sign you in. Please try again.',
       });
-      setGoogleLoading(false);
-      setGithubLoading(false);
+      setIsRedirecting(false);
     }
+  }
+  
+  if (user) {
+    router.replace('/');
+    return null;
   }
 
   return (
@@ -82,12 +83,12 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Button variant="outline" onClick={() => handleSocialLogin('google')} disabled={googleLoading || githubLoading}>
-              {googleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <GoogleIcon />}
+            <Button variant="outline" onClick={() => handleSocialLogin('google')} disabled={isRedirecting || loading}>
+              {isRedirecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <GoogleIcon />}
               Google
             </Button>
-            <Button variant="outline" onClick={() => handleSocialLogin('github')} disabled={googleLoading || githubLoading}>
-              {githubLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Github />}
+            <Button variant="outline" onClick={() => handleSocialLogin('github')} disabled={isRedirecting || loading}>
+              {isRedirecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Github />}
               GitHub
             </Button>
           </div>
@@ -108,6 +109,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={isRedirecting}
               />
             </div>
             <div className="space-y-2">
@@ -119,9 +121,10 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                disabled={isRedirecting}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full" disabled={loading || isRedirecting}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Login
             </Button>

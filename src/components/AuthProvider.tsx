@@ -10,10 +10,12 @@ import {
   User,
   GoogleAuthProvider,
   GithubAuthProvider,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { Skeleton } from './ui/skeleton';
+import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
@@ -30,14 +32,34 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
     });
+
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          // User has been redirected back from the provider.
+        }
+      })
+      .catch((error) => {
+        console.error("Redirect Error:", error);
+        toast({
+          variant: "destructive",
+          title: "Sign-in Failed",
+          description: error.message || 'Could not complete sign-in. Please try again.',
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
     return () => unsubscribe();
-  }, []);
+  }, [toast]);
 
   const signUp = (email: string, pass: string) => {
     return createUserWithEmailAndPassword(auth, email, pass);
@@ -53,12 +75,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+    return signInWithRedirect(auth, provider);
   };
 
   const signInWithGithub = () => {
     const provider = new GithubAuthProvider();
-    return signInWithPopup(auth, provider);
+    return signInWithRedirect(auth, provider);
   };
   
   const value: AuthContextType = {

@@ -28,9 +28,8 @@ export default function SignUpPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [githubLoading, setGithubLoading] = useState(false);
-  const { signUp, signInWithGoogle, signInWithGithub } = useAuth();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const { signUp, signInWithGoogle, signInWithGithub, user } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -61,15 +60,13 @@ export default function SignUpPage() {
   };
 
   const handleSocialLogin = async (provider: 'google' | 'github') => {
+    setIsRedirecting(true);
     try {
       if (provider === 'google') {
-        setGoogleLoading(true);
         await signInWithGoogle();
       } else {
-        setGithubLoading(true);
         await signInWithGithub();
       }
-      router.push('/');
     } catch (error: any) {
       console.error(error);
       toast({
@@ -77,10 +74,14 @@ export default function SignUpPage() {
         title: "Sign-up Failed",
         description: error.message || 'Could not sign you up. Please try again.',
       });
-      setGoogleLoading(false);
-      setGithubLoading(false);
+      setIsRedirecting(false);
     }
   };
+  
+  if (user) {
+    router.replace('/');
+    return null;
+  }
 
   return (
     <div className="container flex min-h-[calc(100vh-14rem)] items-center justify-center py-12">
@@ -91,12 +92,12 @@ export default function SignUpPage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <Button variant="outline" onClick={() => handleSocialLogin('google')} disabled={googleLoading || githubLoading}>
-              {googleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <GoogleIcon />}
+            <Button variant="outline" onClick={() => handleSocialLogin('google')} disabled={isRedirecting || loading}>
+              {isRedirecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <GoogleIcon />}
               Google
             </Button>
-            <Button variant="outline" onClick={() => handleSocialLogin('github')} disabled={googleLoading || githubLoading}>
-              {githubLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Github />}
+            <Button variant="outline" onClick={() => handleSocialLogin('github')} disabled={isRedirecting || loading}>
+              {isRedirecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Github />}
               GitHub
             </Button>
           </div>
@@ -117,6 +118,7 @@ export default function SignUpPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={isRedirecting}
               />
             </div>
             <div className="space-y-2">
@@ -128,6 +130,7 @@ export default function SignUpPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                disabled={isRedirecting}
               />
             </div>
             <div className="space-y-2">
@@ -139,9 +142,10 @@ export default function SignUpPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                disabled={isRedirecting}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full" disabled={loading || isRedirecting}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Sign Up
             </Button>
