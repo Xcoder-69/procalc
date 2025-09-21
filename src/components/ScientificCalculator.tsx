@@ -105,7 +105,7 @@ export default function ScientificCalculator() {
     }
   };
   
-  const baseButtonClass = "text-xl h-16 w-full rounded-2xl transition-all duration-200 shadow-inner-white-sm border border-white/10 bg-white/10 backdrop-blur-sm hover:-translate-y-1 hover:shadow-lg";
+  const baseButtonClass = "text-xl h-16 w-full rounded-2xl transition-all duration-200 shadow-inner-white-sm border border-transparent bg-white/10 dark:bg-white/10 backdrop-blur-sm hover:-translate-y-1 hover:shadow-lg";
 
   const CalcButton = ({ value, display, className, onClick }: { value: string, display?: string, className?: string, onClick: (val: string) => void }) => (
     <Button
@@ -121,63 +121,63 @@ export default function ScientificCalculator() {
     <Card className="w-full max-w-lg mx-auto shadow-2xl bg-card/50 backdrop-blur-xl border-white/10 rounded-2xl overflow-hidden">
       <CardContent className="p-4 space-y-4">
         {/* Display */}
-        <div className="bg-transparent rounded-md px-4 py-2 text-right h-32 flex flex-col justify-end text-white">
-          <div className="h-8 text-2xl text-white/50 truncate text-right">{history || '0'}</div>
+        <div className="bg-transparent rounded-md px-4 py-2 text-right h-32 flex flex-col justify-end text-foreground">
+          <div className="h-8 text-2xl text-foreground/50 truncate text-right">{history || '0'}</div>
           <div className="w-full text-right h-16 text-6xl font-bold truncate">
             {input || '0'}
           </div>
         </div>
         
         <Tabs defaultValue="simple" className='w-full'>
-          <TabsList className="grid w-full grid-cols-2 bg-black/20 border-white/10 h-14">
-            <TabsTrigger value="scientific" className='text-base data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/40'>Scientific</TabsTrigger>
-            <TabsTrigger value="simple" className='text-base data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/40'>Simple</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 bg-foreground/10 dark:bg-black/20 border-white/10 h-14">
+            <TabsTrigger value="scientific" className='text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/40'>Scientific</TabsTrigger>
+            <TabsTrigger value="simple" className='text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/40'>Simple</TabsTrigger>
           </TabsList>
           
           <TabsContent value="scientific" className='mt-4'>
             <div className="grid grid-cols-5 gap-2">
-                <CalcButton value={isDeg ? 'rad' : 'deg'} display={isDeg ? 'RAD' : 'DEG'} onClick={() => setIsDeg(!isDeg)} className="text-sm text-primary/80 hover:shadow-purple-500/30" />
-                <CalcButton value="sin" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value="cos" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value="tan" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value="x²" display="x²" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
+                <CalcButton value={isDeg ? 'rad' : 'deg'} display={isDeg ? 'RAD' : 'DEG'} onClick={() => setIsDeg(!isDeg)} className="text-sm text-primary/80 hover:shadow-primary/30" />
+                <CalcButton value="sin" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value="cos" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value="tan" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value="x²" display="x²" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
 
-                <CalcButton value="log" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value="ln" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value="(" onClick={handleButtonClick} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value=")" onClick={handleButtonClick} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value="^" display="xʸ" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
+                <CalcButton value="log" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value="ln" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value="(" onClick={handleButtonClick} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value=")" onClick={handleButtonClick} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value="^" display="xʸ" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
                 
-                <CalcButton value="√" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
+                <CalcButton value="√" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
                 <CalcButton value="AC" onClick={handleFunction} className="bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:shadow-red-500/30" />
                 <CalcButton value="C" onClick={handleFunction} className="bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:shadow-red-500/30" />
-                <CalcButton value="%" onClick={handleButtonClick} className="text-primary hover:shadow-purple-500/30"/>
-                <CalcButton value="÷" onClick={handleButtonClick} className="text-primary hover:shadow-purple-500/30"/>
+                <CalcButton value="%" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
+                <CalcButton value="÷" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
 
-                <CalcButton value="π" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value="7" onClick={handleButtonClick} className='hover:shadow-white/30' />
-                <CalcButton value="8" onClick={handleButtonClick} className='hover:shadow-white/30' />
-                <CalcButton value="9" onClick={handleButtonClick} className='hover:shadow-white/30' />
-                <CalcButton value="×" onClick={handleButtonClick} className="text-primary hover:shadow-purple-500/30"/>
+                <CalcButton value="π" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value="7" onClick={handleButtonClick} className='hover:shadow-foreground/30' />
+                <CalcButton value="8" onClick={handleButtonClick} className='hover:shadow-foreground/30' />
+                <CalcButton value="9" onClick={handleButtonClick} className='hover:shadow-foreground/30' />
+                <CalcButton value="×" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
 
-                <CalcButton value="e" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value="4" onClick={handleButtonClick} className='hover:shadow-white/30' />
-                <CalcButton value="5" onClick={handleButtonClick} className='hover:shadow-white/30' />
-                <CalcButton value="6" onClick={handleButtonClick} className='hover:shadow-white/30' />
-                <CalcButton value="−" onClick={handleButtonClick} className="text-primary hover:shadow-purple-500/30"/>
+                <CalcButton value="e" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value="4" onClick={handleButtonClick} className='hover:shadow-foreground/30' />
+                <CalcButton value="5" onClick={handleButtonClick} className='hover:shadow-foreground/30' />
+                <CalcButton value="6" onClick={handleButtonClick} className='hover:shadow-foreground/30' />
+                <CalcButton value="−" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
 
-                <CalcButton value="!" onClick={handleFunction} className='text-primary/80 hover:shadow-purple-500/30'/>
-                <CalcButton value="1" onClick={handleButtonClick} className='hover:shadow-white/30' />
-                <CalcButton value="2" onClick={handleButtonClick} className='hover:shadow-white/30' />
-                <CalcButton value="3" onClick={handleButtonClick} className='hover:shadow-white/30' />
-                <CalcButton value="+" onClick={handleButtonClick} className="text-primary hover:shadow-purple-500/30"/>
+                <CalcButton value="!" onClick={handleFunction} className='text-primary/80 hover:shadow-primary/30'/>
+                <CalcButton value="1" onClick={handleButtonClick} className='hover:shadow-foreground/30' />
+                <CalcButton value="2" onClick={handleButtonClick} className='hover:shadow-foreground/30' />
+                <CalcButton value="3" onClick={handleButtonClick} className='hover:shadow-foreground/30' />
+                <CalcButton value="+" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
 
                 <div className="col-span-2">
-                    <Button variant='ghost' className={cn(baseButtonClass, 'w-full hover:shadow-white/30')} onClick={() => handleButtonClick('0')}>0</Button>
+                    <Button variant='ghost' className={cn(baseButtonClass, 'w-full hover:shadow-foreground/30')} onClick={() => handleButtonClick('0')}>0</Button>
                 </div>
-                <CalcButton value="." onClick={handleButtonClick} className='hover:shadow-white/30'/>
+                <CalcButton value="." onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
                 <div className="col-span-2">
-                    <Button variant='default' className={cn(baseButtonClass, 'w-full text-2xl bg-purple-600 hover:bg-purple-700 hover:shadow-purple-500/40 text-white')} onClick={() => handleFunction('=')}>=</Button>
+                    <Button variant='default' className={cn(baseButtonClass, 'w-full text-2xl bg-primary hover:bg-primary/90 hover:shadow-primary/40 text-primary-foreground')} onClick={() => handleFunction('=')}>=</Button>
                 </div>
             </div>
           </TabsContent>
@@ -188,28 +188,28 @@ export default function ScientificCalculator() {
                 <Button variant='ghost' onClick={() => handleFunction('AC')} className={cn(baseButtonClass, "w-full bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:shadow-red-500/30")}>AC</Button>
               </div>
               <CalcButton value="C" onClick={handleFunction} className="bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:shadow-red-500/30"/>
-              <CalcButton value="÷" onClick={handleButtonClick} className="text-primary hover:shadow-purple-500/30"/>
+              <CalcButton value="÷" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
               
-              <CalcButton value="7" onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <CalcButton value="8" onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <CalcButton value="9" onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <CalcButton value="×" onClick={handleButtonClick} className="text-primary hover:shadow-purple-500/30"/>
+              <CalcButton value="7" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <CalcButton value="8" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <CalcButton value="9" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <CalcButton value="×" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
               
-              <CalcButton value="4" onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <CalcButton value="5" onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <CalcButton value="6" onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <CalcButton value="−" onClick={handleButtonClick} className="text-primary hover:shadow-purple-500/30"/>
+              <CalcButton value="4" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <CalcButton value="5" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <CalcButton value="6" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <CalcButton value="−" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
               
-              <CalcButton value="1" onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <CalcButton value="2" onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <CalcButton value="3" onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <CalcButton value="+" onClick={handleButtonClick} className="text-primary hover:shadow-purple-500/30"/>
+              <CalcButton value="1" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <CalcButton value="2" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <CalcButton value="3" onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <CalcButton value="+" onClick={handleButtonClick} className="text-primary hover:shadow-primary/30"/>
 
               <div className="col-span-2">
-                <Button variant='ghost' onClick={() => handleButtonClick('0')} className={cn(baseButtonClass, 'w-full hover:shadow-white/30')}>0</Button>
+                <Button variant='ghost' onClick={() => handleButtonClick('0')} className={cn(baseButtonClass, 'w-full hover:shadow-foreground/30')}>0</Button>
               </div>
-              <CalcButton value="." onClick={handleButtonClick} className='hover:shadow-white/30'/>
-              <Button variant='default' onClick={() => handleFunction('=')} className={cn(baseButtonClass, "text-2xl bg-purple-600 hover:bg-purple-700 hover:shadow-purple-500/40 text-white")}> =</Button>
+              <CalcButton value="." onClick={handleButtonClick} className='hover:shadow-foreground/30'/>
+              <Button variant='default' onClick={() => handleFunction('=')} className={cn(baseButtonClass, "text-2xl bg-primary hover:bg-primary/90 hover:shadow-primary/40 text-primary-foreground")}> =</Button>
             </div>
           </TabsContent>
         </Tabs>
