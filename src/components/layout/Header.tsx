@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, User, Calculator, Sun, Moon, Monitor, History } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { Menu, User, Calculator, Sun, Moon, Monitor, History, HomeIcon } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { categories } from '@/lib/calculators-data';
 import { useTheme } from 'next-themes';
@@ -11,6 +11,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useAuth } from '@/components/AuthProvider';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import SearchBar from './SearchBar';
+import { useHistory } from '../HistoryProvider';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { ScrollArea } from '../ui/scroll-area';
+import { Separator } from '../ui/separator';
 
 function AuthArea() {
   const { user, signOut } = useAuth();
@@ -38,7 +42,7 @@ function AuthArea() {
           <DropdownMenuItem asChild>
             <Link href="/history">
               <History className="mr-2 h-4 w-4" />
-              Calculation History
+              Saved Calculations
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -91,11 +95,60 @@ function ThemeSwitcher() {
   );
 }
 
+function SessionHistory() {
+    const { history, clearHistory } = useHistory();
+
+    return (
+        <Popover>
+            <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label="Session History" disabled={history.length === 0}>
+                    <History className="h-5 w-5" />
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80" align="end">
+                <div className="flex justify-between items-center mb-4">
+                    <h4 className="font-medium text-sm">Session History</h4>
+                    <Button variant="link" size="sm" onClick={clearHistory} disabled={history.length === 0} className="p-0 h-auto">Clear</Button>
+                </div>
+                {history.length > 0 ? (
+                    <ScrollArea className="h-[300px]">
+                        <div className="space-y-4">
+                            {history.map((item, index) => (
+                                <div key={index}>
+                                    <p className="font-semibold text-sm">{item.calculatorTitle}</p>
+                                    <div className="text-xs text-muted-foreground mt-2 space-y-1">
+                                        <div>
+                                            <p className='font-medium'>Inputs:</p>
+                                            {Object.entries(item.inputs).map(([key, value]) => (
+                                                <p key={key}>{key}: {String(value)}</p>
+                                            ))}
+                                        </div>
+                                        <div>
+                                            <p className='font-medium'>Results:</p>
+                                            {Object.entries(item.results).map(([key, value]) => (
+                                                <p key={key}>{key}: {typeof value === 'number' ? value.toFixed(2) : String(value)}</p>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    {index < history.length -1 && <Separator className="mt-4" />}
+                                </div>
+                            ))}
+                        </div>
+                    </ScrollArea>
+                ) : (
+                    <p className="text-sm text-muted-foreground text-center py-4">No calculations in this session yet.</p>
+                )}
+            </PopoverContent>
+        </Popover>
+    )
+}
+
 
 export default function Header() {
   const { user } = useAuth();
 
   const navLinks = [
+    { href: '/', label: 'Home'},
     { href: '/#featured-calculators', label: 'Featured' },
     { href: '/#all-categories', label: 'Categories' },
     { href: '/about', label: 'About' },
@@ -113,7 +166,7 @@ export default function Header() {
             </span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            {navLinks.map(link => (
+            {navLinks.slice(1).map(link => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -144,27 +197,30 @@ export default function Header() {
             <div className="my-4 h-px w-full bg-border" />
             <div className="flex flex-col space-y-2">
               {navLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="px-2 py-1 text-foreground"
-                >
-                  {link.label}
-                </Link>
+                <SheetClose asChild key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="flex items-center px-2 py-2 text-foreground"
+                  >
+                    {link.label === 'Home' && <HomeIcon className="mr-2 h-4 w-4" />}
+                    {link.label}
+                  </Link>
+                </SheetClose>
               ))}
             </div>
             <div className="my-4 h-px w-full bg-border" />
             <div className="flex flex-col space-y-2">
                 <p className="font-semibold px-2">Categories</p>
                 {categories.map((category) => (
+                  <SheetClose asChild key={category.slug}>
                     <Link
-                        key={category.slug}
                         href={`/calculator/${category.slug}`}
                         className="flex items-center px-2 py-1 text-muted-foreground"
                     >
                         <Calculator className="mr-2 h-4 w-4" />
                         {category.name}
                     </Link>
+                  </SheetClose>
                 ))}
             </div>
           </SheetContent>
@@ -182,6 +238,7 @@ export default function Header() {
                 </Link>
               </Button>
             )}
+            {!user && <SessionHistory />}
             <ThemeSwitcher />
             <AuthArea />
           </nav>

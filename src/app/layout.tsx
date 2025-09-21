@@ -10,6 +10,7 @@ import { AIChat } from '@/components/AIChat';
 import { Button } from '@/components/ui/button';
 import { BrainCircuit } from 'lucide-react';
 import { Inter, JetBrains_Mono } from 'next/font/google';
+import { HistoryProvider } from '@/components/HistoryProvider';
 
 
 const inter = Inter({
@@ -83,20 +84,22 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            <div className="relative flex min-h-dvh flex-col bg-background">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-            <AIChat>
-              <Button
-                className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg animate-pulse-glow-once bg-primary hover:bg-primary/90"
-                aria-label="Open AI Chat"
-              >
-                <BrainCircuit className="h-8 w-8" />
-              </Button>
-            </AIChat>
-            <Toaster />
+            <HistoryProvider>
+              <div className="relative flex min-h-dvh flex-col bg-background">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+              <AIChat>
+                <Button
+                  className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg animate-pulse-glow-once bg-primary hover:bg-primary/90"
+                  aria-label="Open AI Chat"
+                >
+                  <BrainCircuit className="h-8 w-8" />
+                </Button>
+              </AIChat>
+              <Toaster />
+            </HistoryProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

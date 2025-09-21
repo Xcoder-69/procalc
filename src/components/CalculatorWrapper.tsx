@@ -19,6 +19,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 import ScientificCalculator from './ScientificCalculator';
+import { useHistory } from './HistoryProvider';
 
 const calculationMap: Record<string, (inputs: Record<string, number | string>) => Record<string, any>> = {
   'bmi-calculator': calculatorLogics.calculateBmi,
@@ -39,6 +40,7 @@ type FormValues = Record<string, string | number>;
 export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: CalculatorDef }) {
   const [result, setResult] = useState<Record<string, any> | null>(null);
   const { user } = useAuth();
+  const { addHistory } = useHistory();
   const { toast } = useToast();
 
   const defaultValues = calculatorDef.inputs.reduce((acc, input) => {
@@ -91,24 +93,32 @@ export default function CalculatorWrapper({ calculatorDef }: { calculatorDef: Ca
       const res = calculationFn(numericData);
       setResult(res);
 
-      if (user && Object.keys(res).length > 0) {
-        try {
-          const historyData: Calculation = {
-            userId: user.uid,
-            calculatorSlug: calculatorDef.slug,
-            calculatorTitle: calculatorDef.title,
-            inputs: data,
-            results: res,
-            createdAt: serverTimestamp(),
-          };
-          await addDoc(collection(db, 'history'), historyData);
-        } catch (error) {
-          console.error("Error saving calculation to history: ", error);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Could not save this calculation to your history.",
-          })
+      if (Object.keys(res).length > 0) {
+        const historyEntry = {
+          calculatorSlug: calculatorDef.slug,
+          calculatorTitle: calculatorDef.title,
+          inputs: data,
+          results: res,
+        };
+
+        if (user) {
+          try {
+            const historyData: Calculation = {
+              ...historyEntry,
+              userId: user.uid,
+              createdAt: serverTimestamp(),
+            };
+            await addDoc(collection(db, 'history'), historyData);
+          } catch (error) {
+            console.error("Error saving calculation to history: ", error);
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: "Could not save this calculation to your history.",
+            })
+          }
+        } else {
+            addHistory(historyEntry);
         }
       }
     }
