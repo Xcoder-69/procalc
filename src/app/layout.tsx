@@ -15,7 +15,6 @@ import { Inter } from 'next/font/google';
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-body',
 });
 
 export const metadata = {
@@ -53,14 +52,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
+    <html lang="en" suppressHydrationWarning className={inter.className}>
       <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5141258475616427"
           crossOrigin="anonymous"></script>
       </head>
       <body
         className={cn(
-          'min-h-screen bg-background font-body antialiased',
+          'min-h-screen bg-background font-sans antialiased',
         )}
       >
         <ThemeProvider

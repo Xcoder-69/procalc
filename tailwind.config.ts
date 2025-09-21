@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['var(--font-body)', ...fontFamily.sans],
-        headline: ['var(--font-body)', ...fontFamily.sans],
+        body: ['Inter', ...fontFamily.sans],
+        headline: ['Inter', ...fontFamily.sans],
       },
       colors: {
         background: 'hsl(var(--background))',
