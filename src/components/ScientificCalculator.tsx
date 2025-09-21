@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Helper for safe evaluation
 const safeEval = (expr: string) => {
@@ -12,8 +12,7 @@ const safeEval = (expr: string) => {
     // Replace user-friendly symbols with JS equivalents
     let evalExpr = expr.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
     
-    // This is a more robust way to handle percentages by replacing them before evaluation.
-    // It will handle cases like 10+10% correctly (evaluating to 11).
+    // Handle percentages
     evalExpr = evalExpr.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
     
     // Using new Function is safer than eval, but for a production app, a dedicated math expression parser is recommended.
@@ -38,6 +37,7 @@ export default function ScientificCalculator() {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState('');
   const [isDeg, setIsDeg] = useState(true);
+  const [memory, setMemory] = useState(0);
 
   const handleButtonClick = (value: string) => {
     setInput((prev) => prev + value);
@@ -68,6 +68,15 @@ export default function ScientificCalculator() {
       case '^':
         handleButtonClick('**');
         break;
+      case 'M+':
+        setMemory(memory + (Number(safeEval(input)) || 0));
+        break;
+      case 'MR':
+        setInput(prev => prev + String(memory));
+        break;
+      case 'MC':
+        setMemory(0);
+        break;
       default:
         // For functions that operate on the current input
         if (input && input !== 'Error') {
@@ -79,7 +88,6 @@ export default function ScientificCalculator() {
                 }
 
                 let result;
-                let funcName = func;
                 let displayFunc = func;
 
                 switch (func) {
@@ -128,127 +136,110 @@ export default function ScientificCalculator() {
             const value = func === 'π' ? Math.PI : Math.E;
             setInput(prev => prev + String(value));
         } else {
-            // For other functions that don't need a preceding value
             handleButtonClick(func);
         }
         break;
     }
   };
   
-  const baseButtonClass = "text-xl h-16 w-full rounded-2xl transition-all duration-200 border-b-4 active:border-b-0 active:translate-y-1";
+  const baseButtonClass = "text-sm h-10 w-full rounded-md transition-all duration-200 border-b-4 active:border-b-0 active:translate-y-1 shadow-md hover:shadow-lg";
 
-  const CalcButton = ({ value, display, className, onClick }: { value: string, display?: string, className?: string, onClick: (val: string) => void }) => (
+  const CalcButton = ({ value, display, className, onClick, children }: { value: string, display?: string, className?: string, onClick: (val: string) => void, children?: React.ReactNode }) => (
     <Button
         variant="ghost"
         className={cn(
             baseButtonClass, 
-            "bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-[0_4px_16px_hsl(var(--primary)/0.2)]", 
+            "bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-primary/30", 
             className
         )}
         onClick={() => onClick(value)}
     >
-      {display || value}
+      {children || display || value}
     </Button>
   );
+  
+  const OpButton = ({value, display, className, onClick}: { value: string, display?: string, className?: string, onClick: (val: string) => void }) => (
+      <CalcButton value={value} display={display} onClick={onClick} className={cn("!bg-primary/10 !text-primary !border-primary/20 hover:!border-primary/40 hover:shadow-primary/40", className)} />
+  );
+  
+  const NumButton = ({value, display, className, onClick}: { value: string, display?: string, className?: string, onClick: (val: string) => void }) => (
+      <CalcButton value={value} display={display} onClick={onClick} className={cn("bg-card text-card-foreground border-foreground/20", className)} />
+  );
+
 
   return (
-    <Card className="w-full max-w-lg mx-auto shadow-2xl bg-card/50 backdrop-blur-xl border-white/10 rounded-2xl overflow-hidden">
+    <Card className="w-full max-w-lg mx-auto shadow-2xl bg-card/80 backdrop-blur-xl border-border/20 rounded-2xl overflow-hidden font-mono">
       <CardContent className="p-4 space-y-4">
         {/* Display */}
-        <div className="bg-transparent rounded-md px-4 py-2 text-right h-32 flex flex-col justify-end text-foreground font-mono">
-          <div className="h-8 text-2xl text-foreground/50 truncate text-right">{history || '0'}</div>
-          <div className="w-full text-right h-16 text-6xl font-bold truncate">
+        <div className="bg-muted/30 rounded-md px-4 py-2 text-right h-28 flex flex-col justify-end text-foreground border border-border/20 shadow-inner">
+          <div className="h-8 text-xl text-foreground/50 truncate text-right">{history || ''}</div>
+          <div className="w-full text-right h-12 text-4xl font-bold truncate">
             {input || '0'}
           </div>
         </div>
+
+        <div className="grid grid-cols-5 gap-2">
+            <CalcButton value="SHIFT" onClick={() => {}} className='col-span-1 !text-yellow-600 !bg-yellow-400/10' />
+            <CalcButton value="ALPHA" onClick={() => {}} className='col-span-1 !text-red-500 !bg-red-400/10' />
+            <div className="col-span-2 grid grid-cols-2 grid-rows-2 gap-1 bg-foreground/10 p-1 rounded-md">
+                <Button size="icon" variant="ghost" className='row-span-2 m-auto bg-card rounded-full h-12 w-12 flex items-center justify-center text-primary'><ChevronLeft /></Button>
+                <Button size="icon" variant="ghost" className='col-start-2 row-start-1 bg-card rounded-md h-6 w-6'><ChevronUp /></Button>
+                <Button size="icon" variant="ghost" className='col-start-2 row-start-2 bg-card rounded-md h-6 w-6'><ChevronDown /></Button>
+            </div>
+             <Button size="icon" variant="ghost" className='m-auto bg-card rounded-full h-12 w-12 flex items-center justify-center text-primary'><ChevronRight /></Button>
+        </div>
         
-        <Tabs defaultValue="scientific" className='w-full'>
-          <TabsList className="grid w-full grid-cols-2 bg-foreground/10 dark:bg-black/20 border-white/10 h-14">
-            <TabsTrigger value="scientific" className='text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/40'>Scientific</TabsTrigger>
-            <TabsTrigger value="simple" className='text-base data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg data-[state=active]:shadow-primary/40'>Simple</TabsTrigger>
-          </TabsList>
+        <div className='grid grid-cols-5 gap-2'>
+            <CalcButton value="sin" onClick={handleFunction} />
+            <CalcButton value="cos" onClick={handleFunction} />
+            <CalcButton value="tan" onClick={handleFunction} />
+            <CalcButton value="MC" onClick={handleFunction} className='!text-destructive/80' />
+            <CalcButton value="MR" onClick={handleFunction} className='!text-destructive/80' />
+
+            <CalcButton value="x²" display="x²" onClick={handleFunction} />
+            <CalcButton value="^" display="xʸ" onClick={handleFunction} />
+            <CalcButton value="log" onClick={handleFunction} />
+            <CalcButton value="ln" onClick={handleFunction} />
+            <CalcButton value="M+" onClick={handleFunction} className='!text-destructive/80' />
+            
+            <CalcButton value="(" onClick={handleButtonClick} />
+            <CalcButton value=")" onClick={handleButtonClick} />
+            <CalcButton value="√" onClick={handleFunction} />
+            <CalcButton value="!" onClick={handleFunction} />
+            <CalcButton value="%" onClick={handleButtonClick} />
+
+        </div>
+
+        <div className="grid grid-cols-5 gap-2">
+          <NumButton value="7" onClick={handleButtonClick} />
+          <NumButton value="8" onClick={handleButtonClick} />
+          <NumButton value="9" onClick={handleButtonClick} />
+          <CalcButton value="C" onClick={handleFunction} className="!bg-destructive/80 !text-destructive-foreground !border-destructive/90" />
+          <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/80 !text-destructive-foreground !border-destructive/90" />
           
-          <TabsContent value="scientific" className='mt-4'>
-            <div className="grid grid-cols-5 gap-2">
-                <CalcButton value={isDeg ? 'rad' : 'deg'} display={isDeg ? 'RAD' : 'DEG'} onClick={() => setIsDeg(!isDeg)} className="text-sm !text-primary/80 border-primary/20 hover:border-primary/40" />
-                <CalcButton value="sin" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="cos" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="tan" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="x²" display="x²" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
+          <NumButton value="4" onClick={handleButtonClick} />
+          <NumButton value="5" onClick={handleButtonClick} />
+          <NumButton value="6" onClick={handleButtonClick} />
+          <OpButton value="×" onClick={handleButtonClick} />
+          <OpButton value="÷" onClick={handleButtonClick} />
+          
+          <NumButton value="1" onClick={handleButtonClick} />
+          <NumButton value="2" onClick={handleButtonClick} />
+          <NumButton value="3" onClick={handleButtonClick} />
+          <OpButton value="+" onClick={handleButtonClick} />
+          <OpButton value="−" onClick={handleButtonClick} />
 
-                <CalcButton value="log" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="ln" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="(" onClick={handleButtonClick} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value=")" onClick={handleButtonClick} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="^" display="xʸ" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                
-                <CalcButton value="√" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60 hover:shadow-[0_4px_16px_hsl(var(--destructive)/0.3)]" />
-                <CalcButton value="C" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60 hover:shadow-[0_4px_16px_hsl(var(--destructive)/0.3)]" />
-                <CalcButton value="%" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-                <CalcButton value="÷" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-
-                <CalcButton value="π" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="7" onClick={handleButtonClick} />
-                <CalcButton value="8" onClick={handleButtonClick} />
-                <CalcButton value="9" onClick={handleButtonClick} />
-                <CalcButton value="×" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-
-                <CalcButton value="e" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="4" onClick={handleButtonClick} />
-                <CalcButton value="5" onClick={handleButtonClick} />
-                <CalcButton value="6" onClick={handleButtonClick} />
-                <CalcButton value="−" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-
-                <CalcButton value="!" onClick={handleFunction} className='!text-primary/80 border-primary/20 hover:border-primary/40'/>
-                <CalcButton value="1" onClick={handleButtonClick} />
-                <CalcButton value="2" onClick={handleButtonClick} />
-                <CalcButton value="3" onClick={handleButtonClick} />
-                <CalcButton value="+" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-
-                <div className="col-span-2">
-                    <Button variant='ghost' className={cn(baseButtonClass, 'w-full bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-[0_4px_16px_hsl(var(--primary)/0.2)]')} onClick={() => handleButtonClick('0')}>0</Button>
-                </div>
-                <CalcButton value="." onClick={handleButtonClick} />
-                <div className="col-span-2">
-                    <Button variant='default' className={cn(baseButtonClass, 'w-full text-2xl !bg-primary hover:!bg-primary/90 text-primary-foreground border-primary/80 hover:shadow-lg hover:shadow-primary/40 active:shadow-none')} onClick={() => handleFunction('=')}>=</Button>
-                </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="simple" className='mt-4'>
-             <div className="grid grid-cols-4 gap-2">
-              <CalcButton value="AC" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60 hover:shadow-[0_4px_16px_hsl(var(--destructive)/0.3)]" />
-              <CalcButton value="C" onClick={handleFunction} className="!bg-destructive/20 !text-destructive !border-destructive/40 hover:!border-destructive/60 hover:shadow-[0_4px_16px_hsl(var(--destructive)/0.3)]" />
-              <CalcButton value="%" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-              <CalcButton value="÷" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-              
-              <CalcButton value="7" onClick={handleButtonClick} />
-              <CalcButton value="8" onClick={handleButtonClick} />
-              <CalcButton value="9" onClick={handleButtonClick} />
-              <CalcButton value="×" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-              
-              <CalcButton value="4" onClick={handleButtonClick} />
-              <CalcButton value="5" onClick={handleButtonClick} />
-              <CalcButton value="6" onClick={handleButtonClick} />
-              <CalcButton value="−" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-              
-              <CalcButton value="1" onClick={handleButtonClick} />
-              <CalcButton value="2" onClick={handleButtonClick} />
-              <CalcButton value="3" onClick={handleButtonClick} />
-              <CalcButton value="+" onClick={handleButtonClick} className="!text-primary !border-primary/30 hover:!border-primary/50"/>
-
-              <div className="col-span-2">
-                <Button variant='ghost' onClick={() => handleButtonClick('0')} className={cn(baseButtonClass, 'w-full bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-foreground/20 hover:-translate-y-px hover:shadow-[0_4px_16px_hsl(var(--primary)/0.2)]')}>0</Button>
-              </div>
-              <CalcButton value="." onClick={handleButtonClick} />
-              <Button variant='default' onClick={() => handleFunction('=')} className={cn(baseButtonClass, "text-2xl !bg-primary hover:!bg-primary/90 text-primary-foreground border-primary/80 hover:shadow-lg hover:shadow-primary/40 active:shadow-none")}> =</Button>
-            </div>
-          </TabsContent>
-        </Tabs>
+          <NumButton value="0" onClick={handleButtonClick} />
+          <NumButton value="." onClick={handleButtonClick} />
+          <CalcButton value="π" onClick={handleFunction} />
+          <CalcButton value="e" onClick={handleFunction} />
+          <OpButton value="=" onClick={handleFunction} />
+        </div>
+        <div className="flex items-center justify-center gap-4 text-xs mt-2">
+            <Button variant={isDeg ? "secondary" : "ghost"} size="sm" onClick={() => setIsDeg(true)}>DEG</Button>
+            <Button variant={!isDeg ? "secondary" : "ghost"} size="sm" onClick={() => setIsDeg(false)}>RAD</Button>
+        </div>
       </CardContent>
     </Card>
   );
 }
-
-    
