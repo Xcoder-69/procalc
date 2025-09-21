@@ -36,40 +36,13 @@ export function AIChat({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
-  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
 
 
-  const getCameraPermission = async () => {
-    if (isCameraOpen) {
-      // Turn off camera
-      if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
-        stream.getTracks().forEach(track => track.stop());
-        videoRef.current.srcObject = null;
-      }
-      setIsCameraOpen(false);
-      return;
-    }
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      setHasCameraPermission(true);
-      setIsCameraOpen(true);
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    } catch (error) {
-      console.error('Error accessing camera:', error);
-      setHasCameraPermission(false);
-      setIsCameraOpen(false);
-      toast({
-        variant: 'destructive',
-        title: 'Camera Access Denied',
-        description: 'Please enable camera permissions in your browser settings.',
-      });
-    }
+  const handleCameraClick = () => {
+    // Temporarily disable camera functionality and show toast
+    handleToolClick('Camera');
   };
 
 
@@ -96,11 +69,6 @@ export function AIChat({ children }: { children: React.ReactNode }) {
     } catch (e) {
       console.error(e);
       setError("Sorry, I couldn't solve that. Please try rephrasing your question.");
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An unexpected error occurred.",
-      });
     } finally {
       setIsLoading(false);
     }
@@ -154,23 +122,9 @@ export function AIChat({ children }: { children: React.ReactNode }) {
           <div className="absolute bottom-2 right-2 flex flex-col gap-2">
             <Button size="icon" variant="ghost" onClick={() => handleToolClick('Microphone')}><Mic className="h-5 w-5" /></Button>
             <Button size="icon" variant="ghost" onClick={() => handleToolClick('File Upload')}><Paperclip className="h-5 w-5" /></Button>
-            <Button size="icon" variant={isCameraOpen ? 'secondary' : 'ghost'} onClick={getCameraPermission}><Camera className="h-5 w-5" /></Button>
+            <Button size="icon" variant={isCameraOpen ? 'secondary' : 'ghost'} onClick={handleCameraClick}><Camera className="h-5 w-5" /></Button>
           </div>
         </div>
-
-        {isCameraOpen && (
-          <div className='space-y-2'>
-            <video ref={videoRef} className="w-full aspect-video rounded-md bg-muted" autoPlay muted />
-            {hasCameraPermission === false && (
-                <Alert variant="destructive">
-                  <AlertTitle>Camera Access Required</AlertTitle>
-                  <AlertDescription>
-                    Please allow camera access in your browser settings to use this feature.
-                  </AlertDescription>
-                </Alert>
-            )}
-          </div>
-        )}
 
         <Button onClick={handleSubmit} disabled={isLoading} className="w-full">
             {isLoading ? (
