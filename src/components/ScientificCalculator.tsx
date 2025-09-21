@@ -193,11 +193,11 @@ export default function ScientificCalculator() {
             <CalcButton value="SHIFT" onClick={() => {}} className='col-span-1 !text-yellow-600 !bg-yellow-400/10 hover:shadow-yellow-500/30' />
             <CalcButton value="ALPHA" onClick={() => {}} className='col-span-1 !text-red-500 !bg-red-400/10 hover:shadow-red-500/30' />
             <div className="col-span-3 grid grid-cols-3 grid-rows-3 gap-px bg-foreground/10 p-1 rounded-md h-[70px] w-full">
-                <Button size="icon" variant="ghost" className='col-start-2 row-start-1 bg-card rounded-md h-5 w-5 mx-auto'><ChevronUp className='h-4 w-4'/></Button>
-                <Button size="icon" variant="ghost" className='col-start-1 row-start-2 bg-card rounded-md h-5 w-5 my-auto'><ChevronLeft className='h-4 w-4'/></Button>
+                <Button size="icon" variant="ghost" className='col-start-2 row-start-1 bg-card rounded-sm h-5 w-5 mx-auto my-auto'><ChevronUp className='h-4 w-4'/></Button>
+                <Button size="icon" variant="ghost" className='col-start-1 row-start-2 bg-card rounded-sm h-5 w-5 my-auto mx-auto'><ChevronLeft className='h-4 w-4'/></Button>
                 <CalcButton value="OK" onClick={handleFunction} className='col-start-2 row-start-2 h-6 w-6 !rounded-full mx-auto my-auto !p-0' />
-                <Button size="icon" variant="ghost" className='col-start-3 row-start-2 bg-card rounded-md h-5 w-5 my-auto'><ChevronRight className='h-4 w-4'/></Button>
-                <Button size="icon" variant="ghost" className='col-start-2 row-start-3 bg-card rounded-md h-5 w-5 mx-auto'><ChevronDown className='h-4 w-4'/></Button>
+                <Button size="icon" variant="ghost" className='col-start-3 row-start-2 bg-card rounded-sm h-5 w-5 my-auto mx-auto'><ChevronRight className='h-4 w-4'/></Button>
+                <Button size="icon" variant="ghost" className='col-start-2 row-start-3 bg-card rounded-sm h-5 w-5 mx-auto my-auto'><ChevronDown className='h-4 w-4'/></Button>
             </div>
         </div>
         
