@@ -107,7 +107,7 @@ export default function ScientificCalculator() {
   
   const baseButtonClass = "text-xl h-16 rounded-2xl transition-all duration-200 flex-1";
 
-  const CalcButton = ({ value, display, className, onClick, variant = 'outline' }: { value: string, display?: string, className?: string, onClick: (val: string) => void, variant?: "default" | "secondary" | "destructive" | "outline" | "ghost" | "link" | null | undefined }) => (
+  const CalcButton = ({ value, display, className, onClick, variant = 'secondary' }: { value: string, display?: string, className?: string, onClick: (val: string) => void, variant?: "default" | "secondary" | "destructive" | "outline" | "ghost" | "link" | null | undefined }) => (
     <Button
         variant={variant}
         className={cn(baseButtonClass, className)}
@@ -128,7 +128,7 @@ export default function ScientificCalculator() {
           </div>
         </div>
         
-        <Tabs defaultValue="scientific">
+        <Tabs defaultValue="scientific" className='w-full'>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="scientific">Scientific</TabsTrigger>
             <TabsTrigger value="simple">Simple</TabsTrigger>
@@ -136,41 +136,41 @@ export default function ScientificCalculator() {
           
           <TabsContent value="scientific" className='mt-4'>
             <div className="grid grid-cols-5 gap-2">
-                <CalcButton value={isDeg ? 'rad' : 'deg'} display={isDeg ? 'RAD' : 'DEG'} onClick={() => setIsDeg(!isDeg)} variant="secondary" className="text-xs"/>
-                <CalcButton value="sin" onClick={handleFunction} variant="secondary" />
-                <CalcButton value="cos" onClick={handleFunction} variant="secondary" />
-                <CalcButton value="tan" onClick={handleFunction} variant="secondary" />
-                <CalcButton value="x²" display="x²" onClick={handleFunction} variant="secondary" />
+                <CalcButton value={isDeg ? 'rad' : 'deg'} display={isDeg ? 'RAD' : 'DEG'} onClick={() => setIsDeg(!isDeg)} className="text-xs"/>
+                <CalcButton value="sin" onClick={handleFunction} />
+                <CalcButton value="cos" onClick={handleFunction} />
+                <CalcButton value="tan" onClick={handleFunction} />
+                <CalcButton value="x²" display="x²" onClick={handleFunction} />
 
-                <CalcButton value="log" onClick={handleFunction} variant="secondary" />
-                <CalcButton value="ln" onClick={handleFunction} variant="secondary" />
-                <CalcButton value="(" onClick={handleButtonClick} variant="secondary" />
-                <CalcButton value=")" onClick={handleButtonClick} variant="secondary" />
-                <CalcButton value="^" display="xʸ" onClick={handleFunction} variant="secondary" />
+                <CalcButton value="log" onClick={handleFunction} />
+                <CalcButton value="ln" onClick={handleFunction} />
+                <CalcButton value="(" onClick={handleButtonClick} />
+                <CalcButton value=")" onClick={handleButtonClick} />
+                <CalcButton value="^" display="xʸ" onClick={handleFunction} />
                 
-                <CalcButton value="√" onClick={handleFunction} variant="secondary" />
+                <CalcButton value="√" onClick={handleFunction} />
                 <CalcButton value="AC" onClick={handleFunction} variant="destructive" />
                 <CalcButton value="C" onClick={handleFunction} variant="destructive" />
-                <CalcButton value="%" onClick={handleButtonClick} variant="secondary" className="text-primary"/>
-                <CalcButton value="÷" onClick={handleButtonClick} variant="secondary" className="text-primary"/>
+                <CalcButton value="%" onClick={handleButtonClick} className="text-primary"/>
+                <CalcButton value="÷" onClick={handleButtonClick} className="text-primary"/>
 
-                <CalcButton value="π" onClick={handleFunction} variant="secondary" />
+                <CalcButton value="π" onClick={handleFunction} />
                 <CalcButton value="7" onClick={handleButtonClick} variant="outline" />
                 <CalcButton value="8" onClick={handleButtonClick} variant="outline" />
                 <CalcButton value="9" onClick={handleButtonClick} variant="outline" />
-                <CalcButton value="×" onClick={handleButtonClick} variant="secondary" className="text-primary"/>
+                <CalcButton value="×" onClick={handleButtonClick} className="text-primary"/>
 
-                <CalcButton value="e" onClick={handleFunction} variant="secondary" />
+                <CalcButton value="e" onClick={handleFunction} />
                 <CalcButton value="4" onClick={handleButtonClick} variant="outline" />
                 <CalcButton value="5" onClick={handleButtonClick} variant="outline" />
                 <CalcButton value="6" onClick={handleButtonClick} variant="outline" />
-                <CalcButton value="−" onClick={handleButtonClick} variant="secondary" className="text-primary"/>
+                <CalcButton value="−" onClick={handleButtonClick} className="text-primary"/>
 
-                <CalcButton value="!" onClick={handleFunction} variant="secondary" />
+                <CalcButton value="!" onClick={handleFunction} />
                 <CalcButton value="1" onClick={handleButtonClick} variant="outline" />
                 <CalcButton value="2" onClick={handleButtonClick} variant="outline" />
                 <CalcButton value="3" onClick={handleButtonClick} variant="outline" />
-                <CalcButton value="+" onClick={handleButtonClick} variant="secondary" className="text-primary"/>
+                <CalcButton value="+" onClick={handleButtonClick} className="text-primary"/>
 
                 <div className="col-span-2">
                     <CalcButton value="0" onClick={handleButtonClick} variant="outline" className='w-full'/>
@@ -186,22 +186,22 @@ export default function ScientificCalculator() {
             <div className="grid grid-cols-4 gap-2">
               <CalcButton value="AC" onClick={handleFunction} variant="destructive" className="col-span-2 w-full"/>
               <CalcButton value="C" onClick={handleFunction} variant="destructive" />
-              <CalcButton value="÷" onClick={handleButtonClick} variant="secondary" className="text-primary"/>
+              <CalcButton value="÷" onClick={handleButtonClick} className="text-primary"/>
               
               <CalcButton value="7" onClick={handleButtonClick} variant="outline" />
               <CalcButton value="8" onClick={handleButtonClick} variant="outline" />
               <CalcButton value="9" onClick={handleButtonClick} variant="outline" />
-              <CalcButton value="×" onClick={handleButtonClick} variant="secondary" className="text-primary"/>
+              <CalcButton value="×" onClick={handleButtonClick} className="text-primary"/>
               
               <CalcButton value="4" onClick={handleButtonClick} variant="outline" />
               <CalcButton value="5" onClick={handleButtonClick} variant="outline" />
               <CalcButton value="6" onClick={handleButtonClick} variant="outline" />
-              <CalcButton value="−" onClick={handleButtonClick} variant="secondary" className="text-primary"/>
+              <CalcButton value="−" onClick={handleButtonClick} className="text-primary"/>
               
               <CalcButton value="1" onClick={handleButtonClick} variant="outline" />
               <CalcButton value="2" onClick={handleButtonClick} variant="outline" />
               <CalcButton value="3" onClick={handleButtonClick} variant="outline" />
-              <CalcButton value="+" onClick={handleButtonClick} variant="secondary" className="text-primary"/>
+              <CalcButton value="+" onClick={handleButtonClick} className="text-primary"/>
 
               <CalcButton value="0" onClick={handleButtonClick} variant="outline" className="col-span-2 w-full"/>
               <CalcButton value="." onClick={handleButtonClick} variant="outline" />

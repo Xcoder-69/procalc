@@ -3,11 +3,11 @@
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const SimpleCalculator = dynamic(() => import('@/components/SimpleCalculator'), {
+const ScientificCalculator = dynamic(() => import('@/components/ScientificCalculator'), {
   ssr: false,
-  loading: () => <Skeleton className="w-full max-w-xs mx-auto h-[550px]" />
+  loading: () => <Skeleton className="w-full max-w-lg mx-auto h-[740px]" />
 });
 
 export default function SimpleCalculatorClient() {
-  return <SimpleCalculator />;
+  return <ScientificCalculator />;
 }
