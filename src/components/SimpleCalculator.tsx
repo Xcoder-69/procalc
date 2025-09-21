@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 
 export default function SimpleCalculator() {
   const [input, setInput] = useState('');
@@ -64,34 +63,30 @@ export default function SimpleCalculator() {
 
   return (
     <Card className="w-full max-w-xs mx-auto shadow-2xl bg-card/80 backdrop-blur-sm border-border/20">
-      <CardContent className="p-4 space-y-4">
+      <CardContent className="p-4 space-y-2">
         <div className="bg-background/50 rounded-md p-4 text-right h-24 flex flex-col justify-end">
           <div className="h-6 text-sm text-muted-foreground truncate">{history || '0'}</div>
-          <Input
-            type="text"
-            className="w-full text-right h-12 text-4xl font-bold border-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0"
-            value={result !== null ? result : input || '0'}
-            readOnly
-          />
+          <div className="w-full text-right h-12 text-4xl font-bold truncate">
+            {result !== null ? result : input || '0'}
+          </div>
         </div>
         
         <div className="grid grid-cols-4 gap-2">
-           <Button variant="destructive" className="col-span-1 text-lg h-16" onClick={clearInput}>AC</Button>
-           <Button variant="destructive" className="text-lg h-16" onClick={deleteLast}>DEL</Button>
-           <Button variant="secondary" className="text-lg h-16" onClick={() => handleButtonClick('/')}>&divide;</Button>
-           <Button variant="secondary" className="text-lg h-16" onClick={() => handleButtonClick('*')}>&times;</Button>
+           <Button variant="secondary" className="col-span-2 text-lg h-16 text-primary" onClick={clearInput}>AC</Button>
+           <Button variant="secondary" className="text-lg h-16 text-primary" onClick={() => handleButtonClick('/')}>&divide;</Button>
+           <Button variant="secondary" className="text-lg h-16 text-primary" onClick={() => handleButtonClick('*')}>&times;</Button>
         </div>
 
         <div className="grid grid-cols-4 gap-2">
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('7')}>7</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('8')}>8</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('9')}>9</Button>
-            <Button variant="secondary" className="text-lg h-16" onClick={() => handleButtonClick('-')}>-</Button>
+            <Button variant="secondary" className="text-lg h-16 text-primary" onClick={() => handleButtonClick('-')}>-</Button>
             
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('4')}>4</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('5')}>5</Button>
             <Button variant="outline" className="text-lg h-16" onClick={() => handleButtonClick('6')}>6</Button>
-            <Button variant="secondary" className="text-lg h-16" onClick={() => handleButtonClick('+')}>+</Button>
+            <Button variant="secondary" className="text-lg h-16 text-primary" onClick={() => handleButtonClick('+')}>+</Button>
 
         </div>
         <div className="grid grid-cols-4 gap-2">

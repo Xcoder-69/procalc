@@ -7,6 +7,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
 import SimpleCalculatorClient from '@/components/SimpleCalculatorClient';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
   const featuredCalculators = calculators.filter(c => c.isFeatured).slice(0, 8);
@@ -14,8 +15,12 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="py-20 md:py-32 bg-background border-b">
-        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+      <section className="py-20 md:py-32 bg-background border-b relative overflow-hidden">
+        <div 
+          className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-full max-w-2xl h-auto aspect-square bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"
+          aria-hidden="true"
+        />
+        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center relative">
           <div className="text-center md:text-left">
             <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter text-primary mb-4">
               ProCalc
@@ -23,9 +28,9 @@ export default function Home() {
             <p className="max-w-xl mx-auto md:mx-0 text-lg md:text-xl text-muted-foreground mb-8">
               Your all-in-one suite of professional-grade calculators for finance, health, and mathematics. Accurate, fast, and easy to use.
             </p>
-            <Button asChild size="lg" variant="outline">
-              <Link href="#featured-calculators">
-                Explore Calculators <ArrowRight className="ml-2" />
+            <Button asChild size="lg">
+              <Link href="#featured-calculators" className='group'>
+                Explore Calculators <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
           </div>
