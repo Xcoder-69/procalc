@@ -143,8 +143,8 @@ export const calculateDateDifference = (inputs: Inputs) => {
 };
 
 export const calculateBodyFat = (inputs: Inputs) => {
-  const { gender, height, neck, waist, hip, weight } = inputs as { gender: string; height: number; neck: number; waist: number; hip?: number, weight: number };
-  if (!gender || !height || !neck || !waist) return {};
+  const { gender, height, neck, waist, hip, weight } = inputs as { gender: string; height: number; neck: number; waist: number; hip?: number, weight?: number | string };
+  if (!gender || !height || !neck || !waist || !weight) return {};
   
   let bodyFatPercentage = 0;
   
