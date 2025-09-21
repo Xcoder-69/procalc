@@ -9,15 +9,24 @@ import { AuthProvider } from '@/components/AuthProvider';
 import { AIChat } from '@/components/AIChat';
 import { Button } from '@/components/ui/button';
 import { BrainCircuit } from 'lucide-react';
-import { Inter } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 
 
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-inter',
 });
 
-export const metadata = {
+const jetbrains_mono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jetbrains-mono',
+})
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://procalc.app';
+
+export const metadata: Metadata = {
   title: 'ProCalc - Your Ultimate All-in-One Calculator Suite',
   description: 'ProCalc is a comprehensive collection of free, accurate, and easy-to-use online calculators for finance, health, mathematics, and more. Your all-in-one suite for daily calculation needs, from BMI and loan EMI to age and percentage calculations.',
   keywords: [
@@ -44,6 +53,10 @@ export const metadata = {
     'calculator suite',
     'daily calculations',
   ],
+  alternates: {
+    canonical: siteUrl,
+  },
+  metadataBase: new URL(siteUrl),
 };
 
 export default function RootLayout({
@@ -52,14 +65,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.className}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrains_mono.variable}`}>
       <head>
+        <link rel="preload" href="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5141258475616427" as="script" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5141258475616427"
           crossOrigin="anonymous"></script>
       </head>
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased',
+          'min-h-screen bg-background font-body antialiased',
         )}
       >
         <ThemeProvider

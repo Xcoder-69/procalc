@@ -25,11 +25,17 @@ export async function generateMetadata({ params }: CalculatorPageProps) {
       title: 'Calculator Not Found',
     };
   }
+  
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://procalc.app';
+  const canonicalUrl = `${siteUrl}/calculator/${calculator.slug}`;
 
   return {
     title: `${calculator.title} | ProCalc`,
     description: calculator.shortDescription,
-    keywords: [calculator.title, 'calculator', ...calculator.title.toLowerCase().split(' ')],
+    keywords: [calculator.title, 'calculator', ...calculator.title.toLowerCase().split(' '), calculator.category],
+    alternates: {
+      canonical: canonicalUrl,
+    },
   };
 }
 

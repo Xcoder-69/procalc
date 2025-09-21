@@ -21,8 +21,9 @@ export default {
         'inner-white-sm': 'inset 0 1px 2px 0 rgb(255 255 255 / 0.15)',
       },
       fontFamily: {
-        body: ['Inter', ...fontFamily.sans],
-        headline: ['Inter', ...fontFamily.sans],
+        body: ['var(--font-inter)', ...fontFamily.sans],
+        headline: ['var(--font-inter)', ...fontFamily.sans],
+        mono: ['var(--font-jetbrains-mono)', ...fontFamily.mono],
       },
       colors: {
         background: 'hsl(var(--background))',

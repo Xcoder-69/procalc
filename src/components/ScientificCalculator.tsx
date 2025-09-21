@@ -121,7 +121,7 @@ export default function ScientificCalculator() {
     <Card className="w-full max-w-lg mx-auto shadow-2xl bg-card/50 backdrop-blur-xl border-white/10 rounded-2xl overflow-hidden">
       <CardContent className="p-4 space-y-4">
         {/* Display */}
-        <div className="bg-transparent rounded-md px-4 py-2 text-right h-32 flex flex-col justify-end text-foreground">
+        <div className="bg-transparent rounded-md px-4 py-2 text-right h-32 flex flex-col justify-end text-foreground font-mono">
           <div className="h-8 text-2xl text-foreground/50 truncate text-right">{history || '0'}</div>
           <div className="w-full text-right h-16 text-6xl font-bold truncate">
             {input || '0'}
