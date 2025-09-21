@@ -76,7 +76,7 @@ export default function RootLayout({
             </div>
             <AIChat>
               <Button
-                className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg hover:scale-110 active:scale-100 transition-transform duration-200 bg-primary hover:bg-primary/90"
+                className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg animate-pulse-glow-once bg-primary hover:bg-primary/90"
                 aria-label="Open AI Chat"
               >
                 <BrainCircuit className="h-8 w-8" />

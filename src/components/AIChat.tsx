@@ -40,22 +40,6 @@ export function AIChat({ children }: { children: React.ReactNode }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
 
-  useEffect(() => {
-    // Open the dialog briefly on page load to showcase the feature
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 500); // Small delay to let the page settle
-
-    const closeTimer = setTimeout(() => {
-      setIsOpen(false);
-    }, 4000); // Keep it open for 3.5 seconds
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(closeTimer);
-    };
-  }, []); // Empty dependency array ensures this runs only once on mount
-
   const getCameraPermission = async () => {
     if (isCameraOpen) {
       // Turn off camera
