@@ -10,8 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
 export default function Home() {
-  const featuredCalculators = calculators.filter(c => c.isFeatured).slice(0, 8);
-
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -47,46 +45,6 @@ export default function Home() {
                 <ScientificCalculator />
               </TabsContent>
             </Tabs>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Calculators Section */}
-      <section id="featured-calculators" className="py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-headline font-bold text-center mb-4">Featured Calculators</h2>
-          <p className="text-center text-muted-foreground max-w-xl mx-auto mb-12">
-            Quickly access our most popular and frequently used calculators for your daily needs.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredCalculators.map((calc, index) => (
-              <Card key={calc.slug} className="group/card flex flex-col hover:shadow-primary/20 hover:shadow-lg transition-all duration-300 overflow-hidden border-2 border-transparent hover:-translate-y-1">
-                <CardHeader className='p-0'>
-                   <div className="overflow-hidden">
-                    <Image
-                        src={`https://picsum.photos/seed/${calc.image.seed}/${calc.image.width}/${calc.image.height}`}
-                        alt={calc.title}
-                        width={calc.image.width}
-                        height={calc.image.height}
-                        className="w-full h-auto aspect-[4/3] object-cover group-hover/card:scale-105 transition-transform duration-300"
-                        data-ai-hint={calc.image.hint}
-                        priority={index < 2}
-                    />
-                   </div>
-                  <div className="p-4">
-                    <p className="text-lg font-semibold leading-tight">{calc.title}</p>
-                    <p className="text-sm h-10 overflow-hidden text-muted-foreground mt-1">{calc.shortDescription}</p>
-                  </div>
-                </CardHeader>
-                <CardContent className="mt-auto p-4">
-                  <Button asChild className="w-full" variant="outline">
-                    <Link href={`/calculator/${calc.slug}`}>
-                      Open Calculator
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>
