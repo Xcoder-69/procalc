@@ -39,14 +39,14 @@ export async function generateMetadata({ params }: CalculatorPageProps) {
   };
 }
 
-const AdPlaceholder = ({ title, className }: { title: string, className: string }) => (
+const AdPlaceholder = ({ id }: { id: string }) => (
     <div className="p-4 text-center bg-card rounded-lg border">
         <h4 className='font-semibold mb-2 text-sm'>Ad Placeholder</h4>
-        <div className={`bg-background/50 flex items-center justify-center rounded-md ${className}`}>
-            <p className='text-muted-foreground text-xs'>{title}</p>
+        <div id={id} className={`bg-background/50 flex items-center justify-center rounded-md min-h-24`}>
         </div>
     </div>
 );
+
 
 export default function CalculatorPage({ params }: CalculatorPageProps) {
   const calculator = getCalculatorBySlug(params.slug);
@@ -62,7 +62,7 @@ export default function CalculatorPage({ params }: CalculatorPageProps) {
   return (
     <>
       <div className="container mx-auto my-6">
-        <AdPlaceholder title="Top Leaderboard Ad (728x90)" className="h-24" />
+        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1" />
       </div>
 
       <div className="container mx-auto px-4 py-8 md:py-12">
@@ -86,7 +86,7 @@ export default function CalculatorPage({ params }: CalculatorPageProps) {
                 <h2 className='font-headline'>About the {calculator.title}</h2>
                 <p>{calculator.article}</p>
                 <div className="my-8">
-                  <AdPlaceholder title="In-Article Ad (300x250)" className="h-64" />
+                  <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-2" />
                 </div>
                 <p>Continue reading the article content here. This section provides more details, use cases, and information related to the calculator to improve user understanding and SEO.</p>
               </div>
@@ -112,7 +112,10 @@ export default function CalculatorPage({ params }: CalculatorPageProps) {
               </Card>
             )}
 
-            <AdPlaceholder title="Sidebar Ad (300x600)" className="h-[600px]" />
+            <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-3" />
+            <div className="my-8">
+             <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-4" />
+            </div>
           </aside>
         </div>
       </div>

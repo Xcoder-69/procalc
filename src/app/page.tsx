@@ -8,11 +8,10 @@ import ScientificCalculator from '@/components/ScientificCalculator';
 import SimpleCalculator from '@/components/SimpleCalculator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const AdPlaceholder = ({ title, className }: { title: string, className: string }) => (
+const AdPlaceholder = ({ id }: { id: string }) => (
     <div className="p-4 text-center bg-card rounded-lg border">
         <h4 className='font-semibold mb-2 text-sm'>Ad Placeholder</h4>
-        <div className={`bg-background/50 flex items-center justify-center rounded-md ${className}`}>
-            <p className='text-muted-foreground text-xs'>{title}</p>
+        <div id={id} className={`bg-background/50 flex items-center justify-center rounded-md min-h-24`}>
         </div>
     </div>
 );
@@ -58,7 +57,7 @@ export default function Home() {
       </section>
 
       <div className="container mx-auto my-6">
-        <AdPlaceholder title="Top Leaderboard Ad (728x90)" className="h-24" />
+        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1" />
       </div>
       
       {/* Categories Section */}
@@ -95,9 +94,9 @@ export default function Home() {
       </section>
       
       <div className="container mx-auto my-6 grid md:grid-cols-3 gap-8">
-        <AdPlaceholder title="Bottom Ad 1 (300x250)" className="h-64" />
-        <AdPlaceholder title="Bottom Ad 2 (300x250)" className="h-64" />
-        <AdPlaceholder title="Bottom Ad 3 (300x250)" className="h-64" />
+        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-2" />
+        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-3" />
+        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-4" />
       </div>
     </div>
   );
