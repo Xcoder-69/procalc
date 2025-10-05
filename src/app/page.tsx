@@ -8,6 +8,14 @@ import ScientificCalculator from '@/components/ScientificCalculator';
 import SimpleCalculator from '@/components/SimpleCalculator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+const AdPlaceholder = ({ title, className }: { title: string, className: string }) => (
+    <div className="p-4 text-center bg-card rounded-lg border">
+        <h4 className='font-semibold mb-2 text-sm'>Ad Placeholder</h4>
+        <div className={`bg-background/50 flex items-center justify-center rounded-md ${className}`}>
+            <p className='text-muted-foreground text-xs'>{title}</p>
+        </div>
+    </div>
+);
 
 export default function Home() {
   return (
@@ -49,13 +57,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ad Section */}
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4 text-center">
-            <div id="container-075495d887dfb628a176dfd88e7d6fb1"></div>
-        </div>
-      </section>
-
+      <div className="container mx-auto my-6">
+        <AdPlaceholder title="Top Leaderboard Ad (728x90)" className="h-24" />
+      </div>
+      
       {/* Categories Section */}
       <section id="all-categories" className="py-16 md:py-24 bg-card border-t">
         <div className="container mx-auto px-4">
@@ -88,6 +93,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+      <div className="container mx-auto my-6 grid md:grid-cols-3 gap-8">
+        <AdPlaceholder title="Bottom Ad 1 (300x250)" className="h-64" />
+        <AdPlaceholder title="Bottom Ad 2 (300x250)" className="h-64" />
+        <AdPlaceholder title="Bottom Ad 3 (300x250)" className="h-64" />
+      </div>
     </div>
   );
 }
