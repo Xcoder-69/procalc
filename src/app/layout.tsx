@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { Sparkles } from 'lucide-react';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { HistoryProvider } from '@/components/HistoryProvider';
-import { Analytics } from "@vercel/analytics/next";
 
 
 const inter = Inter({
@@ -101,7 +100,6 @@ export default function RootLayout({
             </HistoryProvider>
           </AuthProvider>
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   );
