@@ -2,10 +2,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { categories, calculators } from '@/lib/calculators-data';
 import { ArrowRight, Calculator } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
-import ScientificCalculator from '@/components/ScientificCalculator';
 import SimpleCalculator from '@/components/SimpleCalculator';
+import ScientificCalculator from '@/components/ScientificCalculator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const AdPlaceholder = ({ id }: { id: string }) => (
