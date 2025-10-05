@@ -49,6 +49,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Ad Section */}
+      <section className="py-16 md:py-24 bg-background">
+        <div className="container mx-auto px-4 text-center">
+            <div id="container-075495d887dfb628a176dfd88e7d6fb1"></div>
+        </div>
+      </section>
+
       {/* Categories Section */}
       <section id="all-categories" className="py-16 md:py-24 bg-card border-t">
         <div className="container mx-auto px-4">

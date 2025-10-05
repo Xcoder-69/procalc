@@ -69,8 +69,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrains_mono.variable}`}>
       <head>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5141258475616427"
-          crossOrigin="anonymous"></script>
+        <script async="async" data-cfasync="false" src="//pl27786655.revenuecpmgate.com/075495d887dfb628a176dfd88e7d6fb1/invoke.js"></script>
       </head>
       <body
         className={cn(
