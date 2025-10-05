@@ -56,7 +56,7 @@ export default function Home() {
       </section>
 
       <div className="container mx-auto my-6">
-        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1" />
+        <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d" />
       </div>
       
       {/* Categories Section */}
@@ -93,9 +93,9 @@ export default function Home() {
       </section>
       
       <div className="container mx-auto my-6 grid md:grid-cols-3 gap-8">
-        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-2" />
-        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-3" />
-        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-4" />
+        <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d-2" />
+        <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d-3" />
+        <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d-4" />
       </div>
     </div>
   );

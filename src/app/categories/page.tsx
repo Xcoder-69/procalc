@@ -22,7 +22,7 @@ export default function CategoriesPage() {
   return (
     <>
       <div className="container mx-auto my-6">
-        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1" />
+        <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d" />
       </div>
       <div className="container mx-auto px-4 py-16">
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-center mb-4 text-primary">
@@ -67,9 +67,9 @@ export default function CategoriesPage() {
         </div>
       </div>
        <div className="container mx-auto my-6 grid md:grid-cols-3 gap-8">
-        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-2" />
-        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-3" />
-        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-4" />
+        <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d-2" />
+        <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d-3" />
+        <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d-4" />
       </div>
     </>
   );

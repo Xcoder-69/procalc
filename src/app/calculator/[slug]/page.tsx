@@ -62,7 +62,7 @@ export default function CalculatorPage({ params }: CalculatorPageProps) {
   return (
     <>
       <div className="container mx-auto my-6">
-        <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1" />
+        <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d" />
       </div>
 
       <div className="container mx-auto px-4 py-8 md:py-12">
@@ -86,7 +86,7 @@ export default function CalculatorPage({ params }: CalculatorPageProps) {
                 <h2 className='font-headline'>About the {calculator.title}</h2>
                 <p>{calculator.article}</p>
                 <div className="my-8">
-                  <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-2" />
+                  <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d-2" />
                 </div>
                 <p>Continue reading the article content here. This section provides more details, use cases, and information related to the calculator to improve user understanding and SEO.</p>
               </div>
@@ -112,9 +112,9 @@ export default function CalculatorPage({ params }: CalculatorPageProps) {
               </Card>
             )}
 
-            <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-3" />
+            <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d-3" />
             <div className="my-8">
-             <AdPlaceholder id="container-075495d887dfb628a176dfd88e7d6fb1-4" />
+             <AdPlaceholder id="container-05ddfcedb84b370747359a310f8a268d-4" />
             </div>
           </aside>
         </div>
